@@ -178,6 +178,7 @@
             console.log(point,"获取经纬度")
             that.lng = point.lng;
             that.lat = point.lat;
+            alert(11111)
             Bus.$emit('addBar',{
                                  value:that.cityName,
                                  lat:that.lat,
