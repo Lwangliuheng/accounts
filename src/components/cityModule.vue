@@ -106,7 +106,7 @@
             <div class="city_list" v-for="(item, index) in cityData">
               <p class="province">{{item.name}}</p>
               <ul class="city" >
-                  <li v-for="(sitem, sindex) in item.city" @click="selectCity($event,index,sindex)">
+                  <li v-for="(sitem, sindex) in item.city" @click="addCity($event,index,sindex)">
                      {{sitem.name}}
                   </li>
               </ul>
@@ -178,8 +178,7 @@
             console.log(point,"获取经纬度")
             that.lng = point.lng;
             that.lat = point.lat;
-            alert(11111)
-            Bus.$emit('addBar',{
+            Bus.$emit('addSelectCity',{
                                  value:that.cityName,
                                  lat:that.lat,
                                  lng:that.lng
@@ -192,7 +191,7 @@
         });
       },
       //城市的选择
-      selectCity(e,index,sindex){
+      addCity(e,index,sindex){
         var value = cityData[index].city[sindex].name
         this.cityName = value;
         this.cityNameState = true;

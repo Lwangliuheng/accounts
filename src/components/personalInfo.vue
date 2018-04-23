@@ -169,8 +169,8 @@
             </p>
           </div>
         </p>
-        <div class="input_box">
-          <div class="city_input" v-on:click="selectCity">
+        <div class="input_box" v-on:click="selectCity">
+          <div class="city_input" >
             <p class="city_title left">所在城市</p>
             <p class="city_name right city_name_te">{{city}}</p>
           </div>
@@ -228,7 +228,15 @@
        // setTimeout(() => {
        //    this.$store.commit('setSurveyNoActive',"改变后")
        //  }, 1000)
-       //  
+       //注册城市选择回调
+      Bus.$on('addSelectCity',(data)=>{
+           console.log("城市名回现数据",data)
+           this.cityModuleState = false;
+           this.city = data.value;
+           this.cityState = true;
+           this.lat = data.lat;
+           this.lng = data.lng;
+      })
       
     },
     computed:{
@@ -267,16 +275,7 @@
           }
        },
        selectCity(){
-
            this.cityModuleState = true;
-            Bus.$on('addBar',(data)=>{
-               console.log("城市名回现数据",data)
-               this.cityModuleState = false;
-               this.city = data.value;
-               this.cityState = true;
-               this.lat = data.lat;
-               this.lng = data.lng;
-            })
        },
        companyChange(e){
           var company = e.target.value;

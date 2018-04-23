@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 // import surveyContant from  '@/page/surveyContant'
-// import photoList from  '@/page/photoList'
-// import signName from  '@/page/signName'
+import resetPassword from  '@/page/resetPassword'
 import login from '@/page/login'
 
 Vue.use(Router);
@@ -22,6 +21,10 @@ export default new Router({
     //   path:'/signName',
     //   component: signName,
     // },
+    {
+      path: '/reset',
+      component: resetPassword
+    },
     {
       path: '/',
       component: login
