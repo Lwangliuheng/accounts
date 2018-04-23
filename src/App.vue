@@ -21,6 +21,9 @@ export default {
     #app{
    	  font-size:12px;
     }
+    iframe{
+    display:none;
+    }
     .hide{
     	direction: none;
     }

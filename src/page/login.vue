@@ -65,8 +65,9 @@
   }
   .footer{
     width:6.35rem;
-   position:fixed;
-   bottom:0.23rem;
+    margin-top:3rem;
+    /*position:fixed;*/
+   /* bottom:0.23rem;*/
   }
   .footer p{
       text-align: center;
@@ -297,30 +298,30 @@
           // this.registerState = true;
           // return
           console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState)
-           if(!this.phoneNumState){
-               this.$message({
-                message: '请输入正确的手机号',
-                type: 'error'
-              });
-               this.isGreen = false
-              return
-           }
-           if(!this.authCodeState){
-               this.$message({
-                message: '请输入正确的验证码',
-                type: 'error'
-              });
-               this.isGreen = false
-              return
-           }
-           if(!this.invitationCodeState){
-               this.$message({
-                message: '请输入正确的邀请码',
-                type: 'error'
-              });
-              this.isGreen = false
-              return
-           }
+           // if(!this.phoneNumState){
+           //     this.$message({
+           //      message: '请输入正确的手机号',
+           //      type: 'error'
+           //    });
+           //     this.isGreen = false
+           //    return
+           // }
+           // if(!this.authCodeState){
+           //     this.$message({
+           //      message: '请输入正确的验证码',
+           //      type: 'error'
+           //    });
+           //     this.isGreen = false
+           //    return
+           // }
+           // if(!this.invitationCodeState){
+           //     this.$message({
+           //      message: '请输入正确的邀请码',
+           //      type: 'error'
+           //    });
+           //    this.isGreen = false
+           //    return
+           // }
             this.registerState = true;
            //发送ajax
         }
