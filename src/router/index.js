@@ -4,6 +4,9 @@ import Router from 'vue-router'
 // import photoList from  '@/page/photoList'
 // import signName from  '@/page/signName'
 import login from '@/page/login'
+import personalCenter from '@/page/personalCenter'
+
+
 
 Vue.use(Router);
 
@@ -22,14 +25,19 @@ export default new Router({
     //   path:'/signName',
     //   component: signName,
     // },
-    {
-      path: '/',
-      component: login
-    }
+    // {
+    //   path: '/',
+    //   component: login
+    // },
     // {
     //   path: '/:num',
     //   component: login
-    // }
+    // },
+    {
+      path: '/',
+      // path: '/personalCenter',
+      component: personalCenter
+    }
   ]
 })
 
