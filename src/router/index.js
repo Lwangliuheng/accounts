@@ -5,6 +5,9 @@ import resetPassword from  '@/page/resetPassword'
 import feedBack from  '@/page/feedBack'
 import personalSet from  '@/page/personalSet'
 import login from '@/page/login'
+import personalCenter from '@/page/personalCenter'
+
+
 
 Vue.use(Router);
 
@@ -40,13 +43,18 @@ export default new Router({
     },
     //首页
     {
-      path: '/',
+      path: '/login',
       component: login
-    }
+    },
     // {
     //   path: '/:num',
     //   component: login
-    // }
+    // },
+    {
+      path: '/',
+      // path: '/personalCenter',
+      component: personalCenter
+    }
   ]
 })
 
