@@ -3,6 +3,7 @@ import Router from 'vue-router'
 // import surveyContant from  '@/page/surveyContant'
 import resetPassword from  '@/page/resetPassword'
 import feedBack from  '@/page/feedBack'
+import personalSet from  '@/page/personalSet'
 import login from '@/page/login'
 
 Vue.use(Router);
@@ -22,6 +23,11 @@ export default new Router({
     //   path:'/signName',
     //   component: signName,
     // },feedback
+    //个人设置
+    {
+      path: '/set',
+      component: personalSet
+    },
     //意见反馈
     {
       path: '/feedback',
