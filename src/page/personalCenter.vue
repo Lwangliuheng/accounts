@@ -18,9 +18,9 @@
             </div>
         </header>
         <div class="content">
-            <div class="item" @click="myPlan">
+            <div class="item" @click="myWallet">
                 <img class="icon" src="../images/wallet.png" alt="">
-                <span>我的计划</span>
+                <span>我的钱包</span>
             </div>
             <div class="item" @click="onlineLearn">
                 <img class="icon" src="../images/learn.png" alt="">
@@ -72,9 +72,8 @@
     },
     methods: {
         //我的计划
-        myPlan(e){
-            alert("跳哪")
-          this.$router.push({path:'/'});
+        myWallet(e){
+          this.$router.push({path:'/myWallet'});
         },
         //在线学习
         onlineLearn(e){

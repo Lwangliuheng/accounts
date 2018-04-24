@@ -66,7 +66,7 @@ export default new Router({
       path: "/myWallet",
       component: myWallet
     },
-    //查勘通知页
+    //账单详情页
     {
       path: "/incomeDetail",
       component: incomeDetail

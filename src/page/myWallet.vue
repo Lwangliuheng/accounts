@@ -27,7 +27,7 @@
                 <p>推广</p>
             </div>
         </div>
-        <div class="all-get">
+        <div class="all-get" @click="detailsClick">
             <div class="all-get-money">总收入<span>1080.00</span>元</div>
             <div class="all-get-detail">详情<span class="el-icon-arrow-right"></span></div>
         </div>
@@ -55,14 +55,40 @@
   </section>
 </template>
 <script>
-export default {
+
+  export default {
+    components: {
+      
+    },
     data() {
-        return {
-            current: 1
+      return {
+        current: 1
+      }
+    },
+    created(){
+      
+    },
+    mounted() {
+
+      
+    },
+    computed:{
+     
+    },
+    watch: {
+
+    },
+    methods: {
+        //详情
+        detailsClick(e){
+             this.$router.push({path:'/incomeDetail'});
         }
     }
-}
+
+    
+  };
 </script>
+
 <style scoped>
 header {
     width: 100%;
