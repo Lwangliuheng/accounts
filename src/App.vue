@@ -28,4 +28,10 @@ export default {
     	position: fixed;
     	top:0px;
     }
+   .left{
+    float:left;
+    }
+  .right{
+    float:right;
+  }
 </style>
