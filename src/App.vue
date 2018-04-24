@@ -14,6 +14,7 @@ export default {
 <style>
     #app{
    	  font-size:12px;
+		height: 100%;
     }
     iframe{
     display:none;
@@ -31,6 +32,28 @@ export default {
    .left{
     float:left;
     }
+	.el-checkbox__inner {
+			width: .4rem;
+			height: .4rem;
+	}
+	.el-checkbox__input.is-checked .el-checkbox__inner {
+		background: #fff;
+		border-color: #dcdfe6;
+	}
+	.el-checkbox__input.is-focus .el-checkbox__inner {
+		background: #fff;
+		border-color: #dcdfe6;
+	}
+	.el-checkbox__inner::after {
+		border-color: #ff4d01;
+		width: 5px;
+		height: 10px;
+		top: 2px;
+		left: 6px;
+	}
+	.el-checkbox__inner:hover {
+		border-color: #dcdfe6;		
+	}
   .right{
     float:right;
   }
