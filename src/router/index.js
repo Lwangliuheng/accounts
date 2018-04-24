@@ -5,13 +5,19 @@ import Router from 'vue-router'
 // import signName from  '@/page/signName'
 import login from '@/page/login'
 import personalCenter from '@/page/personalCenter'
+import myWallet from "@/page/myWallet";
+import incomeDetail from "@/page/incomeDetail";
+import inviteFriends from "@/page/inviteFriends";
+import workRange from "@/page/workRange";
+import operateActions from "@/page/operateActions";
+import watchVideo from "@/page/watchVideo";
 
 
 
 Vue.use(Router);
 
 export default new Router({
-  mode:"history",
+  mode: "history",
   routes: [
     // {
     //   path:'/surveyContant',
@@ -34,10 +40,34 @@ export default new Router({
     //   component: login
     // },
     {
-      path: '/',
-      // path: '/personalCenter',
+      path: "/personalCenter",
       component: personalCenter
+    },
+    {
+      path: "/myWallet",
+      component: myWallet
+    },
+    {
+      path: "/incomeDetail",
+      component: incomeDetail
+    },
+    {
+      path: "/inviteFriends",
+      component: inviteFriends
+    },
+    {
+      path: "/workRange",
+      component: workRange
+    },
+    {
+      path: "/operateActions",
+      component: operateActions
+    },
+    {
+      path: "/",
+      // path: "/watchVideo",
+      component: watchVideo
     }
   ]
-})
+});
 
