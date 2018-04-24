@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import surveyContant from  '@/page/surveyContant'
 import resetPassword from  '@/page/resetPassword'
 import feedBack from  '@/page/feedBack'
 import personalSet from  '@/page/personalSet'
 import login from '@/page/login'
+import onlineLearn from '@/page/onlineLearn'
 import personalCenter from '@/page/personalCenter'
 
 
@@ -50,6 +50,13 @@ export default new Router({
     //   path: '/:num',
     //   component: login
     // },
+    // 在线学习
+     {
+      path: '/learn',
+      // path: '/personalCenter',
+      component: onlineLearn
+    },
+    // 首页
     {
       path: '/',
       // path: '/personalCenter',
