@@ -4,7 +4,6 @@ import resetPassword from  '@/page/resetPassword'
 import feedBack from  '@/page/feedBack'
 import personalSet from  '@/page/personalSet'
 import login from '@/page/login'
-import onlineLearn from '@/page/onlineLearn'
 import personalCenter from '@/page/personalCenter'
 import myWallet from "@/page/myWallet";
 import incomeDetail from "@/page/incomeDetail";
@@ -31,7 +30,11 @@ export default new Router({
     // {
     //   path:'/signName',
     //   component: signName,
-    // },feedback
+    // },
+    // {
+    //   path: '/:num',
+    //   component: login
+    // },
     //个人设置
     {
       path: '/set',
@@ -47,48 +50,44 @@ export default new Router({
       path: '/reset',
       component: resetPassword
     },
-    //首页
+    // 首页
+    {
+      path: "/",
+      component: personalCenter
+    },
+    //登录页
     {
       path: '/login',
       component: login
     },
-    // {
-    //   path: '/:num',
-    //   component: login
-    // },
-    // 在线学习
-     {
-      path: '/learn',
-      // path: '/personalCenter',
-      component: onlineLearn
-    },
-    // 首页
-    {
-      path: "/personalCenter",
-      component: personalCenter
-    },
+    //账单页
     {
       path: "/myWallet",
       component: myWallet
     },
+    //查勘通知页
     {
       path: "/incomeDetail",
       component: incomeDetail
     },
+    //邀请好友页
     {
       path: "/inviteFriends",
       component: inviteFriends
     },
+    //设置查勘信息页
     {
       path: "/workRange",
       component: workRange
     },
+    //注册成功页
     {
       path: "/operateActions",
       component: operateActions
     },
+    //在线学习页
     {
-      path: "/",
+      path: "/learn",
       // path: "/watchVideo",
       component: watchVideo
     }
