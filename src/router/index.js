@@ -20,18 +20,6 @@ Vue.use(Router);
 export default new Router({
   mode: "history",
   routes: [
-    // {
-    //   path:'/surveyContant',
-    //   component: surveyContant,
-    // },
-    // {
-    //   path:'/photoList/:licenseNo',
-    //   component: photoList,
-    // },
-    // {
-    //   path:'/signName',
-    //   component: signName,
-    // },feedback
     //个人设置
     {
       path: '/set',
@@ -52,10 +40,6 @@ export default new Router({
       path: '/login',
       component: login
     },
-    // {
-    //   path: '/:num',
-    //   component: login
-    // },
     // 在线学习
      {
       path: '/learn',
@@ -67,29 +51,35 @@ export default new Router({
       path: "/personalCenter",
       component: personalCenter
     },
+    // 我的钱包
     {
-      path: "/myWallet",
+      path: "/",
       component: myWallet
     },
+    // 收入详情
     {
       path: "/incomeDetail",
       component: incomeDetail
     },
+    // 邀请好友
     {
       path: "/inviteFriends",
       component: inviteFriends
     },
+    // 工作范围
     {
       path: "/workRange",
       component: workRange
     },
+    // 运营活动
     {
       path: "/operateActions",
       component: operateActions
     },
+    // 观看视频
     {
-      path: "/",
-      // path: "/watchVideo",
+      // path: "/",
+      path: "/watchVideo",
       component: watchVideo
     }
   ]
