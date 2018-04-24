@@ -243,6 +243,7 @@
             this.authValue="重新发送(" + this.countdown + ")"; 
             this.countdown--; 
         } 
+        
         setTimeout(function() { 
             that.settime() }
             ,1000) 

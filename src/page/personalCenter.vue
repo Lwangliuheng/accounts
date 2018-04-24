@@ -2,7 +2,7 @@
     <section class="personalCenter">
         <header class="top">
             <div class="top-left">
-                <img class="avatar" src="" alt="">
+                <img class="avatar" src="../images/headPortrait2.png" alt="">
             </div>
             <div class="top-right">
                 <div class="nick-name">
@@ -19,27 +19,27 @@
         </header>
         <div class="content">
             <div class="item">
-                <img class="icon" src="http://placehold.it/54x42" alt="">
+                <img class="icon" src="../images/wallet.png" alt="">
                 <span>我的计划</span>
             </div>
             <div class="item">
-                <img class="icon" src="http://placehold.it/54x42" alt="">
+                <img class="icon" src="../images/learn.png" alt="">
                 <span>在线学习</span>
             </div>
             <div class="item">
-                <img class="icon" src="http://placehold.it/54x42" alt="">
+                <img class="icon" src="../images/prizeSet.png" alt="">
                 <span>推荐有奖</span>
             </div>
             <div class="item">
-                <img class="icon" src="http://placehold.it/54x42" alt="">
+                <img class="icon" src="../images/service.png" alt="">
                 <span>在线客服</span>
             </div>
             <div class="item">
-                <img class="icon" src="http://placehold.it/54x42" alt="">
+                <img class="icon" src="../images/set_yellow.png" alt="">
                 <span>设置</span>
             </div>
         </div>
-        <div class="dial">
+        <div class="dial" v-show="isCall">
             <div>18811626366</div>
             <div>呼叫</div>
         </div>
@@ -49,7 +49,8 @@
 export default {
   data () {
       return {
-          value: 4  // 最高5
+          value: 4, // 最高5
+          isCall: false  
       } 
   }
 }
@@ -59,7 +60,8 @@ export default {
 .top {
     width: 100%;
     height: 2.8rem;
-    background: green;
+    background: url('../images/personalInformation.png');
+    background-size: 100vw;
     box-sizing: border-box;
     padding: 0.68rem 0.6rem;
     display: flex;
@@ -68,7 +70,9 @@ export default {
     width: 1.44rem;
     height: 1.44rem;
     border-radius: 50%;
-    background: #ccc;
+}
+.top .top-left img {
+    width: 1.44rem;
 }
 .top .top-right {
     margin-left: 0.34rem;
@@ -107,8 +111,7 @@ export default {
     margin: 0;
 }
 .content .item .icon {
-    height: 0.42rem;
-    margin-bottom: 0.3rem;
+    width: 1rem;
 }
 .content .item span {
     display: block;

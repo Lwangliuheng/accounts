@@ -36,17 +36,17 @@
             <div class="welfare-title">福利<span>(程序员努力开发中...)</span></div>
             <ul class="welfare-list">
                 <li>
-                    <img src="http://placehold.it/40x70" alt="">
+                    <img src="../images/IntegralExchangeProduct.png" alt="">
                     <p>积分</p>
                     <span>0积分</span>
                 </li>
                 <li>
-                    <img src="http://placehold.it/40x70" alt="">
+                    <img src="../images/prizeSet.png" alt="">
                     <p>推荐有奖</p>
                     <span>现金豪礼</span>
                 </li>
                 <li>
-                    <img src="http://placehold.it/40x70" alt="">
+                    <img src="../images/activity.png" alt="">
                     <p>奖励活动</p>
                     <span>参与赚更多</span>
                 </li>
@@ -196,6 +196,7 @@ header .spot .active {
     text-align: center;
 }
 .welfare-list li img {
+    height: .7rem;
     margin: .4rem 0 .3rem;
 }
 .welfare-list li p {

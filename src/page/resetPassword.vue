@@ -192,7 +192,7 @@
       <div class="lading_wrap hide">
          <div class="layerThickness" >
             <p>
-              <img src="../images/succeed.png" class="layerThickness_img">
+              <img src="../images/registerSuccess.png" class="layerThickness_img">
             </p>
             <p  class="layerThickness_one">
               <span>恭喜您，修改成功</span>
