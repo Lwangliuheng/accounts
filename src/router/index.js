@@ -4,7 +4,6 @@ import resetPassword from  '@/page/resetPassword'
 import feedBack from  '@/page/feedBack'
 import personalSet from  '@/page/personalSet'
 import login from '@/page/login'
-import onlineLearn from '@/page/onlineLearn'
 import personalCenter from '@/page/personalCenter'
 import myWallet from "@/page/myWallet";
 import incomeDetail from "@/page/incomeDetail";
@@ -20,6 +19,22 @@ Vue.use(Router);
 export default new Router({
   mode: "history",
   routes: [
+    // {
+    //   path:'/surveyContant',
+    //   component: surveyContant,
+    // },
+    // {
+    //   path:'/photoList/:licenseNo',
+    //   component: photoList,
+    // },
+    // {
+    //   path:'/signName',
+    //   component: signName,
+    // },
+    // {
+    //   path: '/:num',
+    //   component: login
+    // },
     //个人设置
     {
       path: '/set',
@@ -35,51 +50,45 @@ export default new Router({
       path: '/reset',
       component: resetPassword
     },
-    //首页
+    // 首页
+    {
+      path: "/",
+      component: personalCenter
+    },
+    //登录页
     {
       path: '/login',
       component: login
     },
-    // 在线学习
-     {
-      path: '/learn',
-      // path: '/personalCenter',
-      component: onlineLearn
-    },
-    // 首页
+    //账单页
     {
-      path: "/personalCenter",
-      component: personalCenter
-    },
-    // 我的钱包
-    {
-      path: "/",
+      path: "/myWallet",
       component: myWallet
     },
-    // 收入详情
+    //查勘通知页
     {
       path: "/incomeDetail",
       component: incomeDetail
     },
-    // 邀请好友
+    //邀请好友页
     {
       path: "/inviteFriends",
       component: inviteFriends
     },
-    // 工作范围
+    //设置查勘信息页
     {
       path: "/workRange",
       component: workRange
     },
-    // 运营活动
+    //注册成功页
     {
       path: "/operateActions",
       component: operateActions
     },
-    // 观看视频
+    //在线学习页
     {
-      // path: "/",
-      path: "/watchVideo",
+      path: "/learn",
+      // path: "/watchVideo",
       component: watchVideo
     }
   ]

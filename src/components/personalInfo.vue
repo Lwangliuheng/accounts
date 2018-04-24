@@ -330,7 +330,7 @@
        },
        //下一步
        registerButton(){
-  
+          this.$router.push({path:'/workRange'});
        }
     }
 
