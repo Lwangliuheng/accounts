@@ -165,7 +165,7 @@
          <div class="city_input">
             <p class="city_title left">姓名</p>
             <p class="city_name right">
-                <input type="text" name="" value="" v-on:blur="nameChange" maxlength="20" class="name_input" placeholder="请输入姓名">
+                <input type="text" name="" value="" @input="nameInput" v-on:blur="nameChange" maxlength="20" class="name_input" placeholder="请输入姓名">
             </p>
           </div>
         </p>
@@ -180,7 +180,7 @@
         <div class="city_input">
             <p class="city_title left">所在公司</p>
             <p class="city_name right">
-                <input type="text" name="" value="" v-on:blur="companyChange" maxlength="20" class="name_input" placeholder="请输入公司">
+                <input type="text" name="" value="" @input="companyInput" v-on:blur="companyChange" maxlength="20" class="name_input" placeholder="请输入公司">
             </p>
           </div>
         </div>
@@ -236,6 +236,7 @@
            this.cityState = true;
            this.lat = data.lat;
            this.lng = data.lng;
+           this.setButGreen();
       })
       
     },
@@ -259,6 +260,19 @@
        imgChange(){
         this.imgState = true
        },
+       //姓名实时校验
+       nameInput(e){
+          var phone = e.target.value;
+          if (phone.length == 0) {
+             this.nameState = false;
+             this.name = '';
+           }else{
+             this.nameState = true;
+             this.name = phone;
+             this.setButGreen();
+          }
+       },
+       //姓名失去焦点校验
        nameChange(e){
            var phone = e.target.value;
            if (phone.length == 0) {
@@ -271,12 +285,25 @@
            }else{
              this.nameState = true;
              this.name = phone;
-             this.setButGreen();
+             //this.setButGreen();
           }
        },
        selectCity(){
            this.cityModuleState = true;
        },
+       //公司实时校验
+       companyInput(e){
+          var company = e.target.value;
+          if (company.length == 0) {
+             this.companyState = false;
+             this.company = '';
+          }else{
+             this.companyState = true;
+             this.company = company;
+             //this.setButGreen();
+          }
+       },
+       //公司失去焦点校验
        companyChange(e){
           var company = e.target.value;
           if (company.length == 0) {
@@ -289,7 +316,7 @@
           }else{
              this.companyState = true;
              this.company = company;
-             this.setButGreen();
+             //this.setButGreen();
           }
        },
        //下一步

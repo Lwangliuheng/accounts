@@ -128,14 +128,14 @@
              <p class="top_wrod">视频查勘定损平台</p>
            </div>
            <p class="input_box">
-             <input type="text" name="" value="" v-on:blur="phoneChange" placeholder="请输入登录手机号">
+             <input type="text" name="" value="" v-on:blur="phoneChange" @input="phoneInput" placeholder="请输入登录手机号">
            </p>
            <div class="input_box">
-             <input type="text" name="" value=""  v-on:blur="authChange" placeholder="请输入短信验证码">
+             <input type="text" name="" value="" @input="authInput"  v-on:blur="authChange" placeholder="请输入短信验证码">
              <p class="auth_code" v-on:click="gainAuthCode">{{authValue}}</p>
            </div>
            <div class="input_box">
-             <input type="text" name="" value="" v-on:blur="invitationChange" placeholder="请输入邀请码">
+             <input type="text" name="" value="" @input="invitationInput" v-on:blur="invitationChange" placeholder="请输入邀请码">
              <p class="auth_code">
                <span class="yqm">邀请码</span>
                <img src="">
@@ -241,7 +241,20 @@
               this.isGreen = false;
            }
         },
-        //手机号
+        //手机号实时监控
+        phoneInput(e){
+           var phone = e.target.value;
+           var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
+           if (!r.test(phone)) {
+             this.phoneNumState = false;
+             this.phoneNum = '';
+           }else{
+             this.phoneNumState = true;
+             this.phoneNum = phone;
+             this.setButGreen();
+          }
+        },
+        //手机号失焦
         phoneChange(e){
            var phone = e.target.value;
            var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
@@ -255,6 +268,18 @@
            }else{
              this.phoneNumState = true;
              this.phoneNum = phone;
+          }
+        },
+        //短信验证码实时监控
+        authInput(e){
+          var auth = e.target.value;
+          var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
+          if (!r.test(auth)) {
+             this.authCodeState = false;
+             this.authCode = '';
+          }else{
+             this.authCodeState = true;
+             this.authCode = auth;
              this.setButGreen();
           }
         },
@@ -272,6 +297,19 @@
           }else{
              this.authCodeState = true;
              this.authCode = auth;
+             //this.setButGreen();
+          }
+        },
+        //邀请码实时监控
+        invitationInput(e){
+          var invitation = e.target.value;
+          var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
+          if (!r.test(invitation)) {
+             this.invitationCodeState = false;
+             this.invitationCode = '';
+          }else{
+             this.invitationCodeState = true;
+             this.invitationCode = invitation;
              this.setButGreen();
           }
         },
@@ -289,7 +327,7 @@
           }else{
              this.invitationCodeState = true;
              this.invitationCode = invitation;
-             this.setButGreen();
+             //this.setButGreen();
           }
         },
         //注册按钮
@@ -298,6 +336,7 @@
           // this.registerState = true;
           // return
           console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState)
+          console.log(this.invitationCode,this.phoneNum,this.authCode)
            // if(!this.phoneNumState){
            //     this.$message({
            //      message: '请输入正确的手机号',
