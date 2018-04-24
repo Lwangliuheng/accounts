@@ -4,9 +4,7 @@
           <span class="el-icon-search"></span><input type="text" v-model="address" placeholder="请输入查勘地点">
       </div>
       <div class="tip">温馨提示：最多可设置3个接单区域，每个区域覆盖3~6公里！<span class="el-icon-circle-close-outline"></span></div>
-      <div class="map">
-          
-      </div>
+      <div class="map" id="allmap"></div>
       <div class="work-address">
           <ul class="address-list">
               <li>
@@ -65,7 +63,7 @@
       
     },
     mounted() {
-
+      this.creatMap();
     },
     computed:{
      
@@ -74,6 +72,11 @@
 
     },
     methods: {
+        //画地图
+        creatMap(){
+          var map = new BMap.Map("allmap");
+          map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图
+        },
         nextStep(e){
           this.$router.push({path:'/operateActions'});
         }
