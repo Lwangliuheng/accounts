@@ -1,11 +1,11 @@
 <template>
   <section class="myWallet">
       <header>
-          <div class="btn1">本日</div>
-          <div class="btn2">本周</div>
+          <div class="btn1" @click='leftChange'>{{option[0]}}</div>
+          <div class="btn2" @click='rightChange'>{{option[1]}}</div>
           <div class="money">
-              <span>588.00</span>
-              <p>本月收入(元)</p>
+              <span>{{moneyList[current-1]}}</span>
+              <p>{{option[2]}}收入(元)</p>
           </div>
           <ul class="spot">
               <li :class="{active:current == 1}"></li>
@@ -36,17 +36,17 @@
             <div class="welfare-title">福利<span>(程序员努力开发中...)</span></div>
             <ul class="welfare-list">
                 <li>
-                    <img src="../images/IntegralExchangeProduct.png" alt="">
+                    <img src="../images/jifen.png" alt="">
                     <p>积分</p>
                     <span>0积分</span>
                 </li>
                 <li>
-                    <img src="../images/prizeSet.png" alt="">
+                    <img src="../images/award.png" alt="">
                     <p>推荐有奖</p>
                     <span>现金豪礼</span>
                 </li>
                 <li>
-                    <img src="../images/activity.png" alt="">
+                    <img src="../images/actions.png" alt="">
                     <p>奖励活动</p>
                     <span>参与赚更多</span>
                 </li>
@@ -62,11 +62,10 @@
     },
     data() {
       return {
-        current: 1
+        current: 3,
+        option: ['本日','本周','本月'],
+        moneyList: [30,300,3000]
       }
-    },
-    created(){
-      
     },
     mounted() {
 
@@ -82,6 +81,18 @@
         //详情
         detailsClick(e){
              this.$router.push({path:'/incomeDetail'});
+        },
+        
+        // 点击左侧按钮
+        leftChange () {
+            this.current == 3 ? this.current = 1 : this.current++;
+            this.option.push(this.option.shift());
+        },
+
+        // 点击右侧按钮
+        rightChange () {
+            this.current == 1 ? this.current = 3 : this.current--;            
+            this.option.unshift(this.option.pop());
         }
     }
 

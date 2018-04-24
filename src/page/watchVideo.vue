@@ -1,7 +1,10 @@
 <template>
   <div class="watch-video">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
-      <video class="video" src=""></video>
+      <div class="video">
+        <video @click="pause" src="../images/video.mp4" ref="video"></video>
+        <img src="../images/videoBtn.png" v-show="!isPlaying" alt="" @click='play'>
+      </div>
       <div class="btn" @click="beganSingle">开始接单<span>(2:13)</span></div>
   </div>
 </template>
@@ -14,7 +17,7 @@
     },
     data() {
       return {
-         
+         isPlaying: false,
       }
     },
     created(){
@@ -32,6 +35,20 @@
     methods: {
         beganSingle(e){
           this.$router.push({path:'/'});
+        },
+
+        //点击按钮播放
+        play () {
+            this.$refs.video.play();
+            this.isPlaying = true;
+        },
+
+        // 点击按钮暂停
+        pause(){
+            if(this.isPlaying) {
+                this.$refs.video.pause();
+                this.isPlaying = false;
+            }
         }
     }
 
@@ -48,14 +65,22 @@
     width: 100%;
 }
 .video {
-    width: 6.9rem;
-    height: 4rem;
-    background: chartreuse;
-    border-radius: .28rem;
     position: absolute;
     top: 3.43rem;
     left: 50%;
     transform: translateX(-50%);
+}
+.video video {
+    width: 6.9rem;
+    height: 4rem;
+    border-radius: .28rem;
+}
+.video img {
+    width: .7rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 .btn {
     width: 6.38rem;
