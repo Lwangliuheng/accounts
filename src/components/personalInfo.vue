@@ -162,13 +162,51 @@
   .auth_code_te{
     width:auto;
   }
+  
+
+
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    /*width: 178px;
+    height: 178px;*/
+      width:1.86rem;
+    height:1.86rem;
+    display: block;
+  }
 </style>
 <template>
     <div class="register_wrap">
       <div class="register_content"  v-if="!cityModuleState">
         <div class="register_top">
-          <img class="register_top_img" src="../images/headPortrait1.png" v-on:click="imgChange">
-          <p class="top_wrod">请按照示例图上传大头照</p>
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" >
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+
+<!--           <img class="register_top_img" src="../images/headPortrait1.png" v-on:click="imgChange">
+          <p class="top_wrod">请按照示例图上传大头照</p> -->
         </div>
         <p class="input_box">
          <div class="city_input">
@@ -215,6 +253,7 @@
     },
     data() {
       return {
+          imageUrl:'',
           isGreen:false,
           cityModuleState:false,//组件显示状态
           img:"",
@@ -331,7 +370,24 @@
        //下一步
        registerButton(){
           this.$router.push({path:'/workRange'});
-       }
+       },
+      handleAvatarSuccess(res, file) {
+        // alert(111111)
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type
+        const isLt2M = file.size / 1024 / 1024;
+
+        // if (!isJPG) {
+        //   this.$message.error('上传头像图片只能是 JPG 格式!');
+        // }
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过 2MB!');
+        // }
+        return isJPG && isLt2M;
+      }
+
     }
 
     
