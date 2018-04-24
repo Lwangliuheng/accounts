@@ -178,9 +178,9 @@
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
+    width:1.86rem;
+    height:1.86rem;
+    line-height: 1.86rem;
     text-align: center;
   }
   .avatar {
