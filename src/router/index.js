@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import resetPassword from  '@/page/resetPassword'
 import feedBack from  '@/page/feedBack'
 import personalSet from  '@/page/personalSet'
