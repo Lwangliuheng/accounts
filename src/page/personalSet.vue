@@ -13,12 +13,12 @@
     padding-right:0.34rem;
     font-size: 16px;
     color:#353535;
-    margin-bottom:0.02rem;
+    margin-bottom:0.05rem;
   }
   .p_img{
-    width:12px;
-    height:24px;
-    border:1px solid red;
+    width:0.6rem;
+    height:0.6rem;
+   /* border:1px solid red;*/
   }
   .feed_back_li_te{
     margin-bottom:0.2rem;
@@ -28,15 +28,15 @@
    <div class="feed_back_wrap">
       <div class="feed_back_li" @click="ModifyPhoneNumber">
          <p class="left">修改手机号</p>
-         <p class="right"> <img src="" class="p_img"> </p>
+         <p class="right"> <img src="../images/RightOn.png" class="p_img"> </p>
       </div>
       <div class="feed_back_li feed_back_li_te" @click="ModifyListRange">
          <p class="left">修改接单范围</p>
-         <p class="right"> <img src="" class="p_img"> </p>
+         <p class="right"> <img src="../images/RightOn.png" class="p_img"> </p>
       </div>
       <div class="feed_back_li" @click="suggestionFeedback">
          <p class="left">意见反馈</p>
-         <p class="right"> <img src="" class="p_img"> </p>
+         <p class="right"> <img src="../images/RightOn.png" class="p_img"> </p>
       </div>
       <div class="feed_back_li">
          <p class="left">开启抢单</p>

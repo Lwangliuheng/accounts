@@ -6,6 +6,8 @@
     
    }
    .register_content{
+     width:100%;
+    height:100vh;
     padding-top:1.5rem;
     margin:0 auto;
     width:6.35rem;
@@ -65,7 +67,7 @@
   }
   .footer{
     width:6.35rem;
-    margin-top:3rem;
+    margin-top:2rem;
     /*position:fixed;*/
    /* bottom:0.23rem;*/
   }
@@ -94,7 +96,13 @@
       
       width:20px;
       height:15px;
-      border:1px solid red;
+      text-align: top;
+     /* border:1px solid red;*/
+  }
+  .petunia img{
+    width:0.6rem;
+    height:0.6rem;
+    margin-top:-0.1rem;
   }
   .award_word{
     font-size: 14px;
@@ -110,13 +118,25 @@
     color:red;
   }
   .close{
+    position:relative;
     text-align: center;
-    line-height: 17px;
+   /* line-height: 17px;*/
     color:#6d6163;
-    width:20px;
-    height:20px;
+   /* width:20px;
+    height:20px;*/
     border:1px solid #6d6163;
     border-radius: 50%;
+  }
+  .register_top_img{
+    width:3.8rem;
+    height:2.07rem;
+  }
+  .close_img{
+    position:absolute;
+    width:0.6rem;
+    height:0.6rem;
+    left:-0.34rem;
+    top:-0.1rem;
   }
 </style>
 <template>
@@ -124,7 +144,7 @@
       <div class="register_wrap" v-if="!registerState">
          <div class="register_content">
            <div class="register_top">
-             <img src="../images/logo.png">
+             <img src="../images/logo.png" class="register_top_img">
              <p class="top_wrod">视频查勘定损平台</p>
            </div>
            <p class="input_box">
@@ -155,9 +175,9 @@
          </div>
          
          <div class="award">
-             <p class="left petunia">1</p>
+             <p class="left petunia"><img src="../images/announcement.png"></p>
              <p class="left award_word">完成组成即送<span class="red">100元返现券</span>，赶紧加入吧</p>
-             <p class="right close" @click="cancelBut">X</p>
+             <p class="right close" @click="cancelBut"><img src="../images/close.png" class="close_img"></p>
          </div>
            <!-- <el-button type="primary" style="width:6rem;">主要按钮</el-button> -->
          

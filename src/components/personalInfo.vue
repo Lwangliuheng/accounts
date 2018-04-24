@@ -18,7 +18,7 @@
    .register_top_img{
       width:1.86rem;
     height:1.86rem;
-    border:1px solid red;
+  /*  border:1px solid red;*/
    }
    .top_wrod{
     margin-top:0.2rem;
@@ -49,7 +49,7 @@
     height:1.16rem;
     line-height: 1.16rem;
     width:100%;
-    border-bottom:1px solid #b6b6b6;
+    /*border-bottom:1px solid #b6b6b6;*/
   }
   .green_but_box{
      margin-top:0.7rem;
@@ -133,7 +133,7 @@
     overflow: hidden; 
   }
   .city_name_te{
-    margin-right:0.4rem;
+    margin-right:0.6rem;
   }
   .city_input p{
     font-size: 14px;
@@ -151,14 +151,23 @@
   }
   .name_input{
     height:50px;
+    width:100%;
     text-align: right;
+  }
+  .auth_code_img{
+    width:0.6rem;
+    height:0.6rem;
+    margin-top:0.24rem;
+  }
+  .auth_code_te{
+    width:auto;
   }
 </style>
 <template>
     <div class="register_wrap">
       <div class="register_content"  v-if="!cityModuleState">
         <div class="register_top">
-          <img class="register_top_img" src="" v-on:click="imgChange">
+          <img class="register_top_img" src="../images/headPortrait1.png" v-on:click="imgChange">
           <p class="top_wrod">请按照示例图上传大头照</p>
         </div>
         <p class="input_box">
@@ -174,7 +183,7 @@
             <p class="city_title left">所在城市</p>
             <p class="city_name right city_name_te">{{city}}</p>
           </div>
-          <p class="auth_code"> > </p>
+          <p class="auth_code auth_code_te"> <img src="../images/RightOn.png" class="auth_code_img"> </p>
         </div>
         <div class="input_box">
         <div class="city_input">

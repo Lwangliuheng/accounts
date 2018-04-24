@@ -27,7 +27,7 @@
    .location_map{
     width:30px;
     height:32px;
-    border:1px solid red;
+   /* border:1px solid red;*/
     margin-right:0.4rem;
    }
    .left{
@@ -86,7 +86,7 @@
         <div class="city_top">
             <div class="city_top_a">
                  <p class="left">
-                  <img src="" class="location_map">
+                  <img src="../images/dwan.png" class="location_map">
                 </p>
                 <p class="left">
                     <span class="city_top_wrod">定位城市：</span>
