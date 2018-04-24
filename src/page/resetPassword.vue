@@ -57,7 +57,6 @@
      line-height: 0.91rem;
      border: 1px solid #cacaca;
      border-radius: 10px;
-     /*background-color: #2fab3b;*/
      height:0.91rem;
      color:#fff;
      font-size: 20px;
@@ -118,63 +117,105 @@
     border:1px solid #6d6163;
     border-radius: 50%;
   }
+  .layerThickness{
+    text-align: center;
+    color:#353535;
+    width:4.5rem;
+    height:3.82rem;
+    position:absolute;
+    left:20%;
+    top:30%;
+    z-index: 100000;
+   background-color: #fff;
+   border-radius:10px;
+  }
+  .layerThickness_botom{
+    font-size: 16px;
+    color:#35a63a;
+    height:1rem;
+    line-height: 1rem;
+    text-align: center;
+    border-top:1px solid #dddddd;
+  }
+  .layerThickness_img{
+    margin-top:0.32rem;
+    width:0.92rem;
+    height:0.92rem;
+    border:1px solid red;
+  }
+  .layerThickness_one{
+    margin-top:0.36rem;
+    /*margin-bottom:0.36rem;*/
+  }
+  .layerThickness_one span{
+    font-size: 18px;
+    color:#363636;
+    
+  }
+  .layerThickness_two{
+    margin-bottom:0.3rem;
+  }
+  .layerThickness_two span{
+    font-size: 14px;
+    color:#999999;
+    
+  }
 </style>
 <template>
    <div>
-      <div class="register_wrap" v-if="!registerState">
+      <div class="register_wrap">
          <div class="register_content">
            <div class="register_top">
              <img src="../images/logo.png">
              <p class="top_wrod">视频查勘定损平台</p>
            </div>
            <p class="input_box">
-             <input type="text" name="" value="" v-on:blur="phoneChange" @input="phoneInput" placeholder="请输入登录手机号">
+             <input type="text" name="" value="" v-on:blur="phoneChange" @input="phoneInput"  placeholder="请输入手机号">
            </p>
            <div class="input_box">
              <input type="text" name="" value="" @input="authInput"  v-on:blur="authChange" placeholder="请输入短信验证码">
              <p class="auth_code" v-on:click="gainAuthCode">{{authValue}}</p>
            </div>
-           <div class="input_box">
-             <input type="text" name="" value="" @input="invitationInput" v-on:blur="invitationChange" placeholder="请输入邀请码">
-             <p class="auth_code">
-               <span class="yqm">邀请码</span>
-               <img src="">
-             </p>
-           </div>
-
+    
            <p v-bind:class="{ 'green_but_box':isGreen, 'gray_but_box': !isGreen }" v-on:click="registerButton">
-               注册
+               修改
            </p>
 
 
-           <div class="footer">
-               <p>注册即同意《注册条款》</p>
-               <p>如不同意请停止注册</p>
-           </div>
-
          </div>
-         
-         <div class="award">
-             <p class="left petunia">1</p>
-             <p class="left award_word">完成组成即送<span class="red">100元返现券</span>，赶紧加入吧</p>
-             <p class="right close" @click="cancelBut">X</p>
-         </div>
-           <!-- <el-button type="primary" style="width:6rem;">主要按钮</el-button> -->
          
       </div>
-      <personal-info v-if="registerState"></personal-info>
+      <div class="lading_wrap hide">
+         <div class="layerThickness" >
+            <p>
+              <img src="" class="layerThickness_img">
+            </p>
+            <p  class="layerThickness_one">
+              <span>恭喜您，修改成功</span>
+            </p>
+            <p class="layerThickness_two">
+              <span >自动跳转回个人中心（{{monolayerTime}}s）</span>
+            </p>
+             
+             <div class="layerThickness_botom" @click="awareClick">
+               知道啦
+             </div>
+         </div>
+      </div>
+      
    </div>
    
 </template>
 <script>
-  import personalInfo from '../components/personalInfo'
+
   export default {
     components: {
-      personalInfo
+      
     },
     data() {
       return {
-          registerState:false,//页面切换状态
+          monolayerTime:"3",
+          layerState:false,
           countdown:60,//计时器
           authValue:"获取验证码",
           authValueState:true,
@@ -182,9 +223,7 @@
           phoneNum: '',//电话号
           phoneNumState:false,
           authCode:"",//验证码
-          authCodeState:false,
-          invitationCode:"",//邀请码
-          invitationCodeState:false
+          authCodeState:false
       }
     },
     created(){
@@ -207,20 +246,17 @@
 
     },
     methods: {
-       cancelBut(){
-           $(".award").addClass("hide")
-       },
        //短信验证码轮训
        settime(){
         var that = this;
         if (this.countdown == 0) { 
             this.authValueState = true;
-            this.authValue="获取验证码"; 
+            this.authValue = "获取验证码"; 
             this.countdown = 60; 
             return;
         } else { 
             this.authValueState = false;   
-            this.authValue="重新发送(" + this.countdown + ")"; 
+            this.authValue = "重新发送(" + this.countdown + ")"; 
             this.countdown--; 
         } 
         setTimeout(function() { 
@@ -231,17 +267,18 @@
        gainAuthCode(){
         if(this.authValueState){
          this.settime();
+         //ajax
         }
        },
-       //注册按钮变色
+       //修改按钮变色
         setButGreen(){
-           if(this.phoneNumState && this.authCodeState && this.invitationCodeState){
+           if(this.phoneNumState && this.authCodeState){
               this.isGreen = true;
            }else{
               this.isGreen = false;
            }
         },
-        //手机号实时监控
+        //手机号实时校验
         phoneInput(e){
            var phone = e.target.value;
            var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
@@ -253,8 +290,9 @@
              this.phoneNum = phone;
              this.setButGreen();
           }
+        
         },
-        //手机号失焦
+         //手机号失去焦点校验
         phoneChange(e){
            var phone = e.target.value;
            var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
@@ -268,9 +306,10 @@
            }else{
              this.phoneNumState = true;
              this.phoneNum = phone;
+             //this.setButGreen();
           }
         },
-        //短信验证码实时监控
+        //短信验证码实时校验
         authInput(e){
           var auth = e.target.value;
           var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
@@ -283,7 +322,7 @@
              this.setButGreen();
           }
         },
-        //短信验证码
+        //短信验证码失去焦点校验
         authChange(e){
            var auth = e.target.value;
            var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
@@ -300,43 +339,35 @@
              //this.setButGreen();
           }
         },
-        //邀请码实时监控
-        invitationInput(e){
-          var invitation = e.target.value;
-          var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
-          if (!r.test(invitation)) {
-             this.invitationCodeState = false;
-             this.invitationCode = '';
-          }else{
-             this.invitationCodeState = true;
-             this.invitationCode = invitation;
-             this.setButGreen();
-          }
-        },
-        //邀请码
-        invitationChange(e){
-           var invitation = e.target.value;
-           var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
-          if (!r.test(invitation)) {
-             this.$message({
-                message: '请输入正确的邀请码',
-                type: 'error'
-              });
-             this.invitationCodeState = false;
-             this.invitationCode = '';
-          }else{
-             this.invitationCodeState = true;
-             this.invitationCode = invitation;
-             //this.setButGreen();
-          }
+        //弹层倒计时
+        monolayerSettime(){
+          var that = this;
+          if (this.monolayerTime == 0) { 
+              // this.authValueState = true;
+              // this.authValue = "获取验证码"; 
+              this.monolayerTime = 3; 
+              //跳转
+              this.$router.push({path:'/'});
+              return;
+          } else { 
+              // this.authValueState = false;   
+              // this.authValue = "重新发送(" + this.countdown + ")"; 
+              this.monolayerTime--; 
+          } 
+          setTimeout(function() { 
+              that.monolayerSettime() }
+              ,1000) 
+       },
+        awareClick(e){
+           //跳转
+           this.$router.push({path:'/'});
+           $(".lading_wrap").addClass("hide")
         },
         //注册按钮
         registerButton(e){
-          // //cs
-          // this.registerState = true;
-          // return
-          console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState)
-          console.log(this.invitationCode,this.phoneNum,this.authCode)
+          $(".lading_wrap").removeClass("hide");
+          this.monolayerSettime();
+          console.log(this.phoneNumState,this.authCodeState)
            // if(!this.phoneNumState){
            //     this.$message({
            //      message: '请输入正确的手机号',
@@ -361,10 +392,8 @@
            //    this.isGreen = false
            //    return
            // }
-            this.registerState = true;
            //发送ajax
         }
-        
     }
 
     

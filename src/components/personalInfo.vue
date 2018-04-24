@@ -12,22 +12,33 @@
    }
    .register_top{
     text-align: center;
+  
     padding-bottom:0.64rem;
+   }
+   .register_top_img{
+      width:1.86rem;
+    height:1.86rem;
+    border:1px solid red;
    }
    .top_wrod{
     margin-top:0.2rem;
-    color:#000;
-    font-size: 18px;
+    color:#b1b1b1;
+    font-size: 13px;
    }
    .input_box{
     position: relative;
    }
+   .input_box input{
+      color:#343434;
+   }
    .auth_code{
      font-size: 14px;
+     width:0.4rem;
+     text-align: center;
      line-height:1.16rem;
      position:absolute;
      right:0px;
-     color:#e6e6e6;
+     color:#343434;
      top:0px;
    }
    .yqm{
@@ -85,9 +96,6 @@
   .hide{
     display:none;
   }
-  /*.award p{
-     
-  }*/
   .petunia{
       margin-right:0.2rem;
       
@@ -117,55 +125,99 @@
     border:1px solid #6d6163;
     border-radius: 50%;
   }
+  .city_input{
+    display:inline-block;
+    height:58px;
+    width:100%;
+    border-bottom:1px solid #9e9e9e;
+    overflow: hidden; 
+  }
+  .city_name_te{
+    margin-right:0.4rem;
+  }
+  .city_input p{
+    font-size: 14px;
+     height:58px;
+     line-height:58px;
+  }
+  .city_title{
+    width:1.5rem;
+    color:#a8a8a8;
+  }
+  .city_name{
+    text-align:right;
+    width:3rem;
+    color:#343434;
+  }
+  .name_input{
+    height:50px;
+    text-align: right;
+  }
 </style>
 <template>
     <div class="register_wrap">
-      <div class="register_content">
+      <div class="register_content"  v-if="!cityModuleState">
         <div class="register_top">
-          <img src="../images/logo.png">
-          <p class="top_wrod">视频查勘定损平台</p>
+          <img class="register_top_img" src="" v-on:click="imgChange">
+          <p class="top_wrod">请按照示例图上传大头照</p>
         </div>
         <p class="input_box">
-          <input type="text" name="" value="" v-on:blur="phoneChange" placeholder="请输入登录手机号">
+         <div class="city_input">
+            <p class="city_title left">姓名</p>
+            <p class="city_name right">
+                <input type="text" name="" value="" @input="nameInput" v-on:blur="nameChange" maxlength="20" class="name_input" placeholder="请输入姓名">
+            </p>
+          </div>
         </p>
-        <div class="input_box">
-          <input type="text" name="" value=""  v-on:blur="authChange" placeholder="请输入短信验证码">
-          <p class="auth_code" v-on:click="gainAuthCode"> > </p>
+        <div class="input_box" v-on:click="selectCity">
+          <div class="city_input" >
+            <p class="city_title left">所在城市</p>
+            <p class="city_name right city_name_te">{{city}}</p>
+          </div>
+          <p class="auth_code"> > </p>
         </div>
         <div class="input_box">
-          <input type="text" name="" value="" v-on:blur="invitationChange" placeholder="请输入邀请码">
-          <p class="auth_code">
-            <span class="yqm">邀请码</span>
-            <img src="">
-          </p>
+        <div class="city_input">
+            <p class="city_title left">所在公司</p>
+            <p class="city_name right">
+                <input type="text" name="" value="" @input="companyInput" v-on:blur="companyChange" maxlength="20" class="name_input" placeholder="请输入公司">
+            </p>
+          </div>
         </div>
 
         <p v-bind:class="{ 'green_but_box':isGreen, 'gray_but_box': !isGreen }" v-on:click="registerButton">
-            注册
+            下一步
         </p>
 
 
-        <div class="footer">
-            <p>注册即同意《注册条款》</p>
-            <p>如不同意请停止注册</p>
-        </div>
+      </div>
 
-      </div>
-      
-      <div class="award">
-          <p class="left petunia">1</p>
-          <p class="left award_word">完成组成即送<span class="red">100元返现券</span>，赶紧加入吧</p>
-          <p class="right close" @click="cancelBut">X</p>
-      </div>
-        <!-- <el-button type="primary" style="width:6rem;">主要按钮</el-button> -->
+      <city-module v-if="cityModuleState"></city-module>
+
    </div>
 
 </template>
 <script>
+  import Bus from '../../accident/static/js/bus.js'
+  import cityModule from '../components/cityModule'
   export default {
+     components: {
+      cityModule
+    },
     data() {
       return {
-         
+          isGreen:false,
+          cityModuleState:false,//组件显示状态
+          img:"",
+          imgState:"",
+          name:"",
+          nameState:false,
+          city:"",
+          lat:"",//纬度
+          lng:"",//经度
+          cityState:false,
+          company:"",
+          companyState:false
       }
     },
     created(){
@@ -176,7 +228,16 @@
        // setTimeout(() => {
        //    this.$store.commit('setSurveyNoActive',"改变后")
        //  }, 1000)
-       //  
+       //注册城市选择回调
+      Bus.$on('addSelectCity',(data)=>{
+           console.log("城市名回现数据",data)
+           this.cityModuleState = false;
+           this.city = data.value;
+           this.cityState = true;
+           this.lat = data.lat;
+           this.lng = data.lng;
+           this.setButGreen();
+      })
       
     },
     computed:{
@@ -188,7 +249,80 @@
 
     },
     methods: {
-       
+         //下一步按钮变色
+       setButGreen(){
+           if(this.imgState && this.nameState && this.cityState && this.companyState){
+              this.isGreen = true;
+           }else{
+              this.isGreen = false;
+           }
+        },
+       imgChange(){
+        this.imgState = true
+       },
+       //姓名实时校验
+       nameInput(e){
+          var phone = e.target.value;
+          if (phone.length == 0) {
+             this.nameState = false;
+             this.name = '';
+           }else{
+             this.nameState = true;
+             this.name = phone;
+             this.setButGreen();
+          }
+       },
+       //姓名失去焦点校验
+       nameChange(e){
+           var phone = e.target.value;
+           if (phone.length == 0) {
+             this.$message({
+                message: '请输入姓名',
+                type: 'error'
+              });
+             this.nameState = false;
+             this.name = '';
+           }else{
+             this.nameState = true;
+             this.name = phone;
+             //this.setButGreen();
+          }
+       },
+       selectCity(){
+           this.cityModuleState = true;
+       },
+       //公司实时校验
+       companyInput(e){
+          var company = e.target.value;
+          if (company.length == 0) {
+             this.companyState = false;
+             this.company = '';
+          }else{
+             this.companyState = true;
+             this.company = company;
+             //this.setButGreen();
+          }
+       },
+       //公司失去焦点校验
+       companyChange(e){
+          var company = e.target.value;
+          if (company.length == 0) {
+             this.$message({
+                message: '请输入公司名',
+                type: 'error'
+              });
+             this.companyState = false;
+             this.company = '';
+          }else{
+             this.companyState = true;
+             this.company = company;
+             //this.setButGreen();
+          }
+       },
+       //下一步
+       registerButton(){
+  
+       }
     }
 
     

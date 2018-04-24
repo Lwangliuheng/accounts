@@ -2,12 +2,6 @@
   <div id="app">
 
   <router-view/>
-  <!-- 加载弹层 -->
-  <div class="lading_wrap hide">
-       <div class="lading">
-       	  加载中……
-       </div>
-  </div>
   </div>
 </template>
 
@@ -22,27 +16,21 @@ export default {
    	  font-size:12px;
 		height: 100%;
     }
+    iframe{
+    display:none;
+    }
     .hide{
     	direction: none;
     }
     .lading_wrap{
-    	background-color:#b6b6b6;
-    	opacity: 0.5;
+    	background:rgba(0,0,0,.5);
     	width:100%;
     	height:100vh;
     	position: fixed;
     	top:0px;
     }
-    .lading{
-    	font-size:20px;
-    	width:2rem;
-    	height:2rem;
-    	margin:auto auto;
-    	position:absolute;
-    	left:0px;
-    	top:0px;
-    	right:0px;
-    	bottom:0px;
+   .left{
+    float:left;
     }
 	.el-checkbox__inner {
 			width: .4rem;
@@ -66,4 +54,7 @@ export default {
 	.el-checkbox__inner:hover {
 		border-color: #dcdfe6;		
 	}
+  .right{
+    float:right;
+  }
 </style>
