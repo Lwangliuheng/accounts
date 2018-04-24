@@ -18,23 +18,23 @@
             </div>
         </header>
         <div class="content">
-            <div class="item">
+            <div class="item" @click="myPlan">
                 <img class="icon" src="../images/wallet.png" alt="">
                 <span>我的计划</span>
             </div>
-            <div class="item">
+            <div class="item" @click="onlineLearn">
                 <img class="icon" src="../images/learn.png" alt="">
                 <span>在线学习</span>
             </div>
-            <div class="item">
+            <div class="item" @click="recommendedPrize">
                 <img class="icon" src="../images/prizeSet.png" alt="">
                 <span>推荐有奖</span>
             </div>
-            <div class="item">
+            <div class="item" @click="customerService">
                 <img class="icon" src="../images/service.png" alt="">
                 <span>在线客服</span>
             </div>
-            <div class="item">
+            <div class="item" @click="personalSet">
                 <img class="icon" src="../images/set_yellow.png" alt="">
                 <span>设置</span>
             </div>
@@ -45,16 +45,59 @@
         </div>
     </section>
 </template>
+
 <script>
-export default {
-  data () {
+
+  export default {
+    components: {
+       
+    },
+    data() {
       return {
-          value: 4, // 最高5
-          isCall: false  
-      } 
-  }
-}
+           value: 4, // 最高5
+           isCall: false  
+      }
+    },
+    created(){
+      
+    },
+    mounted() {
+
+    },
+    computed:{
+     
+    },
+    watch: {
+
+    },
+    methods: {
+        //我的计划
+        myPlan(e){
+            alert("跳哪")
+          this.$router.push({path:'/'});
+        },
+        //在线学习
+        onlineLearn(e){
+          this.$router.push({path:'/learn'});
+        },
+        //有奖推荐
+        recommendedPrize(){
+           this.$router.push({path:'/inviteFriends'});
+        },
+        //在线客服
+        customerService(){
+           this.isCall = true;
+        },
+        //设置
+        personalSet(){
+            this.$router.push({path:'/set'});
+        }
+    }
+
+    
+  };
 </script>
+
 <style scoped>
 
 .top {

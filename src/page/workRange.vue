@@ -45,21 +45,42 @@
               <span class="el-icon-circle-plus"></span>
           </ul>
           <el-checkbox v-model="checked">申请全区域接单</el-checkbox>
-          <div class="btn">下一步</div>
+          <div class="btn" @click="nextStep">下一步</div>
       </div>
   </div>
 </template>
-
 <script>
-export default {
-  data(){
+
+  export default {
+    components: {
+       
+    },
+    data() {
       return {
           address: '',
           checked: false,
-
       }
-  }
-}
+    },
+    created(){
+      
+    },
+    mounted() {
+
+    },
+    computed:{
+     
+    },
+    watch: {
+
+    },
+    methods: {
+        nextStep(e){
+          this.$router.push({path:'/operateActions'});
+        }
+    }
+
+    
+  };
 </script>
 
 <style scoped>

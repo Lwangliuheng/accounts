@@ -27,7 +27,7 @@ export default {
 
   methods: {
       toLearn () {
-          this.$router.push('/watchVideo');
+          this.$router.push('/learn');
       }
   }
 }

@@ -2,16 +2,42 @@
   <div class="watch-video">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
       <video class="video" src=""></video>
-      <div class="btn">开始接单<span>(2:13)</span></div>
+      <div class="btn" @click="beganSingle">开始接单<span>(2:13)</span></div>
   </div>
 </template>
 
 <script>
-export default {
-  
-}
-</script>
 
+  export default {
+    components: {
+       
+    },
+    data() {
+      return {
+         
+      }
+    },
+    created(){
+      
+    },
+    mounted() {
+
+    },
+    computed:{
+     
+    },
+    watch: {
+
+    },
+    methods: {
+        beganSingle(e){
+          this.$router.push({path:'/'});
+        }
+    }
+
+    
+  };
+</script>
 <style scoped>
 .watch-video {
     width: 100%;
