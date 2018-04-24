@@ -141,7 +141,7 @@
     margin-top:0.32rem;
     width:0.92rem;
     height:0.92rem;
-    border:1px solid red;
+   /* border:1px solid red;*/
   }
   .layerThickness_one{
     margin-top:0.36rem;
@@ -160,13 +160,17 @@
     color:#999999;
     
   }
+  .register_top_img{
+    width:3.8rem;
+    height:2.07rem;
+  }
 </style>
 <template>
    <div>
       <div class="register_wrap">
          <div class="register_content">
            <div class="register_top">
-             <img src="../images/logo.png">
+             <img src="../images/logo.png" class="register_top_img">
              <p class="top_wrod">视频查勘定损平台</p>
            </div>
            <p class="input_box">
@@ -188,7 +192,7 @@
       <div class="lading_wrap hide">
          <div class="layerThickness" >
             <p>
-              <img src="" class="layerThickness_img">
+              <img src="../images/succeed.png" class="layerThickness_img">
             </p>
             <p  class="layerThickness_one">
               <span>恭喜您，修改成功</span>
