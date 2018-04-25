@@ -141,7 +141,7 @@
 </style>
 <template>
    <div>
-      <div class="register_wrap" v-if="!registerState">
+      <div class="register_wrap">
          <div class="register_content">
            <div class="register_top">
              <img src="../images/logo.png" class="register_top_img">
@@ -182,19 +182,19 @@
            <!-- <el-button type="primary" style="width:6rem;">主要按钮</el-button> -->
          
       </div>
-      <personal-info v-if="registerState"></personal-info>
+     <!--  <personal-info v-if="registerState"></personal-info> -->
    </div>
    
 </template>
 <script>
-  import personalInfo from '../components/personalInfo'
+  // import personalInfo from '../components/personalInfo'
   export default {
     components: {
-      personalInfo
+      // personalInfo
     },
     data() {
       return {
-          registerState:false,//页面切换状态
+          // registerState:false,//页面切换状态
           countdown:60,//计时器
           authValue:"获取验证码",
           authValueState:true,
@@ -211,12 +211,10 @@
       
     },
     mounted() {
-        this.getCode();
        // setTimeout(() => {
        //    this.$store.commit('setSurveyNoActive',"改变后")
        //  }, 1000)
-       //  
-      
+       // 
     },
     computed:{
      aDouble: function () {
@@ -224,14 +222,9 @@
       }
     },
     watch: {
-
+   
     },
     methods: {
-      getCode(){
-          //encodeURIComponent
-         // console.log(encodeURIComponent) 
-
-      },
        cancelBut(){
            $(".award").addClass("hide")
        },
@@ -255,8 +248,38 @@
        },
        //获取短信验证码
        gainAuthCode(){
+        if(!this.phoneNumState){
+             this.$message({
+                message: '请输入正确的手机号',
+                type: 'error'
+              });
+            return;
+        };
         if(this.authValueState){
-         this.settime();
+           this.settime();
+           var paramData = {
+            phone:this.phoneNum
+           }
+           console.log(paramData,"短信验证码数据")
+           this.$ajax.post(this.ajaxUrl+"/public/sms/v1/send",paramData)
+            .then(response => {
+              if(response.data.rescode == 200){
+                 // this.settime();
+              }else{
+                this.$message({
+                  message: '短信验证码发送失败',
+                  type: 'error'
+                });
+              }
+            }, err => {
+              console.log(err);
+            })
+            .catch((error) => {
+              // this.$message({
+              //     message: '短信验证码发送失败',
+              //     type: 'error'
+              //   });
+            })
         }
        },
        //注册按钮变色
@@ -274,6 +297,7 @@
            if (!r.test(phone)) {
              this.phoneNumState = false;
              this.phoneNum = '';
+             this.setButGreen();
            }else{
              this.phoneNumState = true;
              this.phoneNum = phone;
@@ -299,10 +323,11 @@
         //短信验证码实时监控
         authInput(e){
           var auth = e.target.value;
-          var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
+          var r = /^\d{6}\b/;
           if (!r.test(auth)) {
              this.authCodeState = false;
              this.authCode = '';
+             this.setButGreen();
           }else{
              this.authCodeState = true;
              this.authCode = auth;
@@ -312,7 +337,7 @@
         //短信验证码
         authChange(e){
            var auth = e.target.value;
-           var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
+           var r = /^\d{6}\b/;
           if (!r.test(auth)) {
              this.$message({
                 message: '请输入正确的验证码',
@@ -323,16 +348,16 @@
           }else{
              this.authCodeState = true;
              this.authCode = auth;
-             //this.setButGreen();
           }
         },
         //邀请码实时监控
         invitationInput(e){
           var invitation = e.target.value;
-          var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
+          var r = /^[A-Za-z0-9]+$/;
           if (!r.test(invitation)) {
              this.invitationCodeState = false;
              this.invitationCode = '';
+             this.setButGreen();
           }else{
              this.invitationCodeState = true;
              this.invitationCode = invitation;
@@ -342,7 +367,7 @@
         //邀请码
         invitationChange(e){
            var invitation = e.target.value;
-           var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
+           var r = /^[A-Za-z0-9]+$/;
           if (!r.test(invitation)) {
              this.$message({
                 message: '请输入正确的邀请码',
@@ -353,14 +378,39 @@
           }else{
              this.invitationCodeState = true;
              this.invitationCode = invitation;
-             //this.setButGreen();
           }
         },
-        //注册按钮
+        //注册按钮发送请求
+        registerAjax(){
+          var paramData = {
+                openid:"wlhabc",
+                step:"1",
+                phone:this.phoneNum,
+                pcode:this.authCode,
+                qcode:this.invitationCode
+          }
+          this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
+            .then(response => {
+
+              if(response.data.rescode == 200){
+
+               this.$router.push({path:'/personalInfo'});
+                //console.log(response.result,"城市返回数据");
+    
+
+              }
+            }, err => {
+              console.log(err);
+            })
+            .catch((error) => {
+              // this.$message({
+              //     message: '短信验证码发送失败',
+              //     type: 'error'
+              //   });
+            })
+        },
+        //注册按钮点击
         registerButton(e){
-          // //cs
-          // this.registerState = true;
-          // return
           console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState)
           console.log(this.invitationCode,this.phoneNum,this.authCode)
            // if(!this.phoneNumState){
@@ -387,7 +437,8 @@
            //    this.isGreen = false
            //    return
            // }
-            this.registerState = true;
+           //this.registerAjax();
+           this.$router.push({path:'/personalInfo'});
            //发送ajax
         }
         

@@ -1,13 +1,9 @@
 const state = {
-  surveyNo:"11111",
-  caseDetailActive: false,
-  insititutEditorActive: false,
-  headerActive: false,
-  signSeatsActive: false,
-  surveyOrderId: "",
-  caseListActive: false,
-  clickEditorActive: false,
-  insitituPageno: 1,
+  openid:"",
+  companyCode:"",
+  companyName:"",
+  info:"",
+  maiden:false
 }
 
 export default state

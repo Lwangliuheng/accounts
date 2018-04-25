@@ -9,6 +9,8 @@ import store from './vuex/index'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/style/reset.css'
 import 'viewerjs/dist/viewer.css'
+
+import intercept from "@/js/intercept.js"
 //引入rem布局
 import "../accident/static/js/rem.js"
 Vue.prototype.ajaxUrl = "/public-surveyor-api-boot"
@@ -29,7 +31,8 @@ console.log(config.url)
 // }else if(config.url == '/boot-pub-survey-manage/pubsurvey/manage/department/v1/14/citys'){
 //   loadinginstace = "";
 // }
-if(config.url == '/boot-pub-survey-manage/pub/survey/v1/action'){
+// 注册loading
+if(config.url == '/public-surveyor-api-boot/weixin/public/v1/register'){
   loadinginstace = ElementUI.Loading.service({ fullscreen: true })
 }
 if(config.url == '/boot-pub-survey-manage/pub/survey/v1/page'){
@@ -64,10 +67,14 @@ axios.interceptors.response.use(data => {// 响应成功关闭loading
 })
 
 Vue.config.productionTip = false;
-// router.beforeEach((to, from, next) => {
-//   var ajaxUrl = "/boot-pub-survey-manage";
-//   next()
-// });
+router.beforeEach((to, from, next) => {
+  //判断用户信息
+  if(!store.state.maiden){
+     intercept.getInfo();
+  }
+  //判断openid
+  next()
+});
 new Vue({
   el: '#app',
   router,

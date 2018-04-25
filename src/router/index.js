@@ -12,7 +12,7 @@ import inviteFriends from "@/page/inviteFriends";
 import workRange from "@/page/workRange";
 import operateActions from "@/page/operateActions";
 import watchVideo from "@/page/watchVideo";
-
+import personalInfo from "@/page/personalInfo";
 
 
 Vue.use(Router);
@@ -85,6 +85,11 @@ export default new Router({
     {
       path: "/operateActions",
       component: operateActions
+    },
+    //注册个人信息填写
+    {
+      path: "/personalInfo",
+      component: personalInfo
     },
     //在线学习页
     {
