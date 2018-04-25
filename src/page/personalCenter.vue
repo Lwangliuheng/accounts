@@ -2,12 +2,13 @@
     <section class="personalCenter">
         <header class="top">
             <div class="top-left">
-                <img class="avatar" src="../images/headPortrait2.png" alt="">
+                <img class="avatar" v-if="avatar" :src="avatar" alt="">
+                <img class="avatar" v-else src="../images/headPortrait2.png" alt="">
             </div>
             <div class="top-right">
                 <div class="nick-name">
                     <span>张扬</span>
-                    <span class="level">lv5</span>
+                    <span class="level">lv{{level}}</span>
                 </div>
                 <el-rate
                     v-model="value"
@@ -27,7 +28,7 @@
                 <span>在线学习</span>
             </div>
             <div class="item" @click="recommendedPrize">
-                <img class="icon" src="../images/prizeSet.png" alt="">
+                <img class="icon" src="../images/recommendAward.png" alt="">
                 <span>推荐有奖</span>
             </div>
             <div class="item" @click="customerService">
@@ -55,6 +56,8 @@
     data() {
       return {
            value: 4, // 最高5
+           level: 2,
+           avatar: '',
            isCall: false  
       }
     },

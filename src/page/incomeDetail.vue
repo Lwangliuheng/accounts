@@ -1,15 +1,15 @@
 <template>
   <section class="incomeDetail">
       <ul class="list">
-          <li class="item">
-              <p class="time">2017-02-12 13:11:12</p>
+          <li class="item" v-for="(ls,index) in list" :key='index'>
+              <p class="time">{{ls.date}} {{ls.time}}</p>
               <div class="content">
-                  <p>车牌号：京PUG189</p>
-                  <p>用户姓名：张珊</p>
-                  <p>用户电话：198223211111</p>
-                  <p>查勘地点：北京市朝阳区广渠路</p>
-                  <p>保险公司：阳光保险集团</p>
-                  <span>30元</span>
+                  <p>车牌号：{{ls.carNumber}}</p>
+                  <p>用户姓名：{{ls.username}}</p>
+                  <p>用户电话：{{ls.phone}}</p>
+                  <p>查勘地点：{{ls.address}}</p>
+                  <p>保险公司：{{ls.company}}</p>
+                  <span>{{ls.getMoney}}元</span>
               </div>
           </li>
       </ul>
@@ -18,7 +18,32 @@
 
 <script>
 export default {
-  
+  data () {
+      return {
+          list: [
+              {
+                  date: "2017-02-12",
+                  time: '13:22:22',
+                  carNumber: '京PUG189',
+                  username: '张珊',
+                  phone: '18811224455',
+                  address: "田安娜",
+                  company: '阳光保险',
+                  getMoney: '30'
+              },
+              {
+                  date: "2017-02-12",
+                  time: '13:22:22',
+                  carNumber: '京PUG189',
+                  username: '张珊',
+                  phone: '18811224455',
+                  address: "田安娜",
+                  company: '阳光保险',
+                  getMoney: '30'
+              },
+              ]
+      }
+  }
 }
 </script>
 
