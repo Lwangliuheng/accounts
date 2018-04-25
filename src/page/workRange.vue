@@ -8,7 +8,11 @@
       <div class="work-address">
           <ul class="address-list">
               <li v-for="(ls,index) in list" :key="index">
-                  <h4>{{ls.address}}</h4>
+                  <h4 v-show="!ls.isModify" class="h4">{{ls.address}}</h4>
+                  <div v-show="ls.isModify" class="modify-input">
+                    <input class="h4" type="text" v-model="ls.address" @change='imputChange(ls.address)'>
+                    <span class="el-icon-search" @click='lookAddressLocation(index)'></span>
+                  </div>
                 <div class="modify-ad">
                     <div class="modify-left">
                     <span v-show='ls.isModify' class="el-icon-remove-outline" @click='reduce(index)'></span>
@@ -25,13 +29,15 @@
               <div class="gap1" v-show="canAdd"></div>
               <span @click='addList' v-show="canAdd" class="el-icon-circle-plus"></span>
           </ul>
-          <el-checkbox v-model="checked">申请全区域接单</el-checkbox>
+          <el-checkbox v-model="checked" :disabled="list.length < 3">申请全区域接单</el-checkbox>
           <div class="btn" @click="nextStep">下一步</div>
       </div>
   </div>
 </template>
 <script>
-import * as Map from '../js/map'
+// import * as Map from '../js/map'
+var map;
+var marker1,circle,marker2,circle2,marker0,circle0;
 export default {
   components: {},
   data() {
@@ -42,58 +48,82 @@ export default {
       list: [
           {
               address: '北京市朝阳区百子湾1号',
-              range: 5,
-              isModify: false,
-          },
-          {
-              address: '北京市朝阳区百子湾11号',
-              range: 4,
-              isModify: false,
+              range: 3,
+              isModify: true,
           }
       ],
       canAdd: true,
+      currentAddress: '',
+      tempSearchContent: ''
     };
   },
 
+    watch: {
+        list() {
+            console.log('111')
+        }
+    },
   mounted() {
-      console.log("11");
-        this.$nextTick(function(){  
-            console.log(2222);
-            var _this = this;  
-            Map.init().then( function (BMap){  
-                        //在此调用api  
-                var map = new BMap.Map('allmap');
-                // 创建地图实例
-                var point = new BMap.Point(116.404, 39.915);
-                // 创建点坐标
-                map.centerAndZoom(point, 12);
-                
+    //在此调用api  
+    map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.404, 39.915);
+    map.centerAndZoom(point, 11);
 
-                var mySquare1 = new Map.SquareOverlay(map.getCenter(), 100, "rgba(178,236,208,.7)");    
-                mySquare1.initialize(map);
-                mySquare1.draw();
-                map.addOverlay(mySquare1);
+    // 页面初始化 定位当前位置
+    const that = this;
+    var geolocation = new BMap.Geolocation();
+	geolocation.getCurrentPosition(function(r){
+        // alert('当前位置'+JSON.stringify(r.address))
+        console.log(r.address);
+        // 获取当前位置信息
+        that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
+        that.list[0].address = that.currentAddress;
 
-                // 初始化地图， 设置中心点坐标和地图级别
-                var marker = new BMap.Marker(point);
-                marker.setTop(true);
-                map.addOverlay(marker);
-            })
+		if(this.getStatus() == 0){
 
-        })
-
+            that.theSpot(r.point,3, 0);
+		}else if(this.getStatus() == 2) {
+            alert("请输入详细的位置信息");
+        }else if(this.getStatus() == 8) {
+            alert('请求超时，请检查网络');
+        }
+		else {
+			alert('failed'+this.getStatus());
+		}        
+	},{enableHighAccuracy: true})
   },
-  computed: {},
-  watch: {},
+
   methods: {
 
     nextStep(e) {
       this.$router.push({ path: "/operateActions" });
     },
 
+    // 接单点
+    theSpot (point,width,index) {
+        var mk = new BMap.Marker(point);
+        mk.setTop(true);
+        map.addOverlay(mk);
+        map.panTo(point);
+        if(width == 3 || width == 4) {
+            map.centerAndZoom(point, 14);
+        }else {
+            map.centerAndZoom(point, 13);            
+        }
+        mk.setLabel('我是111');
+        console.log(circle);
+        // alert('您的位置：'+r.point.lng+','+r.point.lng);
+        var circle = new BMap.Circle(point,500*width,{fillColor:"#b2edd1", strokeWeight:.1, strokeOpacity:0.5}); //创建圆
+
+        map.addOverlay(circle); 
+        // var label = new BMap.Label(`id${index}`);
+        // mk.setLabel(label);
+    },
+
     // 增加范围
     add (index) {
         this.list[index].range == 6 ? this.list[index].range : this.list[index].range++;
+        console.log(this.list);
     },
 
     // 减小范围
@@ -104,6 +134,21 @@ export default {
     // 确认修改
     confirmRange(index) {
         this.list[index].isModify = false;
+        map.clearOverlays();
+        const that = this;
+        // 创建地址解析器实例    
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        myGeo.getPoint(this.list[index].address, function(point){
+            if (point) {
+                map.centerAndZoom(point, 16);
+                // map.addOverlay(new BMap.Marker(point));
+                that.theSpot(point,that.list[index].range);
+
+            }else{
+                alert("您选择地址没有解析到结果!");
+            }
+        });
     },
 
     // 修改
@@ -120,13 +165,43 @@ export default {
     // 添加一条地址
     addList (index) {
         this.list.push({
-            address: '新加地址',
+            address: this.currentAddress,
             range: 3,
-            isModify: false
+            isModify: true
         })
         if(this.list.length == 3) {
             this.canAdd = false;
         }
+    },
+
+    // 点击搜索按钮
+    lookAddressLocation (index) {
+        if(this.tempSearchContent == this.list[index].address) {
+            alert("aaa");
+            return;
+        }
+        alert("ccccc");
+        map.clearOverlays();
+        const that = this;
+        // 创建地址解析器实例    
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        myGeo.getPoint(this.tempSearchContent, function(point){
+            if (point) {
+                map.centerAndZoom(point, 16);
+                // map.addOverlay(new BMap.Marker(point));
+                that.theSpot(point,that.list[index].range);
+
+            }else{
+                alert("您选择地址没有解析到结果!");
+            }
+        });
+    },
+
+    // 当输入框内容改变
+    imputChange (value) {
+        alert(value);
+        this.tempSearchContent = value;
     }
   }
 };
@@ -135,9 +210,11 @@ export default {
 <style scoped>
 work-range {
   width: 100%;
+  height: 100%;
   position: relative;
 }
 .search {
+display: none;
   padding: 0 0.3rem;
   height: 0.88rem;
   line-height: 0.88rem;
@@ -165,7 +242,7 @@ work-range {
   line-height: 0.6rem;
   background: #ffefc1;
   position: absolute;
-  top: 0.88rem;
+  top: 0;
   z-index: 99;
 }
 .tip span {
@@ -203,7 +280,7 @@ work-range {
 .address-list {
   width: 6.9rem;
   border-radius: 0.15rem;
-  box-shadow: 0 0 0.1rem #eee;
+  box-shadow: 0 0 0.2rem #ccc;
   position: absolute;
   background: #fff;
   top: -0.52rem;
@@ -214,13 +291,29 @@ work-range {
 .address-list li {
   padding: 0 0.3rem;
 }
-.address-list h4 {
+.address-list h4,
+.address-list input {
+    width: 70%;
   font-size: 0.3rem;
   line-height: 0.3rem;
   font-family: "SimHei";
   margin-bottom: 0.2rem;
   margin-top: 0.4rem;
 }
+.address-list input {
+    border: 0.5px solid #ccc;
+    margin-bottom: 0.13rem;
+    margin-top: 0.33rem;
+}
+
+.modify-input span{
+    font-size: .42rem;
+    line-height: .42rem;
+    position: relative;
+    top: .04rem;
+    color: #666;
+}
+
 .modify-ad {
   display: flex;
   justify-content: space-between;
@@ -250,6 +343,9 @@ work-range {
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 50%);
+}
+.address-list .el-icon-delete {
+    margin-left: .2rem;
 }
 </style>
 

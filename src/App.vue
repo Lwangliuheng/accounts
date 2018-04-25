@@ -14,7 +14,8 @@ export default {
 <style>
     #app{
    	  font-size:12px;
-		height: 100%;
+			height: 100%;
+			overflow: auto;
     }
     iframe{
     display:none;
