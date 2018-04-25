@@ -3,12 +3,12 @@ import router from '../router'
 import store from '../vuex/index'
 export default {
        interceptPage(type){
-           if(type == 1){
-              router.push({path:'/login'});
-           }
-           if(type == 2){
-                router.push({path:'/personalInfo'});
-           }
+           // if(type == 1){
+           //    router.push({path:'/login'});
+           // }
+           // if(type == 2){
+           //      router.push({path:'/personalInfo'});
+           // }
           
        },
        getInfo(){
