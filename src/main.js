@@ -11,7 +11,7 @@ import '@/style/reset.css'
 import 'viewerjs/dist/viewer.css'
 //引入rem布局
 import "../accident/static/js/rem.js"
-Vue.prototype.ajaxUrl = "/boot-pub-duty-video/"
+Vue.prototype.ajaxUrl = "/public-surveyor-api-boot"
 Vue.prototype.$ajax = axios;
 
 Vue.use(ElementUI);

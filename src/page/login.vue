@@ -211,7 +211,7 @@
       
     },
     mounted() {
-
+        this.getCode();
        // setTimeout(() => {
        //    this.$store.commit('setSurveyNoActive',"改变后")
        //  }, 1000)
@@ -227,6 +227,11 @@
 
     },
     methods: {
+      getCode(){
+          //encodeURIComponent
+         // console.log(encodeURIComponent) 
+
+      },
        cancelBut(){
            $(".award").addClass("hide")
        },
