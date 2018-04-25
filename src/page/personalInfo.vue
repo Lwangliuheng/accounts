@@ -193,7 +193,7 @@
 </style>
 <template>
     <div class="register_wrap">
-      <div class="register_content"  v-if="!cityModuleState">
+      <div class="register_content"  v-show="!cityModuleState">
         <div class="register_top">
           <el-upload
             name="image"
@@ -227,7 +227,8 @@
         <div class="city_input">
             <p class="city_title left">所在公司</p>
             <p class="city_name right">
-                <input type="text" name="" value="" @input="companyInput" v-on:blur="companyChange" maxlength="20" class="name_input" placeholder="请输入公司">
+                  {{company}}
+                <!-- <input type="text" name="" value="" @input="companyInput" v-on:blur="companyChange" maxlength="20" class="name_input" placeholder="请输入公司" disabled="false"> -->
             </p>
           </div>
         </div>
@@ -239,7 +240,7 @@
 
       </div>
 
-      <city-module v-if="cityModuleState"></city-module>
+      <city-module v-show="cityModuleState"></city-module>
 
    </div>
 
@@ -254,7 +255,8 @@
     data() {
       return {
           action:this.ajaxUrl + "/public/file/v1/uploadImage",
-          imageUrl:'',
+          imageUrl:'',//本地图片引用地址
+          imgeUrlLine:"",//后台返回的线上图片地址
           isGreen:false,
           cityModuleState:false,//组件显示状态
           img:"",
@@ -266,7 +268,7 @@
           lng:"",//经度
           cityCode:"",//城市code
           cityState:false,
-          company:"",
+          companyCode:null,
           companyState:false
       }
     },
@@ -274,13 +276,13 @@
       
     },
     mounted() {
-
        // setTimeout(() => {
        //    this.$store.commit('setSurveyNoActive',"改变后")
        //  }, 1000)
        //注册城市选择回调
       Bus.$on('addSelectCity',(data)=>{
            console.log("城市名回现数据",data)
+           this.cityState = true;
            this.cityModuleState = false;
            this.city = data.value;
            this.cityState = true;
@@ -291,8 +293,8 @@
       })
     },
     computed:{
-     aDouble: function () {
-         return this.$store.state.surveyNo
+     company: function () {
+         return this.$store.state.companyName
       }
     },
     watch: {
@@ -301,7 +303,7 @@
     methods: {
          //下一步按钮变色
        setButGreen(){
-           if(this.imgState && this.nameState && this.cityState && this.companyState){
+           if(this.imgState && this.nameState && this.cityState ){
               this.isGreen = true;
            }else{
               this.isGreen = false;
@@ -374,25 +376,48 @@
        },
        //下一步
        registerButton(){
-
-          //this.$router.push({path:'/workRange'});
+    
+          if(!this.imgState){
+               this.$message({
+                message: '请上传头像',
+                type: 'error'
+              });
+               this.isGreen = false
+              return
+           }
+           if(!this.nameState){
+               this.$message({
+                message: '请输入姓名',
+                type: 'error'
+              });
+               this.isGreen = false
+              return
+           }
+           if(!this.cityState){
+               this.$message({
+                message: '请选择城市',
+                type: 'error'
+              });
+              this.isGreen = false
+              return
+           }
           var paramData = {
                 openid:"wlhabc",
                 step:"2",
                 username:this.name,
                 cityCode:this.cityCode,
-                //companyCode:"", // 没有就不传
-                //logo:"",//已经传入
+                companyCode:this.$store.state.companyCode,
+                logo:this.imgeUrlLine,//传入后台返回线上链接
                 lat:this.lat,
                 lng:this.lng
           }
           this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
 
-              if(response.rescode == 200){
+              if(response.data.rescode == 200){
 
-                console.log(response.result,"城市返回数据");
-    
+                console.log(response.data.result,"城市返回数据");
+                this.$router.push({path:'/workRange'});
 
               }
             }, err => {
@@ -409,7 +434,12 @@
        //上传图片成功
       handleAvatarSuccess(res, file) {
         // alert(111111)
+        console.log(res,"图片上传后台返回数据")
+        this.imgeUrlLine = res.url
+        this.imgState = true
+        //本地显示地址
         this.imageUrl = URL.createObjectURL(file.raw);
+        this.setButGreen();
       },
       //上传图片过程
       beforeAvatarUpload(file) {
