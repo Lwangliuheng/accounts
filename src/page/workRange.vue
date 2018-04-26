@@ -10,7 +10,7 @@
               <li v-for="(ls,index) in list" :key="index">
                   <h4 v-show="!ls.isModify" class="h4">{{ls.address}}</h4>
                   <div v-show="ls.isModify" class="modify-input">
-                    <input class="h4" type="text" v-model="ls.address" @change='imputChange(ls.address)'>
+                    <input class="h4" type="text" v-model="ls.address" @change='imputChange(index)'>
                     <span class="el-icon-search" @click='lookAddressLocation(index)'></span>
                   </div>
                 <div class="modify-ad">
@@ -105,13 +105,9 @@ export default {
         mk.setTop(true);
         map.addOverlay(mk);
         map.panTo(point);
-        if(width == 3 || width == 4) {
-            map.centerAndZoom(point, 14);
-        }else {
-            map.centerAndZoom(point, 13);            
-        }
-        mk.setLabel('我是111');
-        console.log(circle);
+
+        map.centerAndZoom(point, 12);
+
         // alert('您的位置：'+r.point.lng+','+r.point.lng);
         var circle = new BMap.Circle(point,500*width,{fillColor:"#b2edd1", strokeWeight:.1, strokeOpacity:0.5}); //创建圆
 
@@ -131,24 +127,13 @@ export default {
         this.list[index].range == 3 ? this.list[index].range : this.list[index].range--;
     },
 
+
     // 确认修改
     confirmRange(index) {
         this.list[index].isModify = false;
-        map.clearOverlays();
-        const that = this;
-        // 创建地址解析器实例    
-        var myGeo = new BMap.Geocoder();
-        // 将地址解析结果显示在地图上,并调整地图视野
-        myGeo.getPoint(this.list[index].address, function(point){
-            if (point) {
-                map.centerAndZoom(point, 16);
-                // map.addOverlay(new BMap.Marker(point));
-                that.theSpot(point,that.list[index].range);
 
-            }else{
-                alert("您选择地址没有解析到结果!");
-            }
-        });
+        // 重新渲染
+        this.lookAddressLocation();
     },
 
     // 修改
@@ -160,6 +145,9 @@ export default {
     deleteItem(index) {
         this.canAdd = true;
         this.list.splice(index,1);
+
+        // 重新渲染
+        this.lookAddressLocation();
     },
 
     // 添加一条地址
@@ -169,6 +157,10 @@ export default {
             range: 3,
             isModify: true
         })
+        
+        // 重新渲染
+        this.lookAddressLocation();
+
         if(this.list.length == 3) {
             this.canAdd = false;
         }
@@ -176,32 +168,35 @@ export default {
 
     // 点击搜索按钮
     lookAddressLocation (index) {
-        if(this.tempSearchContent == this.list[index].address) {
-            alert("aaa");
-            return;
-        }
-        alert("ccccc");
-        map.clearOverlays();
+        
         const that = this;
-        // 创建地址解析器实例    
-        var myGeo = new BMap.Geocoder();
-        // 将地址解析结果显示在地图上,并调整地图视野
-        myGeo.getPoint(this.tempSearchContent, function(point){
-            if (point) {
-                map.centerAndZoom(point, 16);
-                // map.addOverlay(new BMap.Marker(point));
-                that.theSpot(point,that.list[index].range);
+        // 先清空所有
+        map.clearOverlays();
 
-            }else{
-                alert("您选择地址没有解析到结果!");
-            }
+        this.list.forEach( (item,index) => {
+            console.log(item);
+            // 创建地址解析器实例    
+            var myGeo = new BMap.Geocoder();
+            // 将地址解析结果显示在地图上,并调整地图视野
+            myGeo.getPoint(item.address, function(point){
+                if (point) {
+                    map.centerAndZoom(point, 16);
+                    // map.addOverlay(new BMap.Marker(point));
+                    that.theSpot(point,item.range);
+
+                }else{
+                    alert("您选择地址没有解析到结果!");
+                }
+            });
         });
+
+        
     },
 
     // 当输入框内容改变
-    imputChange (value) {
-        alert(value);
-        this.tempSearchContent = value;
+    imputChange (index) {
+        console.log(this.list[index]);
+        // this.tempSearchContent = value;
     }
   }
 };

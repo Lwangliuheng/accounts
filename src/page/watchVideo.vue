@@ -2,28 +2,28 @@
   <div class="watch-video">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
       <div class="video">
-        <video @click="pause" src="../images/video.mp4" ref="video"></video>
+        <video @click="pause" ref="video" id="video" controls @ended="end">
+            <source src="../images/video.mp4" type="video/mp4">
+            您的手机暂不支持video标签，请升级系统
+        </video>
         <img src="../images/videoBtn.png" v-show="!isPlaying" alt="" @click='play'>
       </div>
-      <div class="btn" @click="beganSingle">开始接单<span>(2:13)</span></div>
+      <div class="btn" @click="beganSingle" :class="{active: isEnd}">开始接单<span>(2:13)</span></div>
   </div>
 </template>
 
 <script>
 
   export default {
-    components: {
-       
-    },
     data() {
       return {
          isPlaying: false,
+         isEnd: false
       }
     },
-    created(){
-      
-    },
     mounted() {
+        // alert(this.$refs.video)
+        console.log(this.$refs.video.duration);
 
     },
     computed:{
@@ -34,7 +34,9 @@
     },
     methods: {
         beganSingle(e){
-          this.$router.push({path:'/'});
+            if(this.isEnd) {
+                this.$router.push({path:'/'});
+            }
         },
 
         //点击按钮播放
@@ -43,6 +45,9 @@
             this.isPlaying = true;
         },
 
+        end() {
+            this.isEnd = true;
+        },
         // 点击按钮暂停
         pause(){
             if(this.isPlaying) {
@@ -64,6 +69,7 @@
 .bg {
     width: 100%;
 }
+
 .video {
     position: absolute;
     top: 3.43rem;
@@ -73,6 +79,7 @@
 .video video {
     width: 6.9rem;
     height: 4rem;
+    background: #ccc;
     border-radius: .28rem;
 }
 .video img {
@@ -92,6 +99,9 @@
     line-height: .9rem;
     text-align: center;
     color: #fff;
+}
+.active {
+    background: #2fab3b;
 }
 .btn span {
     color: #fff;

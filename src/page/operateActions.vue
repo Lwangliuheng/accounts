@@ -47,6 +47,13 @@ export default {
     align-content: center;
     justify-content: center;
 }
+.no-actions,
+.have-actions {
+    position: absolute;
+    top: 1.7rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
 .title img {
     width: .56rem;
     height: .56rem;
@@ -90,17 +97,16 @@ export default {
     font-size: .28rem;
     line-height: .4rem;
     text-align: center;
-    position: absolute;
-    left: 0;
-    bottom: 4.27rem;
     font-weight: bold;
+    position: relative;
+    margin-top: 6rem;
 }
 .learn-tip::before,
 .learn-tip::after {
     content: '';
     display: block;
     width: 1.07rem;
-    border-top: 1px solid #666;
+    border-top: 0.5px solid #666;
     position: absolute;
     top: .4rem;
 }
@@ -119,10 +125,7 @@ export default {
     line-height: .9rem;
     color: #fff;
     font-size: .34rem;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 2.96rem;
+    margin: .47rem auto 0;
 }
 .bg {
     width: 100%;
