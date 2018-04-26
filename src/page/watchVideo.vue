@@ -35,7 +35,29 @@
     methods: {
         beganSingle(e){
             if(this.isEnd) {
-                this.$router.push({path:'/'});
+            var paramData = {
+                openid:"wlhabc",
+                step:"5",
+                complete:"1"
+            }
+            this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
+                .then(response => {
+
+                  if(response.data.rescode == 200){
+                   
+                   alert("开始接单吧")
+                  
+                  }
+                }, err => {
+                  console.log(err);
+                })
+                .catch((error) => {
+                    console.log(err);
+                  // this.$message({
+                  //     message: '短信验证码发送失败',
+                  //     type: 'error'
+                  //   });
+                })
             }
         },
 
