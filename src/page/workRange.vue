@@ -47,22 +47,20 @@ export default {
       haveTip: true,
       list: [
           {
-              address: '北京市朝阳区百子湾1号',
+              address: '',
+              lng: '',
+              lat: '',
               range: 3,
               isModify: true,
           }
       ],
       canAdd: true,
       currentAddress: '',
+      currentPoint: '',
       tempSearchContent: ''
     };
   },
 
-    watch: {
-        list() {
-            console.log('111')
-        }
-    },
   mounted() {
     //在此调用api  
     map = new BMap.Map("allmap");
@@ -71,32 +69,110 @@ export default {
 
     // 页面初始化 定位当前位置
     const that = this;
-    var geolocation = new BMap.Geolocation();
-	geolocation.getCurrentPosition(function(r){
-        // alert('当前位置'+JSON.stringify(r.address))
-        console.log(r.address);
-        // 获取当前位置信息
-        that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
-        that.list[0].address = that.currentAddress;
 
-		if(this.getStatus() == 0){
+    // 先去后台调取一遍接口，看用户是否已经填过了
 
-            that.theSpot(r.point,3, 0);
-		}else if(this.getStatus() == 2) {
-            alert("请输入详细的位置信息");
-        }else if(this.getStatus() == 8) {
-            alert('请求超时，请检查网络');
+    this.$ajax({
+        url: this.ajaxUrl+"/weixin/public/v1/register",
+        method:'POST',
+        data: {
+            openid:'1234',
+            step: '3'
+        }})
+    .then( res => {
+        console.log("后台获取到的数据",res.data.result)
+        if(res.data.rescode == 200) {
+            // 如果接收到的值 存有位置
+            if(res.data.result.areas.length) {
+                if(res.data.result.areas.length == 3) that.canAdd = false;
+                this.list = res.data.result.areas.map( item => {
+                    return {
+                        address: item.address,
+                        lng: item.lng,
+                        lat: item.lat,
+                        range: 3,
+                        isModify: false, 
+                    }
+                })
+                
+                this.lookAddressLocation();
+
+                // 获取当前位置  
+                var geolocation = new BMap.Geolocation();
+                geolocation.getCurrentPosition(function(r){
+                    // console.log(r.point);
+                    // 获取当前位置信息
+                    that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
+                    that.currentPoint = r.point;
+                 
+                },{enableHighAccuracy: true})
+            }else {
+                // 获取当前位置
+                var geolocation = new BMap.Geolocation();
+                geolocation.getCurrentPosition(function(r){
+                    // console.log(r.point);
+                    // 获取当前位置信息
+                    that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
+                    that.currentPoint = r.point;
+            
+                    that.list[0].address = that.currentAddress;
+                    that.list[0].lng = r.point.lng;
+                    that.list[0].lat = r.point.lat;
+            
+                    if(this.getStatus() == 0){
+            
+                        that.theSpot(r.point,3, 0);
+                    }else if(this.getStatus() == 2) {
+                        alert("请输入详细的位置信息");
+                    }else if(this.getStatus() == 8) {
+                        alert('请求超时，请检查网络');
+                    }
+                    else {
+                        alert('failed'+this.getStatus());
+                    }        
+                },{enableHighAccuracy: true})
+            }
         }
-		else {
-			alert('failed'+this.getStatus());
-		}        
-	},{enableHighAccuracy: true})
+    })
   },
 
   methods: {
 
+      // 下一步
     nextStep(e) {
-      this.$router.push({ path: "/operateActions" });
+    //   this.$router.push({ path: "/operateActions" });
+
+        // 判断是否至少存在一个位置
+        if(!this.list.length) {
+            return alert("请至少填写一个接单范围！");
+        }
+        console.log(this.list)
+        let data = {};
+        if(this.checked) data.all = '1';
+        else data.all = '0';
+
+        data.areas = this.list.map( item => {
+            return {
+                lng: item.lng,
+                lat: item.lat,
+                address: item.address,
+                length: item.range
+            }
+        })
+        data.openid = '1234';
+        data.step = 3;
+        // console.log(data);
+        // 调用接口
+        this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",data)
+        .then(res => {
+            if(res.data.rescode == 200){
+                res.data.result.money ? this.$router.push({ path: "/operateActions",query: {money: res.data.result.money } }) : this.$router.push({ path: "/operateActions"})
+            }else{
+                console.log(response)
+            }
+        }, err => {
+            console.log(err);
+        })
     },
 
     // 接单点
@@ -154,6 +230,8 @@ export default {
     addList (index) {
         this.list.push({
             address: this.currentAddress,
+            lng: this.currentPoint.lng,
+            lat: this.currentPoint.lat,
             range: 3,
             isModify: true
         })
@@ -174,12 +252,12 @@ export default {
         map.clearOverlays();
 
         this.list.forEach( (item,index) => {
-            console.log(item);
             // 创建地址解析器实例    
             var myGeo = new BMap.Geocoder();
             // 将地址解析结果显示在地图上,并调整地图视野
             myGeo.getPoint(item.address, function(point){
                 if (point) {
+                    item.point = point;
                     map.centerAndZoom(point, 16);
                     // map.addOverlay(new BMap.Marker(point));
                     that.theSpot(point,item.range);
@@ -189,8 +267,6 @@ export default {
                 }
             });
         });
-
-        
     },
 
     // 当输入框内容改变
@@ -306,6 +382,7 @@ display: none;
     line-height: .42rem;
     position: relative;
     top: .04rem;
+    left: -0.54rem;
     color: #666;
 }
 

@@ -58,4 +58,10 @@ export default {
   .right{
     float:right;
   }
+	.el-message__icon{
+		font-size: 20px;
+	}
+	.el-message {
+		padding: 10px;
+	}
 </style>

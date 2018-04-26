@@ -21,7 +21,9 @@ Vue.use(ElementUI);
 var loadinginstace = "";
 axios.interceptors.request.use(
   config => {
-    console.log(config.url);
+    console.log("config.url", config);
+    
+
     // element ui Loading方法
     // if(config.url == '/boot-pub-survey-manage/monitor/v1/overview'){
     //   loadinginstace = "";

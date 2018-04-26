@@ -37,10 +37,12 @@
    }
   .input_box input{
     color:#6d6d6d;
-    height:1.16rem;
-    line-height: 1.16rem;
+    height:.76rem;
+    line-height: .76rem;
     width:100%;
     border-bottom:1px solid #b6b6b6;
+    box-sizing: border-box;
+    margin: .2rem 0;
   }
   .green_but_box{
      margin-top:0.7rem;
@@ -311,7 +313,7 @@
            if (!r.test(phone)) {
              this.$message({
                 message: '请输入正确的手机号',
-                type: 'error'
+                type: 'error'              
               });
              this.phoneNumState = false;
              this.phoneNum = '';
@@ -413,32 +415,32 @@
         registerButton(e){
           console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState)
           console.log(this.invitationCode,this.phoneNum,this.authCode)
-           // if(!this.phoneNumState){
-           //     this.$message({
-           //      message: '请输入正确的手机号',
-           //      type: 'error'
-           //    });
-           //     this.isGreen = false
-           //    return
-           // }
-           // if(!this.authCodeState){
-           //     this.$message({
-           //      message: '请输入正确的验证码',
-           //      type: 'error'
-           //    });
-           //     this.isGreen = false
-           //    return
-           // }
-           // if(!this.invitationCodeState){
-           //     this.$message({
-           //      message: '请输入正确的邀请码',
-           //      type: 'error'
-           //    });
-           //    this.isGreen = false
-           //    return
-           // }
-           //this.registerAjax();
-           this.$router.push({path:'/personalInfo'});
+           if(!this.phoneNumState){
+               this.$message({
+                message: '请输入正确的手机号',
+                type: 'error'
+              });
+               this.isGreen = false
+              return
+           }
+           if(!this.authCodeState){
+               this.$message({
+                message: '请输入正确的验证码',
+                type: 'error'
+              });
+               this.isGreen = false
+              return
+           }
+           if(!this.invitationCodeState){
+               this.$message({
+                message: '请输入正确的邀请码',
+                type: 'error'
+              });
+              this.isGreen = false
+              return
+           }
+           this.registerAjax();
+          //  this.$router.push({path:'/personalInfo'});
            //发送ajax
         }
         

@@ -25,7 +25,13 @@ export default {
       }
   },
 
+    created () {
+        if(this.$route.query.money) {
+            this.haveActions = true;
+        }
+    },
   methods: {
+
       toLearn () {
           this.$router.push('/learn');
       }
