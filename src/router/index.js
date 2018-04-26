@@ -53,12 +53,12 @@ export default new Router({
     },
     // 首页
     {
-      path: "/",
+      path: "/home",
       component: personalCenter
     },
     //登录页
     {
-      path: '/login',
+      path: '/',
       component: login
     },
     //账单页
