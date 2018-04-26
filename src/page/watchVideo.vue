@@ -63,7 +63,7 @@
                 }, err => {
                     console.log(err);
                 })
-                this.$router.push({path:'/'});
+                // this.$router.push({path:'/'});
             }
         },
 
