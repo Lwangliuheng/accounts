@@ -51,7 +51,8 @@
     methods: {
         beganSingle(e){
             if(this.isEnd) {
-                this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: '1234',step: '4',complete: '1'})
+                var openid = localStorage.getItem('openid');
+                this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: openid,step: '4',complete: '1'})
                 .then(res => {
                     if(res.data.rescode == 200){
                         console.log("video url",res.data.result.video);

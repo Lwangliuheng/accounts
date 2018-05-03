@@ -167,7 +167,7 @@ export default {
                 length: item.range
             }
         })
-        data.openid = '1234';
+        data.openid = localStorage.getItem('openid');;
         data.step = 3;
         // console.log(data);
         // 调用接口

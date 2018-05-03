@@ -4,6 +4,7 @@ const state = {
   companyCode:"",
   companyName:"",
   info:"",
+  invitationCode:"",
   maiden:false
 }
 

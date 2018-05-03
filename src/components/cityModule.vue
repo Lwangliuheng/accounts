@@ -151,7 +151,7 @@
        var that = this;
        setTimeout(function(){
            that.placeKick();
-       },100)
+       },1000)
        // this.$nextTick(function(){
        //    this.placeKick();
        // })

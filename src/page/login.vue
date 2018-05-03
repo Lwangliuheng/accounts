@@ -30,7 +30,7 @@
      position:absolute;
      right:0px;
      color:#e6e6e6;
-     top:0px;
+     top:-0.2rem;
    }
    .yqm{
     color:#e6e6e6;
@@ -69,7 +69,7 @@
   }
   .footer{
     width:6.35rem;
-    margin-top:2rem;
+    margin-top:1rem;
     /*position:fixed;*/
    /* bottom:0.23rem;*/
   }
@@ -140,6 +140,13 @@
     left:-0.34rem;
     top:-0.1rem;
   }
+  .input_box_span{
+    display:inline-block;
+    width:100%;
+    line-height: 0.8rem;
+    border-bottom:1px solid #b6b6b6;
+    height:0.8rem;
+  }
 </style>
 <template>
    <div>
@@ -157,7 +164,8 @@
              <p class="auth_code" v-on:click="gainAuthCode">{{authValue}}</p>
            </div>
            <div class="input_box">
-             <input type="text" name="" value="" @input="invitationInput" v-on:blur="invitationChange" placeholder="请输入邀请码">
+             <p class="input_box_span">{{invitationCode}}</p>
+           <!--   <input type="text" name="" value=""  @input="invitationInput" v-on:blur="invitationChange" placeholder="请输入邀请码"> -->
              <p class="auth_code">
                <span class="yqm">邀请码</span>
                <img src="">
@@ -230,12 +238,59 @@ import intercept from "../js/intercept.js";
    
     },
     methods: {
+      interceptPage(type){
+           if(type == 1){
+              this.$router.push({path:'/'});
+           }
+           if(type == 2){
+                this.$router.push({path:'/personalInfo'});
+           }
+           if(type == 3){
+                this.$router.push({path:'/workRange'});
+           }
+           if(type == 4){
+                this.$router.push({path:'/operateActions'});
+           }
+           if(type == 5){
+                this.$router.push({path:'/learn'});
+           }
+           // if(type == 6){
+           //      router.push({path:'/personalInfo'});
+           // }
+          
+       },
+       //获取基本信息
+        getInfo(){
+           var openid = localStorage.getItem('openid');
+           console.log("register",openid)
+           var paramData = {
+                openid:openid,
+                step:"1"
+           }
+          this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
+            .then(response => {
+                if(response.data.rescode == 200){
+                    
+                   this.$store.commit('setcompanyActive',response.data.result);
+                   console.log(response.data.result.qcode);
+                   this.invitationCode = response.data.result.qcode; 
+                   this.interceptPage(response.data.result.step);
+
+                }
+                console.log(response,33333)
+            }, err => {
+
+              console.log(err);
+
+            })
+            .catch((error) => {
+              // this.$message({
+              //     message: '短信验证码发送失败',
+              //     type: 'error'
+              //   });
+            });
+       },
       getCode(){
-        // alert(44444)
-        // console.log(window.location.href,"78987987987897")
-        // var str = window.location.href;
-        // var arr = str.split("?");
-        // var arr1 = arr[1].split("&")[0].split("=")[1];
       
         var code = this.$route.query.code;
         var code = window.location.href.split("?")[1].split("&")[0].split("=")[1];
@@ -246,48 +301,38 @@ import intercept from "../js/intercept.js";
         var paramData = {
           code:code
         };
-        //判断openid是否存在
-        var openid = localStorage.getItem('openid');
-        console.log(openid,"本地保存的openid");
-        if(!openid){
-          //alert(openid)
-           localStorage.setItem("openid",openid);
-           this.$store.commit('setopenidActive',openid);
-            //判断用户信息
-            if (!this.$store.state.maiden) {
-              intercept.getInfo();
-            }
-           return
-        }
-         //openid不存在
         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/getOpenId",paramData)
             .then(response => {
                   var openid = response.data.openid;
                   console.log(response.data,"openid5466645654654656");
-                  console.log(openid,"openid");
-                  localStorage.setItem('chinaName',response.data.data.user.chinaName)
+                  localStorage.setItem('openid',response.data.openid);
                   this.$store.commit('setopenidActive',openid);
                   //判断用户信息
-                  if (!this.$store.state.maiden) {
-                    intercept.getInfo();
-                  }
+                  console.log(this.$store.state.maiden,"第一次1111进入");
+                   //判断第几步并获取基本信息
+                   this.getInfo();
+                   
+                  // if (!this.$store.state.maiden) {
+                  //   intercept.getInfo();
+                  // }
              if(!response.data.openid){
                 this.$message({
                   message: '获取失败',
                    type: 'error'
                 }); 
-                进入空白页
-                var userAgent = navigator.userAgent;
-                if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-                    window.location.href="about:blank";   
-                }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
-                    window.opener=null;window.open('about:blank','_self','').close(); 
-                }else {
-                    window.pener = null;
-                    window.open("about:blank", "_self");
-                    window.close();
-                }
-             }
+
+                //进入空白页
+                // var userAgent = navigator.userAgent;
+                // if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
+                //     window.location.href="about:blank";   
+                // }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
+                //     window.opener=null;window.open('about:blank','_self','').close(); 
+                // }else {
+                //     window.pener = null;
+                //     window.open("about:blank", "_self");
+                //     window.close();
+                // }
+             };
                 
             }, err => {
               console.log(err);
@@ -355,7 +400,12 @@ import intercept from "../js/intercept.js";
        },
        //注册按钮变色
         setButGreen(){
-           if(this.phoneNumState && this.authCodeState && this.invitationCodeState){
+           // if(this.phoneNumState && this.authCodeState && this.invitationCodeState){
+           //    this.isGreen = true;
+           // }else{
+           //    this.isGreen = false;
+           // }
+           if(this.phoneNumState && this.authCodeState){
               this.isGreen = true;
            }else{
               this.isGreen = false;
@@ -502,14 +552,14 @@ import intercept from "../js/intercept.js";
                this.isGreen = false
               return
            }
-           if(!this.invitationCodeState){
-               this.$message({
-                message: '请输入正确的邀请码',
-                type: 'error'
-              });
-              this.isGreen = false
-              return
-           }
+           // if(!this.invitationCodeState){
+           //     this.$message({
+           //      message: '请输入正确的邀请码',
+           //      type: 'error'
+           //    });
+           //    this.isGreen = false
+           //    return
+           // }
            this.registerAjax();
            //this.$router.push({path:'/personalInfo'});
            //发送ajax
