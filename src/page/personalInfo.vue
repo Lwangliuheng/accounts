@@ -252,6 +252,7 @@
      components: {
       cityModule
     },
+    name:"personalInfo",
     data() {
       return {
           action:this.ajaxUrl + "/public/file/v1/uploadImage",
@@ -401,8 +402,9 @@
               this.isGreen = false
               return
            }
+          var openid = this.$store.state.openid;
           var paramData = {
-                openid:"wlhabc",
+                openid:openid,
                 step:"2",
                 username:this.name,
                 cityCode:this.cityCode,

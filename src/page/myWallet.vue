@@ -60,6 +60,7 @@
     components: {
       
     },
+    name:"myWallet",
     data() {
       return {
         current: 3,

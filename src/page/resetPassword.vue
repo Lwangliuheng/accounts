@@ -216,6 +216,7 @@
     components: {
       
     },
+    name:"reset",
     data() {
       return {
           monolayerTime:"3",

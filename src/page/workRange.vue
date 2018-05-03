@@ -40,6 +40,7 @@ var map;
 var marker1,circle,marker2,circle2,marker0,circle0;
 export default {
   components: {},
+  name:"workRange",
   data() {
     return {
       address: "",
@@ -62,83 +63,90 @@ export default {
   },
 
   mounted() {
-    //在此调用api  
-    map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.404, 39.915);
-    map.centerAndZoom(point, 11);
-
-    // 页面初始化 定位当前位置
-    const that = this;
-
-    // 先去后台调取一遍接口，看用户是否已经填过了
-
-    this.$ajax({
-        url: this.ajaxUrl+"/weixin/public/v1/register",
-        method:'POST',
-        data: {
-            openid:'1234',
-            step: '3'
-        }})
-    .then( res => {
-        console.log("后台获取到的数据",res.data.result)
-        if(res.data.rescode == 200) {
-            // 如果接收到的值 存有位置
-            if(res.data.result.areas.length) {
-                if(res.data.result.areas.length == 3) that.canAdd = false;
-                this.list = res.data.result.areas.map( item => {
-                    return {
-                        address: item.address,
-                        lng: item.lng,
-                        lat: item.lat,
-                        range: 3,
-                        isModify: false, 
-                    }
-                })
-                
-                this.lookAddressLocation();
-
-                // 获取当前位置  
-                var geolocation = new BMap.Geolocation();
-                geolocation.getCurrentPosition(function(r){
-                    // console.log(r.point);
-                    // 获取当前位置信息
-                    that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
-                    that.currentPoint = r.point;
-                 
-                },{enableHighAccuracy: true})
-            }else {
-                // 获取当前位置
-                var geolocation = new BMap.Geolocation();
-                geolocation.getCurrentPosition(function(r){
-                    // console.log(r.point);
-                    // 获取当前位置信息
-                    that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
-                    that.currentPoint = r.point;
-            
-                    that.list[0].address = that.currentAddress;
-                    that.list[0].lng = r.point.lng;
-                    that.list[0].lat = r.point.lat;
-            
-                    if(this.getStatus() == 0){
-            
-                        that.theSpot(r.point,3, 0);
-                    }else if(this.getStatus() == 2) {
-                        alert("请输入详细的位置信息");
-                    }else if(this.getStatus() == 8) {
-                        alert('请求超时，请检查网络');
-                    }
-                    else {
-                        alert('failed'+this.getStatus());
-                    }        
-                },{enableHighAccuracy: true})
-            }
-        }
-    })
+     var that = this;
+       setTimeout(function(){
+           that.drawMap();
+       },1500)
   },
 
   methods: {
+    //画地图
+    drawMap(){
+        //在此调用api  
+        map = new BMap.Map("allmap");
+        var point = new BMap.Point(116.404, 39.915);
+        map.centerAndZoom(point, 11);
 
-      // 下一步
+        // 页面初始化 定位当前位置
+        const that = this;
+
+        // 先去后台调取一遍接口，看用户是否已经填过了
+        var openid = localStorage.getItem('openid');
+        this.$ajax({
+            url: this.ajaxUrl+"/weixin/public/v1/register",
+            method:'POST',
+            data: {
+                openid:openid,
+                step: '3'
+            }})
+        .then( res => {
+            console.log("后台获取到的数据",res.data.result)
+            if(res.data.rescode == 200) {
+                // 如果接收到的值 存有位置
+                if(res.data.result.areas.length) {
+                    if(res.data.result.areas.length == 3) that.canAdd = false;
+                    this.list = res.data.result.areas.map( item => {
+                        return {
+                            address: item.address,
+                            lng: item.lng,
+                            lat: item.lat,
+                            range: 3,
+                            isModify: false, 
+                        }
+                    })
+                    
+                    this.lookAddressLocation();
+
+                    // 获取当前位置  
+                    var geolocation = new BMap.Geolocation();
+                    geolocation.getCurrentPosition(function(r){
+                        // console.log(r.point);
+                        // 获取当前位置信息
+                        that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
+                        that.currentPoint = r.point;
+                     
+                    },{enableHighAccuracy: true})
+                }else {
+                    // 获取当前位置
+                    var geolocation = new BMap.Geolocation();
+                    geolocation.getCurrentPosition(function(r){
+                        // console.log(r.point);
+                        // 获取当前位置信息
+                        that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
+                        that.currentPoint = r.point;
+                
+                        that.list[0].address = that.currentAddress;
+                        that.list[0].lng = r.point.lng;
+                        that.list[0].lat = r.point.lat;
+                
+                        if(this.getStatus() == 0){
+                
+                            that.theSpot(r.point,3, 0);
+                        }else if(this.getStatus() == 2) {
+                            alert("请输入详细的位置信息");
+                        }else if(this.getStatus() == 8) {
+                            alert('请求超时，请检查网络');
+                        }
+                        else {
+                            alert('failed'+this.getStatus());
+                        }        
+                    },{enableHighAccuracy: true})
+                }
+            }
+        })
+      
+    },
+    // 下一步
     nextStep(e) {
     //   this.$router.push({ path: "/operateActions" });
 

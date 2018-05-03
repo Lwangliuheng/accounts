@@ -10,6 +10,9 @@ import "element-ui/lib/theme-chalk/index.css";
 import "@/style/reset.css";
 import "viewerjs/dist/viewer.css";
 
+
+import {WXBaseAuthorize} from "@/js/wechat.js";
+//判断type进行页面的跳转
 import intercept from "@/js/intercept.js";
 //引入rem布局
 import "../accident/static/js/rem.js";
@@ -75,12 +78,12 @@ axios.interceptors.response.use(
 );
 
 Vue.config.productionTip = false;
+WXBaseAuthorize();
 router.beforeEach((to, from, next) => {
   //判断用户信息
   // if (!store.state.maiden) {
   //   intercept.getInfo();
   // }
-  //判断openid
   next();
 });
 new Vue({

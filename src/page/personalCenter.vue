@@ -53,6 +53,7 @@
     components: {
        
     },
+    name:"home",
     data() {
       return {
            value: 4, // 最高5

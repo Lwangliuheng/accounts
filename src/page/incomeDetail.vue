@@ -18,6 +18,7 @@
 
 <script>
 export default {
+  name:"incomeDetail",
   data () {
       return {
           list: [

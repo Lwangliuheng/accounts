@@ -72,6 +72,7 @@
     components: {
       
     },
+    name:"set",
     data() {
       return {
         switchState:false

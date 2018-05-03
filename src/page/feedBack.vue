@@ -57,6 +57,7 @@
     components: {
       
     },
+    name:"feedBack",
     data() {
       return {
          textareaValue:""

@@ -128,7 +128,6 @@
   import Bus from '../../accident/static/js/bus.js'
   // import cityData from '../../accident/static/js/cityData.js'
   import cityDataOne from '../js/cityDate.js'
-  import * as Map from '../js/map'
   export default {
 
     data() {
@@ -147,10 +146,15 @@
     },
     mounted() {
        // this.cityData = cityData;
+       //城市数据转变格式
        this.cityDataOne = this.remouldCityData(false,0,[]);
-       this.$nextTick(function(){
-          this.placeKick();
-       })
+       var that = this;
+       setTimeout(function(){
+           that.placeKick();
+       },100)
+       // this.$nextTick(function(){
+       //    this.placeKick();
+       // })
      
     },
     computed:{

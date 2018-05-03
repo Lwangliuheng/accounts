@@ -1,4 +1,5 @@
 const state = {
+  code:"",
   openid:"",
   companyCode:"",
   companyName:"",

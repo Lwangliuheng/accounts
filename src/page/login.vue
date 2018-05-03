@@ -189,11 +189,13 @@
    
 </template>
 <script>
+import intercept from "../js/intercept.js";
   // import personalInfo from '../components/personalInfo'
   export default {
     components: {
       // personalInfo
     },
+    name:"Login",
     data() {
       return {
           // registerState:false,//页面切换状态
@@ -213,10 +215,11 @@
       
     },
     mounted() {
-       // setTimeout(() => {
-       //    this.$store.commit('setSurveyNoActive',"改变后")
-       //  }, 1000)
-       // 
+
+      //获取openid
+      //alert(33333)
+      this.getCode();
+      
     },
     computed:{
      aDouble: function () {
@@ -227,6 +230,72 @@
    
     },
     methods: {
+      getCode(){
+        // alert(44444)
+        // console.log(window.location.href,"78987987987897")
+        // var str = window.location.href;
+        // var arr = str.split("?");
+        // var arr1 = arr[1].split("&")[0].split("=")[1];
+      
+        var code = this.$route.query.code;
+        var code = window.location.href.split("?")[1].split("&")[0].split("=")[1];
+        console.log(code,"我是code")
+        this.code = code;
+        this.$store.commit('setcodeActive',code);
+        // var code  = "001cggG21yrNoN1k7EG21WK0G21cggGD"
+        var paramData = {
+          code:code
+        };
+        //判断openid是否存在
+        var openid = localStorage.getItem('openid');
+        console.log(openid,"本地保存的openid");
+        if(!openid){
+          //alert(openid)
+           localStorage.setItem("openid",openid);
+           this.$store.commit('setopenidActive',openid);
+            //判断用户信息
+            if (!this.$store.state.maiden) {
+              intercept.getInfo();
+            }
+           return
+        }
+         //openid不存在
+        this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/getOpenId",paramData)
+            .then(response => {
+                  var openid = response.data.openid;
+                  console.log(response.data,"openid5466645654654656");
+                  console.log(openid,"openid");
+                  localStorage.setItem('chinaName',response.data.data.user.chinaName)
+                  this.$store.commit('setopenidActive',openid);
+                  //判断用户信息
+                  if (!this.$store.state.maiden) {
+                    intercept.getInfo();
+                  }
+             if(!response.data.openid){
+                this.$message({
+                  message: '获取失败',
+                   type: 'error'
+                }); 
+                进入空白页
+                var userAgent = navigator.userAgent;
+                if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
+                    window.location.href="about:blank";   
+                }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
+                    window.opener=null;window.open('about:blank','_self','').close(); 
+                }else {
+                    window.pener = null;
+                    window.open("about:blank", "_self");
+                    window.close();
+                }
+             }
+                
+            }, err => {
+              console.log(err);
+            })
+            .catch((error) => {
+            
+            })
+      },
        cancelBut(){
            $(".award").addClass("hide")
        },
@@ -384,8 +453,10 @@
         },
         //注册按钮发送请求
         registerAjax(){
+          var openid = localStorage.getItem('openid');
+          console.log(openid)
           var paramData = {
-                openid:"wlhabc",
+                openid:openid,
                 step:"1",
                 phone:this.phoneNum,
                 pcode:this.authCode,
@@ -440,7 +511,7 @@
               return
            }
            this.registerAjax();
-          //  this.$router.push({path:'/personalInfo'});
+           //this.$router.push({path:'/personalInfo'});
            //发送ajax
         }
         

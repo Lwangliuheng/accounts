@@ -17,6 +17,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    disableHostCheck: true,
     historyApiFallback: true,
     hot: true,
     host: process.env.HOST || config.dev.host,

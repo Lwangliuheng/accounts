@@ -9,21 +9,20 @@
         <img class="video-poster" v-show="!haveWatch" src="../images/videoPoster.png" alt="" srcset="">
         <img class="video-btn" src="../images/videoBtn.png" v-show="!isPlaying" alt="" @click='play'>
       </div>
-      <div class="btn" @click="beganSingle" :class="{active: isEnd}">开始接单<span>({{minute}}:{{second}})</span></div>
+      <div class="btn" @click="beganSingle" :class="{active: isEnd}">开始接单<span></span></div>
   </div>
 </template>
 
 <script>
     var timer;
   export default {
+    name:"learn",
     data() {
       return {
          isPlaying: false,
          haveWatch: false,
          isEnd: false,
-         videoUrl: '',
-         minute: 2,
-         second: 13
+         videoUrl: ''
       }
     },
     mounted() {
@@ -57,6 +56,17 @@
                     if(res.data.rescode == 200){
                         console.log("video url",res.data.result.video);
                         this.videoUrl = res.data.result.video;
+                          // 进入空白页
+                        var userAgent = navigator.userAgent;
+                        if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
+                            window.location.href="about:blank";   
+                        }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
+                            window.opener=null;window.open('about:blank','_self','').close(); 
+                        }else {
+                            window.pener = null;
+                            window.open("about:blank", "_self");
+                            window.close();
+                        }
                     }else{
                         console.error(res)
                     }

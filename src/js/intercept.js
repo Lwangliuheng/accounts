@@ -3,17 +3,31 @@ import router from '../router'
 import store from '../vuex/index'
 export default {
        interceptPage(type){
-           // if(type == 1){
-           //    router.push({path:'/login'});
-           // }
-           // if(type == 2){
+           if(type == 1){
+              router.push({path:'/'});
+           }
+           if(type == 2){
+                router.push({path:'/personalInfo'});
+           }
+           if(type == 3){
+                router.push({path:'/workRange'});
+           }
+           if(type == 4){
+                router.push({path:'/operateActions'});
+           }
+           if(type == 5){
+                router.push({path:'/learn'});
+           }
+           // if(type == 6){
            //      router.push({path:'/personalInfo'});
            // }
           
        },
        getInfo(){
+           var openid = localStorage.getItem('openid');
+           console.log("register",openid)
            var paramData = {
-                openid:"wlhabc",
+                openid:openid,
                 step:"1"
            }
           axios.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)

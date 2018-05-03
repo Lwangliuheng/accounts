@@ -13,12 +13,13 @@ import workRange from "@/page/workRange";
 import operateActions from "@/page/operateActions";
 import watchVideo from "@/page/watchVideo";
 import personalInfo from "@/page/personalInfo";
+import Code from "@/page/code";
 
 
 Vue.use(Router);
 
 export default new Router({
-  mode: "history",
+  // mode: "history",
   routes: [
     // {
     //   path:'/surveyContant',
@@ -36,6 +37,11 @@ export default new Router({
     //   path: '/:num',
     //   component: login
     // },
+    // //code设置
+    {
+      path: '/code',
+      component: Code
+    },
     //个人设置
     {
       path: '/set',
@@ -56,7 +62,7 @@ export default new Router({
       path: "/home",
       component: personalCenter
     },
-    //登录页
+    //1登录页
     {
       path: '/',
       component: login
@@ -86,7 +92,7 @@ export default new Router({
       path: "/operateActions",
       component: operateActions
     },
-    //注册个人信息填写
+    //2注册个人信息填写
     {
       path: "/personalInfo",
       component: personalInfo
@@ -94,7 +100,6 @@ export default new Router({
     //在线学习页
     {
       path: "/learn",
-      // path: "/watchVideo",
       component: watchVideo
     }
   ]

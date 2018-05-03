@@ -4,6 +4,12 @@ const mutation = {
      state.companyCode = data.companyCode;
      state.info = data;
      state.maiden = true;
+  },
+  setopenidActive(state,openid){
+     state.openid = openid;
+  },
+  setcodeActive(state,code){
+     state.code = code;
   }
   
 }
