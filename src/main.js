@@ -78,8 +78,18 @@ axios.interceptors.response.use(
 );
 
 Vue.config.productionTip = false;
-WXBaseAuthorize();
+// WXBaseAuthorize();
 router.beforeEach((to, from, next) => {
+  console.log(to.path);
+  console.log(to.path != "/code");
+  console.log(localStorage.getItem('openid') == null)
+  if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
+        if(to.path != "/code"){
+            WXBaseAuthorize();
+        };
+  };
+  
+  //console.log(to.path)
   //判断用户信息
   // if (!store.state.maiden) {
   //   intercept.getInfo();

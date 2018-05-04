@@ -6,9 +6,10 @@
 export function WXBaseAuthorize() {
    console.log(location.origin,"url")
 
-   const baseUrl = encodeURIComponent("https://test.zhongchebaolian.com/public/#/" );
+   const baseUrl = encodeURIComponent("https://test.zhongchebaolian.com/public/#/code" );
    console.log(baseUrl,"定向url")//wx2ee0af7fbdfe267e
    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2ee0af7fbdfe267e&redirect_uri="+ baseUrl +"&response_type=code&scope=snsapi_base&#wechat_redirect";
+   window.location.href= url;
    // https://test.zhongchebaolian.com/public/#/
    // http://localhost:8085/public/?code=0214IYd610X9TS1O6Ve61IW0e614IYd4&state=#/code
    // https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx2ee0af7fbdfe267e&secret=db81e0704e0011f7a64074e456f8ccfd&code=061xmJVY19QH401S7aVY1lWKVY1xmJV7&grant_type=authorization_code

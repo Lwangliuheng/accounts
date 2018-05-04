@@ -228,7 +228,7 @@
             <p class="city_title left">所在公司</p>
             <p class="city_name right">
                   {{company}}
-                <!-- <input type="text" name="" value="" @input="companyInput" v-on:blur="companyChange" maxlength="20" class="name_input" placeholder="请输入公司" disabled="false"> -->
+                <!-- <input type="text" name="" value="" @input="companyInput" v-on:blur="companyChange" maxlength="20" class="name_input" placeholder="请输入公司"> -->
             </p>
           </div>
         </div>
@@ -270,13 +270,15 @@
           cityCode:"",//城市code
           cityState:false,
           companyCode:null,
+          company:"",
           companyState:false
       }
     },
     created(){
-      
+       
     },
     mounted() {
+       this.getInfo();
        // setTimeout(() => {
        //    this.$store.commit('setSurveyNoActive',"改变后")
        //  }, 1000)
@@ -294,14 +296,72 @@
       })
     },
     computed:{
-     company: function () {
-         return this.$store.state.companyName
-      }
+     // company: function () {
+     //     return this.$store.state.companyName
+     //  }
     },
     watch: {
 
     },
     methods: {
+       //获取基本信息
+        getInfo(){
+           var openid = localStorage.getItem('openid');
+           var paramData = {
+                openid:openid,
+                step:"2"
+           }
+          this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
+            .then(response => {
+                if(response.data.rescode == 200){
+                    
+                    if(response.data.result.username){//用户名
+                       this.name = response.data.result.username;
+                       this.nameState = true;
+                    }else{
+                       this.name = "";
+                       this.nameState = false;
+                    };
+                    if(response.data.result.cityCode){
+                       this.cityCode = response.data.result.cityCode;//城市名
+                       this.cityState = true;
+                       this.city = response.data.result.cityName
+                       this.lat = response.data.result.lat
+                       this.lng = response.data.result.lng
+                    }else{
+                       this.cityCode = "";//城市名
+                       this.cityState = false;
+                       this.city = "";
+                       this.lat = "";
+                       this.lng = "";
+                    };
+                    if(response.data.result.companyName){
+                       this.company = response.data.result.companyName;//公司名
+                       this.companyCode = response.data.result.companyCode;
+                       
+                    }else{
+                      this.company = "";//公司名
+                      this.companyCode = "";
+                    };
+                   // this.$store.commit('setcompanyActive',response.data.result);
+                   // console.log(response.data.result.qcode);
+                   // this.invitationCode = response.data.result.qcode; 
+                   // this.interceptPage(response.data.result.step);
+
+                }
+                console.log(response,33333)
+            }, err => {
+
+              console.log(err);
+
+            })
+            .catch((error) => {
+              // this.$message({
+              //     message: '短信验证码发送失败',
+              //     type: 'error'
+              //   });
+            });
+       },
          //下一步按钮变色
        setButGreen(){
            if(this.imgState && this.nameState && this.cityState ){
@@ -402,13 +462,15 @@
               this.isGreen = false
               return
            }
-          var openid = this.$store.state.openid;
+          var openid = localStorage.getItem('openid');
           var paramData = {
                 openid:openid,
                 step:"2",
                 username:this.name,
                 cityCode:this.cityCode,
-                companyCode:this.$store.state.companyCode,
+                cityName:this.city,
+                companyName:this.company,
+                companyCode:this.companyCode,
                 logo:this.imgeUrlLine,//传入后台返回线上链接
                 lat:this.lat,
                 lng:this.lng

@@ -14,10 +14,10 @@ module.exports = {
       '/public-surveyor-api-boot': {
         // target:'http://192.168.1.27:10008',
         // target: 'http://192.168.1.140:8080',      // 志猛个人服务器
-        target: 'http://192.168.1.126:8080',      // 和鹏个人服务器
+        //target: 'http://192.168.1.126:8080',      // 和鹏个人服务器
         // target: 'http://192.168.1.18:8080',//元鹏
         // target: 'https://chakan.zhongchebaolian.com', // 生产
-        //target: 'https://survey.zhongchebaolian.com', // 测试
+        target: 'https://survey.zhongchebaolian.com', // 测试
         changeOrigin: true,
         pathRewrite: {
           '^/public-surveyor-api-boot': '/public-surveyor-api-boot'
