@@ -212,7 +212,7 @@
          <div class="city_input">
             <p class="city_title left">姓名</p>
             <p class="city_name right">
-                <input type="text" name="" value="" @input="nameInput" v-on:blur="nameChange" maxlength="20" class="name_input" placeholder="请输入姓名">
+                <input type="text" name="" :value="name" @input="nameInput" v-on:blur="nameChange" maxlength="20" class="name_input" placeholder="请输入姓名">
             </p>
           </div>
         </p>
@@ -308,8 +308,7 @@
         getInfo(){
            var openid = localStorage.getItem('openid');
            var paramData = {
-                openid:openid,
-                step:"2"
+                openid:openid
            }
           this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
             .then(response => {
@@ -343,6 +342,13 @@
                       this.company = "";//公司名
                       this.companyCode = "";
                     };
+                    if(response.data.result.logo){
+                      this.imageUrl = response.data.result.logo;
+                      this.imgState = true;
+                    }else{
+                      this.imageUrl = "";
+                      this.imgState = false;
+                    }
                    // this.$store.commit('setcompanyActive',response.data.result);
                    // console.log(response.data.result.qcode);
                    // this.invitationCode = response.data.result.qcode; 

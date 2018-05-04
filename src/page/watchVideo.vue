@@ -2,8 +2,8 @@
   <div class="watch-video">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
       <div class="video">
-        <video @click="pause" ref="video" id="video" controls @ended="end" poster="../images/videoPoster.png">
-            <source src="../images/video.mp4" type="video/mp4">
+        <video @click="pause" ref="video" id="video" controls @ended="end">
+            <source :src="videoUrl" type="video/mp4">
             您的手机暂不支持video标签，请升级系统
         </video>
         <img class="video-poster" v-show="!haveWatch" src="../images/videoPoster.png" alt="" srcset="">
@@ -26,9 +26,10 @@
       }
     },
     mounted() {
+        this.getInfo();
         // alert(this.$refs.video)
         // 设置页面加载完成
-        console.log(this.$refs.video.duration);
+        //console.log(this.$refs.video.duration);
         // 调用接口
         // this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: '1234',step: '4'})
         // .then(res => {
@@ -49,14 +50,40 @@
 
     },
     methods: {
+         //获取基本信息
+        getInfo(){
+           var openid = localStorage.getItem('openid');
+           var paramData = {
+                openid:openid
+           }
+          this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
+            .then(response => {
+                if(response.data.rescode == 200){
+                    
+                    console.log("video url",response.data.result.video);
+                     this.videoUrl = response.data.result.video;
+
+                }
+                console.log(response,33333)
+            }, err => {
+
+              console.log(err);
+
+            })
+            .catch((error) => {
+              // this.$message({
+              //     message: '短信验证码发送失败',
+              //     type: 'error'
+              //   });
+            });
+        },
         beganSingle(e){
             if(this.isEnd) {
                 var openid = localStorage.getItem('openid');
-                this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: openid,step: '4',complete: '1'})
+                this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: openid,step: '5',complete: '1'})
                 .then(res => {
                     if(res.data.rescode == 200){
-                        console.log("video url",res.data.result.video);
-                        this.videoUrl = res.data.result.video;
+                       
                           // 进入空白页
                         var userAgent = navigator.userAgent;
                         if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {

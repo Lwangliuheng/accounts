@@ -157,7 +157,7 @@
              <p class="top_wrod">视频查勘定损平台</p>
            </div>
            <p class="input_box">
-             <input type="text" name="" value="" v-on:blur="phoneChange" @input="phoneInput" placeholder="请输入登录手机号">
+             <input type="text" name="" :value="phoneNum" v-on:blur="phoneChange" @input="phoneInput" placeholder="请输入登录手机号">
            </p>
            <div class="input_box">
              <input type="text" name="" value="" @input="authInput"  v-on:blur="authChange" placeholder="请输入短信验证码">
@@ -265,8 +265,7 @@ import intercept from "../js/intercept.js";
            var openid = localStorage.getItem('openid');
            console.log("register",openid)
            var paramData = {
-                openid:openid,
-                step:"1"
+                openid:openid
            }
           this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
             .then(response => {

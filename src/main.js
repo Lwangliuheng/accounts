@@ -82,7 +82,8 @@ Vue.config.productionTip = false;
 router.beforeEach((to, from, next) => {
   console.log(to.path);
   console.log(to.path != "/code");
-  console.log(localStorage.getItem('openid') == null)
+  console.log(localStorage.getItem('openid') == "undefined");
+  console.log(localStorage.getItem('openid') == null);
   if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
         if(to.path != "/code"){
             WXBaseAuthorize();

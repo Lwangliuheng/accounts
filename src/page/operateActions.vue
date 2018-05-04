@@ -34,6 +34,32 @@ export default {
   methods: {
 
       toLearn () {
+
+        var openid = localStorage.getItem('openid');
+        console.log(openid)
+        var paramData = {
+              openid:openid,
+              step:"4"
+        }
+        this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
+          .then(response => {
+
+            if(response.data.rescode == 200){
+
+             this.$router.push('/learn');
+              //console.log(response.result,"城市返回数据");
+        
+
+            }
+          }, err => {
+            console.log(err);
+          })
+          .catch((error) => {
+            // this.$message({
+            //     message: '短信验证码发送失败',
+            //     type: 'error'
+            //   });
+          })
           this.$router.push('/learn');
       }
   }

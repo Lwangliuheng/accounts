@@ -47,7 +47,7 @@ import axios from "axios";
         var paramData = {
           code:code
         };
-        console.log(localStorage.getItem('openid'))
+        console.log(localStorage.getItem('openid'),"getCode")
         console.log(localStorage.getItem('openid') == "undefined")
         if(localStorage.getItem('openid') != "undefined" && localStorage.getItem('openid') != null){
            console.log("本地已经保存openID")
@@ -73,6 +73,7 @@ import axios from "axios";
             .then(response => {
                   var openid = response.data.openid;
                   console.log(response.data,"openid5466645654654656");
+                  //localStorage.setItem('openid',"safafasfd98879879safd");
                   localStorage.setItem('openid',response.data.openid);
                   this.$store.commit('setopenidActive',openid);
                   //判断用户信息
@@ -83,22 +84,23 @@ import axios from "axios";
                   //   intercept.getInfo();
                   // }
              if(!response.data.openid){
+               alert("没有获取到openid，请重新登录")
                 this.$message({
                   message: '获取失败',
                    type: 'error'
                 }); 
 
                 //进入空白页
-                // var userAgent = navigator.userAgent;
-                // if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-                //     window.location.href="about:blank";   
-                // }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
-                //     window.opener=null;window.open('about:blank','_self','').close(); 
-                // }else {
-                //     window.pener = null;
-                //     window.open("about:blank", "_self");
-                //     window.close();
-                // }
+                var userAgent = navigator.userAgent;
+                if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
+                    window.location.href="about:blank";   
+                }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
+                    window.opener=null;window.open('about:blank','_self','').close(); 
+                }else {
+                    window.pener = null;
+                    window.open("about:blank", "_self");
+                    window.close();
+                }
              };
                 
             }, err => {
@@ -109,17 +111,23 @@ import axios from "axios";
             })
       },
       interceptPage(type){
-           if(type == 1){
+           if(type == 0){
               this.$router.push({path:'/'});
            }
-           if(type == 2){
+           // if(type == 1){
+           //    this.$router.push({path:'/'});
+           // }
+           if(type == 1){
                 this.$router.push({path:'/personalInfo'});
            }
-           if(type == 3){
+           if(type == 2){
                 this.$router.push({path:'/workRange'});
            }
-           if(type == 4){
+           if(type == 3){
                 this.$router.push({path:'/operateActions'});
+           }
+           if(type == 4){
+                this.$router.push({path:'/learn'});
            }
            if(type == 5){
                 this.$router.push({path:'/learn'});
@@ -134,8 +142,7 @@ import axios from "axios";
            var openid = localStorage.getItem('openid');
            console.log("register",openid)
            var paramData = {
-                openid:openid,
-                step:"1"
+                openid:openid
            }
           this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
             .then(response => {
