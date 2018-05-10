@@ -1,12 +1,12 @@
 <template>
-  <div class="watch-video">
+  <div class="watch-video" v-if="readyState">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
       <div class="video">
         <video @click="pause" ref="video" id="video" controls @ended="end">
             <source :src="videoUrl" type="video/mp4">
             您的手机暂不支持video标签，请升级系统
         </video>
-        <img class="video-poster" v-show="!haveWatch" src="../images/videoPoster.png" alt="" srcset="">
+        <img class="video-poster" v-show="!haveWatch" src="../images/videoPoster.png" alt="" srcset="" >
         <img class="video-btn" src="../images/videoBtn.png" v-show="!isPlaying" alt="" @click='play'>
       </div>
       <div class="btn" @click="beganSingle" :class="{active: isEnd}">开始接单<span></span></div>
@@ -19,6 +19,8 @@
     name:"learn",
     data() {
       return {
+         complete:"", 
+         readyState:false,//页面显示状态
          isPlaying: false,
          haveWatch: false,
          isEnd: false,
@@ -26,6 +28,7 @@
       }
     },
     mounted() {
+        this.videoUrl = "https://static.zhongchebaolian.com/message/survey/images/WeChat_20180301131800.mp4";
         this.getInfo();
         // alert(this.$refs.video)
         // 设置页面加载完成
@@ -59,9 +62,13 @@
           this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
-                    
+                     //页面显示
+                      this.readyState = true;
+                    //判断是否注册过
+                      this.complete =  response.data.result.complete;
                     console.log("video url",response.data.result.video);
-                     this.videoUrl = response.data.result.video;
+                     //this.videoUrl = response.data.result.video;
+                this.videoUrl = "https://static.zhongchebaolian.com/message/survey/images/WeChat_20180301131800.mp4";
 
                 }
                 console.log(response,33333)
@@ -78,23 +85,36 @@
             });
         },
         beganSingle(e){
-            if(this.isEnd) {
+            if(this.complete == 1){
+               this.$message({
+                 showClose: true,
+                 message: '此账号已被注册！',
+                 type: 'success'
+               });
+               return
+            };
+            if(this.isEnd) {    
                 var openid = localStorage.getItem('openid');
                 this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: openid,step: '5',complete: '1'})
                 .then(res => {
                     if(res.data.rescode == 200){
                        
-                          // 进入空白页
-                        var userAgent = navigator.userAgent;
-                        if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-                            window.location.href="about:blank";   
-                        }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
-                            window.opener=null;window.open('about:blank','_self','').close(); 
-                        }else {
-                            window.pener = null;
-                            window.open("about:blank", "_self");
-                            window.close();
-                        }
+                        this.$confirm('您已注册成功！', '温馨提示', {
+                                confirmButtonText: '确定',
+                                showCancelButton:false,
+                                customClass:"tsk",
+                                cancelButtonText: '取消',
+                                type: 'warning',
+                                center: true
+                        }).then(() => {
+                              // 进入空白页
+                             WeixinJSBridge.call('closeWindow');
+                        }).catch(() => {
+                             
+                              // 进入空白页
+                            WeixinJSBridge.call('closeWindow');
+                        });
+
                     }else{
                         console.error(res)
                     }
@@ -107,6 +127,7 @@
 
         //点击按钮播放
         play () {
+            /*alert(1111111111111)*/
             this.$refs.video.play();
             this.isPlaying = true;
             this.haveWatch = true;
@@ -115,6 +136,7 @@
 
         // 点击按钮暂停
         pause(){
+            /*alert(66666666)*/
             if(this.isPlaying) {
                 this.$refs.video.pause();
                 this.isPlaying = false;

@@ -49,6 +49,7 @@
     height:1.16rem;
     line-height: 1.16rem;
     width:100%;
+    font-size: 16px;
     /*border-bottom:1px solid #b6b6b6;*/
   }
   .green_but_box{
@@ -82,7 +83,7 @@
   .footer p{
       text-align: center;
       color:#e4e4e4;
-      font-size: 12px;
+       font-size: 15px;
   }
   .award{
     padding:0.18rem 0.24rem;
@@ -192,8 +193,9 @@
   }
 </style>
 <template>
-    <div class="register_wrap">
-      <div class="register_content"  v-show="!cityModuleState">
+  <div>
+    <div class="register_wrap" v-if="readyState">
+      <div class="register_content"  v-show="!cityModuleState" >
         <div class="register_top">
           <el-upload
             name="image"
@@ -212,7 +214,7 @@
          <div class="city_input">
             <p class="city_title left">姓名</p>
             <p class="city_name right">
-                <input type="text" name="" :value="name" @input="nameInput" v-on:blur="nameChange" maxlength="20" class="name_input" placeholder="请输入姓名">
+                <input type="text" name="" :value="name" @input="nameInput" v-on:blur="nameChange" maxlength="4" class="name_input" placeholder="请输入姓名">
             </p>
           </div>
         </p>
@@ -243,7 +245,7 @@
       <city-module v-show="cityModuleState"></city-module>
 
    </div>
-
+</div>
 </template>
 <script>
   import Bus from '../../accident/static/js/bus.js'
@@ -255,6 +257,8 @@
     name:"personalInfo",
     data() {
       return {
+          complete:"", 
+          readyState:false,//页面显示状态
           action:this.ajaxUrl + "/public/file/v1/uploadImage",
           imageUrl:'',//本地图片引用地址
           imgeUrlLine:"",//后台返回的线上图片地址
@@ -278,7 +282,14 @@
        
     },
     mounted() {
-       this.getInfo();
+      //回车键
+       document.onkeydown = (ev) => {
+        if (ev.keyCode == 13) {
+          this.registerButton()
+        }
+      };
+      //获取基本信息
+      this.getInfo();
        // setTimeout(() => {
        //    this.$store.commit('setSurveyNoActive',"改变后")
        //  }, 1000)
@@ -306,14 +317,18 @@
     methods: {
        //获取基本信息
         getInfo(){
-           var openid = localStorage.getItem('openid');
+           //var openid = localStorage.getItem('openid');
+           var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM";
            var paramData = {
                 openid:openid
            }
-          this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
+          this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
-                    
+                    //页面显示
+                      this.readyState = true;
+                    //判断是否注册过
+                      this.complete =  response.data.result.complete;
                     if(response.data.result.username){//用户名
                        this.name = response.data.result.username;
                        this.nameState = true;
@@ -443,7 +458,14 @@
        },
        //下一步
        registerButton(){
-    
+          if(this.complete == 1){
+             this.$message({
+               showClose: true,
+               message: '此账号已被注册！',
+               type: 'success'
+             });
+             return
+          };
           if(!this.imgState){
                this.$message({
                 message: '请上传头像',
@@ -472,7 +494,7 @@
           var paramData = {
                 openid:openid,
                 step:"2",
-                username:this.name,
+                userName:this.name,
                 cityCode:this.cityCode,
                 cityName:this.city,
                 companyName:this.company,

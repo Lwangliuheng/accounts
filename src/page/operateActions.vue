@@ -69,7 +69,7 @@ export default {
 <style scoped>
 .operate-actions {
     height: 100%;
-    padding-top: 1.1rem;
+    padding-top: 0.2rem;
     position: relative;
 }
 .title {
@@ -83,7 +83,7 @@ export default {
 .no-actions,
 .have-actions {
     position: absolute;
-    top: 1.7rem;
+    /*top: 1.7rem;*/
     left: 50%;
     transform: translateX(-50%);
 }

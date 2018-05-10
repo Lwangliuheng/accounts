@@ -86,13 +86,14 @@ export default {
             url: this.ajaxUrl+"/weixin/public/v1/register",
             method:'POST',
             data: {
-                openid:openid,
-                step: '3'
+                openid:openid
             }})
         .then( res => {
             console.log("后台获取到的数据",res.data.result)
             if(res.data.rescode == 200) {
                 // 如果接收到的值 存有位置
+                var currentAddress = this.$store.state.currentAddress;
+                console.log(currentAddress,"地址已经保存过1");
                 if(res.data.result.areas.length) {
                     if(res.data.result.areas.length == 3) that.canAdd = false;
                     this.list = res.data.result.areas.map( item => {
@@ -108,6 +109,12 @@ export default {
                     this.lookAddressLocation();
 
                     // 获取当前位置  
+                    if(currentAddress){
+                        console.log(currentAddress,"地址已经保存过,并且有数据");
+                        this.currentAddress = this.$store.state.currentAddress;
+                        this.currentPoint = this.$store.state.currentPoint;
+                        return
+                    };
                     var geolocation = new BMap.Geolocation();
                     geolocation.getCurrentPosition(function(r){
                         // console.log(r.point);
@@ -118,6 +125,17 @@ export default {
                     },{enableHighAccuracy: true})
                 }else {
                     // 获取当前位置
+                    if(currentAddress){
+                       console.log(currentAddress,"地址已经保存过,但没有数据");
+                       this.currentAddress = this.$store.state.currentAddress;
+                       this.currentPoint = this.$store.state.currentPoint;
+                       this.list[0].address = this.currentAddress;
+                       this.list[0].lng = this.currentPoint.lng;
+                       this.list[0].lat = this.currentPoint.lat;
+                       
+                       this.theSpot(this.currentPoint,3, 0);
+                        return
+                    };
                     var geolocation = new BMap.Geolocation();
                     geolocation.getCurrentPosition(function(r){
                         // console.log(r.point);
@@ -342,7 +360,7 @@ display: none;
   position: relative;
 }
 .work-address .el-checkbox {
-  margin: 4.44rem 0 0.32rem 0.56rem;
+  margin: 3.9rem 0 0.32rem 0.56rem;
   font-size: 0.28rem;
 }
 .work-address .btn {

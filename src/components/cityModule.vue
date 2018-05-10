@@ -184,7 +184,12 @@
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function(r){
           if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                console.log(r)
+                console.log(r);
+                var data = {
+                  currentAddress:r.address.city+r.address.district+r.address.street+r.address.street_number,
+                  currentPoint:r.point
+                };
+                that.$store.commit('setThreeActive',data)
                 that.cityName = r.address.city;
                 that.cityNameState = true;
           }

@@ -40,8 +40,13 @@ axios.interceptors.request.use(
     // 注册loading
     if (config.url == "/public-surveyor-api-boot/weixin/public/v1/register") {
       loadinginstace = ElementUI.Loading.service({ fullscreen: true });
-    }
-    if (config.url == "/boot-pub-survey-manage/pub/survey/v1/page") {
+    };
+    //短信
+    if (config.url == "/public-surveyor-api-boot/public/sms/v1/send") {
+      loadinginstace = ElementUI.Loading.service({ fullscreen: true });
+    };
+    //红包loading
+    if (config.url == "/boot-xcx-survey-api/rider/income/v1/redpacket/receive") {
       loadinginstace = ElementUI.Loading.service({ fullscreen: true });
     }
     return config;
@@ -77,25 +82,69 @@ axios.interceptors.response.use(
   }
 );
 
+
+  window.addEventListener("popstate", function(e) { 
+      history.go(-1);
+  }, false); 
+   
+    
+
+
+
+
 Vue.config.productionTip = false;
-// WXBaseAuthorize();
+console.log(window.location.href.split("#")[1].split("?")[0],99999);
+var currentPathOne =  window.location.href.split("#")[1];
+var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
+console.log(currentPathOne);
+console.log(currentPathTwo);
+//刚进入路径跳转
+if(localStorage.getItem('openid')){
+   if(currentPathOne !=　"/redPacket"){
+      if( currentPathTwo != "/caseList"){
+          console.log("我有openid，也不是特殊页面！")
+          intercept.getInfo();
+      }
+   };  
+};
+
 router.beforeEach((to, from, next) => {
   console.log(to.path);
   console.log(to.path != "/code");
   console.log(localStorage.getItem('openid') == "undefined");
   console.log(localStorage.getItem('openid') == null);
   if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
-        if(to.path != "/code"){
-            WXBaseAuthorize();
+        if(to.path != "/code" && to.path != "/caseList" && to.path != "/redPacket"){
+           WXBaseAuthorize();
         };
   };
+  //路径跳转优化
+  //在进入code页面之前不能进行页面跳转！
+  // if(currentPathOne !=　"/code"){
+  //   if(currentPathOne !=　"/redPacket"){
+  //      if( currentPathTwo != "/caseList"){
+  //          console.log("我有openid，也不是特殊页面！")
+  //          intercept.getInfo();
+  //      }
+  //   };
+  // };
+   if(currentPathOne ==　"/redPacket"){
+       next();
+   };
+   if(currentPathTwo == "/caseList"){
+       next();
+   }
+  if(localStorage.getItem('openid') ){
+    console.log(store.state.firstTime,"有id并且首次进入");
+    if(store.state.firstTime){
+      next();
+    };
+  }else{
+    if(currentPathOne !=　"/redPacket" && currentPathTwo != "/caseList"){
+        next();
+    };
+  }
   
-  //console.log(to.path)
-  //判断用户信息
-  // if (!store.state.maiden) {
-  //   intercept.getInfo();
-  // }
-  next();
 });
 new Vue({
   el: "#app",

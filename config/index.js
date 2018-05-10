@@ -11,7 +11,24 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/boot-xcx-survey-api': {
+        // target: 'http://192.168.1.69:18081',      // 志猛个人服务器
+        // target: 'http://192.168.1.154:80',      // 和鹏个人服务器
+        // target: 'http://192.168.1.18:8080',//元鹏
+        //target: 'https://chakan.zhongchebaolian.com', // 生产
+        target: 'https://survey.zhongchebaolian.com', // 测试
+        changeOrigin: true
+      },
       '/public-surveyor-api-boot': {
+        // target: 'http://lipengwei.furui.com',      // 个人服务器
+        // target: 'http://liangxing.furui.com',      // 个人服务器
+        // target: 'http://luhongguang.furui.com',
+        // target: 'http://testmall.aiganyisheng.com', // 测试
+        // target: 'https://api.accidentx.zhongchebaolian.com', // 正式
+        target: 'https://test.zhongchebaolian.com', // 测试
+        changeOrigin: true
+      },
+     /* '/public-surveyor-api-boot': {
         // target:'http://192.168.1.27:10008',
         // target: 'http://192.168.1.140:8080',      // 志猛个人服务器
         //target: 'http://192.168.1.126:8080',      // 和鹏个人服务器
@@ -22,7 +39,19 @@ module.exports = {
         pathRewrite: {
           '^/public-surveyor-api-boot': '/public-surveyor-api-boot'
         }
-      },
+      },*/
+      // '/boot-xcx-survey-api': {
+      //   // target:'http://192.168.1.27:10008',
+      //   // target: 'http://192.168.1.140:8080',      // 志猛个人服务器
+      //   //target: 'http://192.168.1.126:8080',      // 和鹏个人服务器
+      //   // target: 'http://192.168.1.18:8080',//元鹏
+      //   // target: 'https://chakan.zhongchebaolian.com', // 生产
+      //   target: 'https://survey.zhongchebaolian.com', // 测试
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/boot-xcx-survey-api': '/boot-xcx-survey-api'
+      //   }
+      // }
     },
 
     // Various Dev Server settings

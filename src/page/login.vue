@@ -8,7 +8,7 @@
    .register_content{
      width:100%;
     height:100vh;
-    padding-top:1.5rem;
+    padding-top:0.9rem;
     margin:0 auto;
     width:6.35rem;
    }
@@ -24,6 +24,9 @@
    .input_box{
     position: relative;
    }
+   /*.input_box input{
+    font-size: 16px;
+   }*/
    .auth_code{
      font-size: 14px;
      line-height:1.16rem;
@@ -43,6 +46,7 @@
     border-bottom:1px solid #b6b6b6;
     box-sizing: border-box;
     margin: .2rem 0;
+    font-size: 16px;
   }
   .green_but_box{
      margin-top:0.7rem;
@@ -69,14 +73,14 @@
   }
   .footer{
     width:6.35rem;
-    margin-top:1rem;
+    margin-top:0.2rem;
     /*position:fixed;*/
    /* bottom:0.23rem;*/
   }
   .footer p{
       text-align: center;
       color:#e4e4e4;
-      font-size: 12px;
+      font-size: 15px;
   }
   .award{
     padding:0.18rem 0.24rem;
@@ -147,10 +151,14 @@
     border-bottom:1px solid #b6b6b6;
     height:0.8rem;
   }
+  .auth_code_te{
+    font-size: 16px;
+    color:#000;
+  }
 </style>
 <template>
    <div>
-      <div class="register_wrap">
+      <div class="register_wrap" v-if="readyState">
          <div class="register_content">
            <div class="register_top">
              <img src="../images/logo.png" class="register_top_img">
@@ -161,7 +169,7 @@
            </p>
            <div class="input_box">
              <input type="text" name="" value="" @input="authInput"  v-on:blur="authChange" placeholder="请输入短信验证码">
-             <p class="auth_code" v-on:click="gainAuthCode">{{authValue}}</p>
+             <p class="auth_code auth_code_te" v-on:click="gainAuthCode">{{authValue}}</p>
            </div>
            <div class="input_box">
              <p class="input_box_span" v-if="invitationCode">{{invitationCode}}</p>
@@ -207,6 +215,8 @@ import intercept from "../js/intercept.js";
     name:"Login",
     data() {
       return {
+          complete:"", 
+          readyState:false,
           // registerState:false,//页面切换状态
           countdown:60,//计时器
           authValue:"获取验证码",
@@ -224,7 +234,12 @@ import intercept from "../js/intercept.js";
       
     },
     mounted() {
-
+      //回车键
+       document.onkeydown = (ev) => {
+        if (ev.keyCode == 13) {
+          this.registerButton()
+        }
+      };
       //获取openid
       //alert(33333)
       //this.getCode();
@@ -239,38 +254,23 @@ import intercept from "../js/intercept.js";
    
     },
     methods: {
-      // interceptPage(type){
-      //      if(type == 1){
-      //         this.$router.push({path:'/'});
-      //      }
-      //      if(type == 2){
-      //           this.$router.push({path:'/personalInfo'});
-      //      }
-      //      if(type == 3){
-      //           this.$router.push({path:'/workRange'});
-      //      }
-      //      if(type == 4){
-      //           this.$router.push({path:'/operateActions'});
-      //      }
-      //      if(type == 5){
-      //           this.$router.push({path:'/learn'});
-      //      }
-      //      // if(type == 6){
-      //      //      router.push({path:'/personalInfo'});
-      //      // }
-          
-      //  },
        //获取基本信息
         getInfo(){
            var openid = localStorage.getItem('openid');
+           //var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM";
            console.log("register",openid)
            var paramData = {
                 openid:openid
            }
-          this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
+           ///public-surveyor-api-boot
+          this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
-                    
+                  //页面显示
+                    this.readyState = true;
+                  //判断是否注册过
+                    this.complete =  response.data.result.complete;
+                    console.log(response.data.result.complete,"是否注册成功！")
                     if(response.data.result.phone){
                        this.phoneNum = response.data.result.phone;//电话号
                        this.phoneNumState = true;
@@ -311,68 +311,6 @@ import intercept from "../js/intercept.js";
               //   });
             });
        },
-      // getCode(){
-      
-      //   var code = this.$route.query.code;
-      //   var code = window.location.href.split("?")[1].split("&")[0].split("=")[1];
-      //   console.log(code,"我是code")
-      //   this.code = code;
-      //   this.$store.commit('setcodeActive',code);
-      //   // var code  = "001cggG21yrNoN1k7EG21WK0G21cggGD"
-      //   var paramData = {
-      //     code:code
-      //   };
-      //   console.log(localStorage.getItem('openid'))
-      //   console.log(localStorage.getItem('openid') == "undefined")
-      //   if(localStorage.getItem('openid') != "undefined"){
-      //      var openid = localStorage.getItem('openid');
-      //      this.$store.commit('setopenidActive',openid);
-      //       //判断用户信息
-      //      console.log(this.$store.state.maiden,"1111进入");
-      //       //判断第几步并获取基本信息
-      //      this.getInfo();
-      //      return
-      //   };
-      //   this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/getOpenId",paramData)
-      //       .then(response => {
-      //             var openid = response.data.openid;
-      //             console.log(response.data,"openid5466645654654656");
-      //             localStorage.setItem('openid',response.data.openid);
-      //             this.$store.commit('setopenidActive',openid);
-      //             //判断用户信息
-      //             console.log(this.$store.state.maiden,"第一次1111进入");
-      //              //判断第几步并获取基本信息
-      //              this.getInfo();
-                   
-      //             // if (!this.$store.state.maiden) {
-      //             //   intercept.getInfo();
-      //             // }
-      //        if(!response.data.openid){
-      //           this.$message({
-      //             message: '获取失败',
-      //              type: 'error'
-      //           }); 
-
-      //           //进入空白页
-      //           // var userAgent = navigator.userAgent;
-      //           // if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-      //           //     window.location.href="about:blank";   
-      //           // }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
-      //           //     window.opener=null;window.open('about:blank','_self','').close(); 
-      //           // }else {
-      //           //     window.pener = null;
-      //           //     window.open("about:blank", "_self");
-      //           //     window.close();
-      //           // }
-      //        };
-                
-      //       }, err => {
-      //         console.log(err);
-      //       })
-      //       .catch((error) => {
-            
-      //       })
-      // },
        cancelBut(){
            $(".award").addClass("hide")
        },
@@ -404,7 +342,7 @@ import intercept from "../js/intercept.js";
             return;
         };
         if(this.authValueState){
-           this.settime();
+           // this.settime();
            var paramData = {
             phone:this.phoneNum
            }
@@ -412,7 +350,7 @@ import intercept from "../js/intercept.js";
            this.$ajax.post(this.ajaxUrl+"/public/sms/v1/send",paramData)
             .then(response => {
               if(response.data.rescode == 200){
-                 // this.settime();
+                 this.settime();
               }else{
                 this.$message({
                   message: '短信验证码发送失败',
@@ -432,11 +370,7 @@ import intercept from "../js/intercept.js";
        },
        //注册按钮变色
         setButGreen(){
-           // if(this.phoneNumState && this.authCodeState && this.invitationCodeState){
-           //    this.isGreen = true;
-           // }else{
-           //    this.isGreen = false;
-           // }
+          
            if(this.phoneNumState && this.authCodeState){
               this.isGreen = true;
            }else{
@@ -566,8 +500,20 @@ import intercept from "../js/intercept.js";
         },
         //注册按钮点击
         registerButton(e){
-          console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState)
-          console.log(this.invitationCode,this.phoneNum,this.authCode)
+
+  this.$router.push({path:'/personalInfo'});
+
+  this.$router.push({path:'/personalInfo'});
+          console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState);
+          console.log(this.invitationCode,this.phoneNum,this.authCode);
+           if(this.complete == 1){
+              this.$message({
+                showClose: true,
+                message: '此账号已被注册！',
+                type: 'success'
+              });
+              return
+           };
            if(!this.phoneNumState){
                this.$message({
                 message: '请输入正确的手机号',

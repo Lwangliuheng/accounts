@@ -12,6 +12,9 @@ export default {
 </script>
 
 <style>
+	.tsk{
+	    width:80%;
+	  }
     #app{
    	  font-size:12px;
 			height: 100%;

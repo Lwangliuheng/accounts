@@ -84,23 +84,25 @@ import axios from "axios";
                   //   intercept.getInfo();
                   // }
              if(!response.data.openid){
-               alert("没有获取到openid，请重新登录")
+               console.log("没有获取到openid，请重新登录")
                 this.$message({
                   message: '获取失败',
                    type: 'error'
                 }); 
 
+                // 进入空白页
+                WeixinJSBridge.call('closeWindow');
                 //进入空白页
-                var userAgent = navigator.userAgent;
-                if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
-                    window.location.href="about:blank";   
-                }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
-                    window.opener=null;window.open('about:blank','_self','').close(); 
-                }else {
-                    window.pener = null;
-                    window.open("about:blank", "_self");
-                    window.close();
-                }
+                // var userAgent = navigator.userAgent;
+                // if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
+                //     window.location.href="about:blank";   
+                // }else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
+                //     window.opener=null;window.open('about:blank','_self','').close(); 
+                // }else {
+                //     window.pener = null;
+                //     window.open("about:blank", "_self");
+                //     window.close();
+                // }
              };
                 
             }, err => {
@@ -111,6 +113,8 @@ import axios from "axios";
             })
       },
       interceptPage(type){
+        console.log(type);
+        console.log(type == 4);   
            if(type == 0){
               this.$router.push({path:'/'});
            }
@@ -130,7 +134,7 @@ import axios from "axios";
                 this.$router.push({path:'/learn'});
            }
            if(type == 5){
-                this.$router.push({path:'/learn'});
+                this.$router.push({path:'/'});
            }
            // if(type == 6){
            //      router.push({path:'/personalInfo'});
@@ -144,13 +148,14 @@ import axios from "axios";
            var paramData = {
                 openid:openid
            }
-          this.$ajax.post("/public-surveyor-api-boot/weixin/public/v1/register",paramData)
+          this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
-                    
+                   this.$store.commit('setfirstTimeActive');
                    this.$store.commit('setcompanyActive',response.data.result);
                    console.log(response.data.result.qcode);
                    this.invitationCode = response.data.result.qcode; 
+                   console.log(response.data.result.step);
                    this.interceptPage(response.data.result.step);
 
                 }

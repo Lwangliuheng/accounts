@@ -11,6 +11,25 @@ const mutation = {
   },
   setcodeActive(state,code){
      state.code = code;
+  },
+  setlngActive(state,data){
+     state.lng = data.lng;
+     state.lat = data.lat;
+  },
+  setuidActive(state,uid){
+     state.uid = uid;
+     
+  },
+  setThreeActive(state,data){
+     state.currentAddress = data.currentAddress;
+     state.currentPoint = data.currentPoint;
+  },
+   setfirstTimeActive(state){
+     state.firstTime = true;
+  },
+  setordernoActive(state,orderno){
+     state.orderno = orderno;
+     
   }
   
 }

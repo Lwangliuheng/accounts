@@ -14,6 +14,8 @@ import operateActions from "@/page/operateActions";
 import watchVideo from "@/page/watchVideo";
 import personalInfo from "@/page/personalInfo";
 import Code from "@/page/code";
+import caseList from "@/page/caseList";
+import redPacket from "@/page/redPacket";
 
 
 Vue.use(Router);
@@ -96,6 +98,16 @@ export default new Router({
     {
       path: "/personalInfo",
       component: personalInfo
+    },
+    //抢单列表
+    {
+      path: "/caseList",
+      component: caseList
+    },
+    //红包
+    {
+      path: "/redPacket",
+      component: redPacket
     },
     //在线学习页
     {
