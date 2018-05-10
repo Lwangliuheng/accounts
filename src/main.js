@@ -83,9 +83,10 @@ axios.interceptors.response.use(
 );
 
 
-  window.addEventListener("popstate", function(e) { 
-      history.go(-1);
-  }, false); 
+  // window.addEventListener("popstate", function(e) { 
+  //     history.go(-1);
+  //     alert(666666)
+  // }, false); 
    
     
 
