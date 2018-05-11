@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from '../router'
 import store from '../vuex/index'
 export default {
-      interceptPage(type){
+      interceptPage(type,routerCallback){
         console.log(type);
         console.log(type == 4);   
            if(type == 0){
@@ -26,13 +26,15 @@ export default {
            if(type == 5){
                 router.push({path:'/'});
            }
+            routerCallback();
            // if(type == 6){
            //      router.push({path:'/personalInfo'});
            // }
           
        },
-       getInfo(){
+       getInfo(routerCallback){
            var openid = localStorage.getItem('openid');
+           //var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM"
            console.log("register",openid)
            var paramData = {
                 openid:openid
@@ -41,7 +43,7 @@ export default {
             .then(response => {
                 if(response.data.rescode == 200){
                    store.commit('setfirstTimeActive');
-                   this.interceptPage(response.data.result.step);
+                   this.interceptPage(response.data.result.step,routerCallback);
 
                 }
                 console.log(response,33333)

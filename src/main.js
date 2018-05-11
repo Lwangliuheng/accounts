@@ -103,50 +103,66 @@ console.log(currentPathTwo);
 if(localStorage.getItem('openid')){
    if(currentPathOne !=　"/redPacket"){
       if( currentPathTwo != "/caseList"){
-          console.log("我有openid，也不是特殊页面！")
-          intercept.getInfo();
+          console.log("我有openid，也不是特殊页面！");
+          //特殊页面不用判断进行到第几步
+          intercept.getInfo(routerCallback);
       }
    };  
+}else{
+    router.beforeEach((to, from, next) => {
+      if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
+             //初次去除不需要获取openid的页面
+            if(to.path != "/code" && to.path != "/caseList" && to.path != "/redPacket"){
+               WXBaseAuthorize();
+            };
+      };
+      //初次进入不执行，重定向后执行，进入code获取openid。
+      ///localStorage.setItem('openid',"oYqIewHK593VkLLuDtT1Axx2yaAM")
+      next();
+      
+    });
 };
 
-router.beforeEach((to, from, next) => {
-  console.log(to.path);
-  console.log(to.path != "/code");
-  console.log(localStorage.getItem('openid') == "undefined");
-  console.log(localStorage.getItem('openid') == null);
-  if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
-        if(to.path != "/code" && to.path != "/caseList" && to.path != "/redPacket"){
-           WXBaseAuthorize();
-        };
-  };
-  //路径跳转优化
-  //在进入code页面之前不能进行页面跳转！
-  // if(currentPathOne !=　"/code"){
-  //   if(currentPathOne !=　"/redPacket"){
-  //      if( currentPathTwo != "/caseList"){
-  //          console.log("我有openid，也不是特殊页面！")
-  //          intercept.getInfo();
-  //      }
-  //   };
-  // };
-   if(currentPathOne ==　"/redPacket"){
-       next();
-   };
-   if(currentPathTwo == "/caseList"){
-       next();
-   }
-  if(localStorage.getItem('openid') ){
-    console.log(store.state.firstTime,"有id并且首次进入");
-    if(store.state.firstTime){
-      next();
-    };
-  }else{
-    if(currentPathOne !=　"/redPacket" && currentPathTwo != "/caseList"){
-        next();
-    };
-  }
+ function routerCallback(){
+   router.beforeEach((to, from, next) => {
+    //alert(666666)
+     next();
+     
+   });
+ }
+
+ 
+//备份路由拦截
+// router.beforeEach((to, from, next) => {
+//   console.log(to.path);
+//   console.log(to.path != "/code");
+//   console.log(localStorage.getItem('openid') == "undefined");
+//   console.log(localStorage.getItem('openid') == null);
+//   if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
+//          //初次去除不需要获取openid的页面
+//         if(to.path != "/code" && to.path != "/caseList" && to.path != "/redPacket"){
+//           // WXBaseAuthorize();
+//           return
+//         };
+//   };
+//    if(currentPathOne ==　"/redPacket"){
+//        next();
+//    };
+//    if(currentPathTwo == "/caseList"){
+//        next();
+//    }
+//   if(localStorage.getItem('openid') ){
+//     // console.log(store.state.firstTime,"有id并且首次进入");
+//     //if(store.state.firstTime){
+//       next();
+//     //};
+//   }else{
+//     if(currentPathOne !=　"/redPacket" && currentPathTwo != "/caseList"){
+//         next();
+//     };
+//   }
   
-});
+// });
 new Vue({
   el: "#app",
   router,

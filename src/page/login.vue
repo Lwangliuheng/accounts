@@ -501,7 +501,7 @@ import intercept from "../js/intercept.js";
         //注册按钮点击
         registerButton(e){
 
-  //this.$router.push({path:'/personalInfo'});
+  this.$router.push({path:'/personalInfo'});
 
           console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState);
           console.log(this.invitationCode,this.phoneNum,this.authCode);
