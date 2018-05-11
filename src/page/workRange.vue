@@ -278,9 +278,8 @@ export default {
     },
 
     // 点击搜索按钮
-    lookAddressLocation (index) {
+    lookAddressLocation (currentIndex) {
         
-        console.log(index);
         const that = this;
         // 先清空所有
         map.clearOverlays();
@@ -288,22 +287,29 @@ export default {
         if(this.list.length){
 
             let arr = Array.from(this.list);
-            arr.push(arr.splice(index,1)[0]);
+            arr.push(arr.splice(currentIndex,1)[0]);
             
             // 先渲染点
-            arr.forEach( (item,index) => {
+            arr.forEach( (item,index,array) => {
                 // 创建地址解析器实例    
                 var myGeo = new BMap.Geocoder();
                 // 将地址解析结果显示在地图上,并调整地图视野
                 myGeo.getPoint(item.address, function(point){
                     if (point) {
-                        console.log('地址转成的坐标',point.lng);
-                        item.lng = point.lng;
-                        item.lat = point.lat;
+                        // 保存当前查询位置
+                        that.list[currentIndex].lng = point.lng;
+                        that.list[currentIndex].lat = point.lat;
                         
+                        // 渲染所有点
                         that.theSpot(point,item.range);
                         
-                        // map.centerAndZoom(point,13);
+
+                        // 如果是最后一个，定为中心
+                        if(index == array.length-1){
+                            let center = that.list[index];
+                            let centerPoint = new BMap.Point(center.lng,center.lat);
+                            map.centerAndZoom(centerPoint,13);
+                        }
                     }else{
                         alert("您选择地址没有解析到结果!");
                     }
@@ -311,10 +317,7 @@ export default {
             });
             // 深拷贝位置列表
 
-            let center = this.list[index];
-            console.log(center.address);
-            let centerPoint = new BMap.Point(center.lng,center.lat);
-            map.centerAndZoom(centerPoint,13);
+
             // map.panTo(centerPoint);
 
         }
@@ -325,6 +328,8 @@ export default {
     imputChange (index) {
         // console.log(this.list[index]);
         // this.tempSearchContent = value;
+        // this.lookAddressLocation(index);
+        
     }
   }
 };
