@@ -90,7 +90,8 @@ axios.interceptors.response.use(
    
     
 
-
+//cs
+localStorage.setItem('openid',"oYqIewHK593VkLLuDtT1Axx2yaAM");
 
 
 Vue.config.productionTip = false;
@@ -113,7 +114,7 @@ if(localStorage.getItem('openid')){
       if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
              //初次去除不需要获取openid的页面
             if(to.path != "/code" && to.path != "/caseList" && to.path != "/redPacket"){
-               WXBaseAuthorize();
+              // WXBaseAuthorize();
             };
       };
       //初次进入不执行，重定向后执行，进入code获取openid。

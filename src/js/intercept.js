@@ -5,27 +5,27 @@ export default {
       interceptPage(type,routerCallback){
         console.log(type);
         console.log(type == 4);   
-           if(type == 0){
-              router.push({path:'/'});
-           }
-           // if(type == 1){
-           //    this.$router.push({path:'/'});
+           // if(type == 0){
+           //    router.push({path:'/'});
            // }
-           if(type == 1){
-                router.push({path:'/personalInfo'});
-           }
-           if(type == 2){
-                router.push({path:'/workRange'});
-           }
-           if(type == 3){
-                router.push({path:'/operateActions'});
-           }
-           if(type == 4){
-                router.push({path:'/learn'});
-           }
-           if(type == 5){
-                router.push({path:'/'});
-           }
+           // // if(type == 1){
+           // //    this.$router.push({path:'/'});
+           // // }
+           // if(type == 1){
+           //      router.push({path:'/personalInfo'});
+           // }
+           // if(type == 2){
+           //      router.push({path:'/workRange'});
+           // }
+           // if(type == 3){
+           //      router.push({path:'/operateActions'});
+           // }
+           // if(type == 4){
+           //      router.push({path:'/learn'});
+           // }
+           // if(type == 5){
+           //      router.push({path:'/'});
+           // }
             routerCallback();
            // if(type == 6){
            //      router.push({path:'/personalInfo'});

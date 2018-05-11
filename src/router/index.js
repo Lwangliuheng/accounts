@@ -16,7 +16,7 @@ import personalInfo from "@/page/personalInfo";
 import Code from "@/page/code";
 import caseList from "@/page/caseList";
 import redPacket from "@/page/redPacket";
-
+import Clause from "@/page/clause";
 
 Vue.use(Router);
 
@@ -108,6 +108,11 @@ export default new Router({
     {
       path: "/redPacket",
       component: redPacket
+    },
+    //条款页
+    {
+      path: "/clause",
+      component: Clause
     },
     //在线学习页
     {
