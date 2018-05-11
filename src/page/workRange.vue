@@ -1,5 +1,5 @@
 <template>
-  <div class="work-range">
+  <div class="work-range" v-loading="loading">
       <div class="search">
           <span class="el-icon-search"></span><input type="text" v-model="address" placeholder="请输入查勘地点">
       </div>
@@ -45,6 +45,7 @@ export default {
     return {
       address: "",
       checked: false,
+      loading: true,
       haveTip: true,
       list: [
           {
@@ -64,9 +65,11 @@ export default {
 
   mounted() {
      var that = this;
+
        setTimeout(function(){
            that.drawMap();
-       },1500)
+           that.loading = false;
+       },1000)
   },
 
   methods: {
@@ -106,7 +109,7 @@ export default {
                         }
                     })
                     
-                    this.lookAddressLocation();
+                    this.lookAddressLocation(this.list.length-1);
 
                     // 获取当前位置  
                     if(currentAddress){
@@ -205,28 +208,26 @@ export default {
     theSpot (point,width,index) {
         var mk = new BMap.Marker(point);
         mk.setTop(true);
+        // map.panTo(point);
         map.addOverlay(mk);
-        map.panTo(point);
 
-        map.centerAndZoom(point, 12);
-
-        // alert('您的位置：'+r.point.lng+','+r.point.lng);
         var circle = new BMap.Circle(point,500*width,{fillColor:"#b2edd1", strokeWeight:.1, strokeOpacity:0.5}); //创建圆
-
         map.addOverlay(circle); 
-        // var label = new BMap.Label(`id${index}`);
-        // mk.setLabel(label);
     },
 
     // 增加范围
     add (index) {
         this.list[index].range == 6 ? this.list[index].range : this.list[index].range++;
         console.log(this.list);
+        // 重新渲染
+        this.lookAddressLocation(index);
     },
 
     // 减小范围
     reduce (index) {
         this.list[index].range == 3 ? this.list[index].range : this.list[index].range--;
+        // 重新渲染
+        this.lookAddressLocation(index);
     },
 
 
@@ -235,7 +236,7 @@ export default {
         this.list[index].isModify = false;
 
         // 重新渲染
-        this.lookAddressLocation();
+        this.lookAddressLocation(index);
     },
 
     // 修改
@@ -247,13 +248,19 @@ export default {
     deleteItem(index) {
         this.canAdd = true;
         this.list.splice(index,1);
-
+        this.checked = false;
         // 重新渲染
-        this.lookAddressLocation();
+        this.lookAddressLocation(this.list.length-1);
     },
 
     // 添加一条地址
-    addList (index) {
+    addList () {
+
+        // 如果上面的没有确定，点击增加全部确定
+        this.list.forEach( item => {
+            item.isModify = false
+        });
+        // 增加新的位置
         this.list.push({
             address: this.currentAddress,
             lng: this.currentPoint.lng,
@@ -263,7 +270,7 @@ export default {
         })
         
         // 重新渲染
-        this.lookAddressLocation();
+        this.lookAddressLocation(this.list.length-1);
 
         if(this.list.length == 3) {
             this.canAdd = false;
@@ -271,34 +278,58 @@ export default {
     },
 
     // 点击搜索按钮
-    lookAddressLocation (index) {
+    lookAddressLocation (currentIndex) {
         
         const that = this;
         // 先清空所有
         map.clearOverlays();
+        // 把当前修改项放在最后一位
+        if(this.list.length){
 
-        this.list.forEach( (item,index) => {
-            // 创建地址解析器实例    
-            var myGeo = new BMap.Geocoder();
-            // 将地址解析结果显示在地图上,并调整地图视野
-            myGeo.getPoint(item.address, function(point){
-                if (point) {
-                    item.point = point;
-                    map.centerAndZoom(point, 16);
-                    // map.addOverlay(new BMap.Marker(point));
-                    that.theSpot(point,item.range);
+            let arr = Array.from(this.list);
+            arr.push(arr.splice(currentIndex,1)[0]);
+            
+            // 先渲染点
+            arr.forEach( (item,index,array) => {
+                // 创建地址解析器实例    
+                var myGeo = new BMap.Geocoder();
+                // 将地址解析结果显示在地图上,并调整地图视野
+                myGeo.getPoint(item.address, function(point){
+                    if (point) {
+                        // 保存当前查询位置
+                        that.list[currentIndex].lng = point.lng;
+                        that.list[currentIndex].lat = point.lat;
+                        
+                        // 渲染所有点
+                        that.theSpot(point,item.range);
+                        
 
-                }else{
-                    alert("您选择地址没有解析到结果!");
-                }
+                        // 如果是最后一个，定为中心
+                        if(index == array.length-1){
+                            let center = that.list[index];
+                            let centerPoint = new BMap.Point(center.lng,center.lat);
+                            map.centerAndZoom(centerPoint,13);
+                        }
+                    }else{
+                        alert("您选择地址没有解析到结果!");
+                    }
+                });
             });
-        });
+            // 深拷贝位置列表
+
+
+            // map.panTo(centerPoint);
+
+        }
+
     },
 
     // 当输入框内容改变
     imputChange (index) {
-        console.log(this.list[index]);
+        // console.log(this.list[index]);
         // this.tempSearchContent = value;
+        // this.lookAddressLocation(index);
+        
     }
   }
 };
@@ -360,7 +391,7 @@ display: none;
   position: relative;
 }
 .work-address .el-checkbox {
-  margin: 3.9rem 0 0.32rem 0.56rem;
+  margin: 4.7rem 0 0.4rem 0.56rem;
   font-size: 0.28rem;
 }
 .work-address .btn {
@@ -390,26 +421,33 @@ display: none;
 }
 .address-list h4,
 .address-list input {
-    width: 70%;
-  font-size: 0.3rem;
-  line-height: 0.3rem;
-  font-family: "SimHei";
-  margin-bottom: 0.2rem;
-  margin-top: 0.4rem;
+    width: 100%;
+    min-height: .5rem;
+    font-size: 0.34rem;
+    line-height: 0.34rem;
+    font-family: "SimHei";
+    margin-bottom: 0.2rem;
+    margin-top: 0.3rem;
 }
 .address-list input {
-    border: 0.5px solid #ccc;
-    margin-bottom: 0.13rem;
-    margin-top: 0.33rem;
+    width: 75%;   
+    padding-right: .45rem; 
+    border: 1px solid #ccc;
 }
 
+.modify-input {
+    position: relative;
+}
 .modify-input span{
+    display: block;
+    padding: .1rem;
+    color: #666;
     font-size: .42rem;
     line-height: .42rem;
-    position: relative;
-    top: .04rem;
-    left: -0.54rem;
-    color: #666;
+    position: absolute;
+    top: 55%;
+    left: calc(70% - .32rem);
+    transform: translateY(-50%);
 }
 
 .modify-ad {
@@ -417,9 +455,9 @@ display: none;
   justify-content: space-between;
 }
 .modify-ad span[class^="el"] {
-  font-size: 0.38rem;
-  line-height: 0.38rem;
-  height: 0.38rem;
+  font-size: 0.45rem;
+  line-height: 0.45rem;
+  height: 0.45rem;
   color: #666;
 }
 .modify-ad .modify-left .el-icon-remove-outline,
@@ -427,7 +465,7 @@ display: none;
   color: #2fab3b;
 }
 .modify-ad .modify-left {
-  font-size: 0.3rem;
+  font-size: 0.34rem;
   line-height: 0.38rem;
   color: #666;
 }
