@@ -155,6 +155,53 @@
     font-size: 16px;
     color:#000;
   }
+  .clause_wrod{
+    color:#2fab3b;
+    text-decoration: underline;
+  }
+  .clause_but_wrap{
+    padding-top:0.2rem;
+  }
+  .clause_wrap{
+    width:100%;
+    height:100vh;
+    position:absolute;
+    top:0px;
+    background-color:#666666;
+    opacity:0.8;
+    background: rgb(128,128,128,0.8);
+    z-index: 10;
+    padding-top:10vh;
+   /* background-color:#*/
+  }
+  .clause_content{
+    position:absolute;
+    top:10vh;
+    width:80%;
+    z-index: 20;
+   /* height:80vh;*/
+    background-color:#fff; 
+    left:50%;
+    margin-left:-40%;
+    border-radius: 10px;
+  }
+  .consent_but{
+     text-align: center;
+     line-height: 0.91rem;
+     border: 1px solid #2fab3b;
+     background-color: #2fab3b;
+     height:0.91rem;
+     border-radius:0px 0px 10px 10px;
+     color:#fff;
+     font-size: 20px;
+  }
+  .clause_content_wrod{
+    padding:0.4rem 0.3rem;
+    margin-bottom:1rem;
+  }
+  .el-checkbox{
+    margin:0.05rem 0.20rem 0px 0 !important;
+  }
 </style>
 <template>
    <div>
@@ -180,16 +227,20 @@
                <img src="">
              </p>
            </div>
-
+           <div class="clause_but_wrap">
+              <el-checkbox v-model="checked" @change="checkedChange" class="el-checkbox"></el-checkbox>
+              <span class="clause_wrod" @click="clauseClick">注册条款</span>
+           </div>
+           
            <p v-bind:class="{ 'green_but_box':isGreen, 'gray_but_box': !isGreen }" v-on:click="registerButton">
                注册
            </p>
 
 
-           <div class="footer">
+          <!--  <div class="footer">
                <p>注册即同意《注册条款》</p>
                <p>如不同意请停止注册</p>
-           </div>
+           </div> -->
 
          </div>
          
@@ -202,6 +253,16 @@
          
       </div>
      <!--  <personal-info v-if="registerState"></personal-info> -->
+     <!-- 条款弹层 -->
+       <div class="clause_wrap" v-if="clausePopupState"></div>
+       <div class="clause_content" v-if="clausePopupState">
+            <div class="clause_content_wrod">
+               4556456465454
+            </div>
+            <p class=" consent_but" @click="consentClick">
+               同意
+           </p>
+       </div>
    </div>
    
 </template>
@@ -215,6 +276,8 @@ import intercept from "../js/intercept.js";
     name:"Login",
     data() {
       return {
+          clausePopupState:false,
+          checked:true,//注册按钮状态
           complete:"", 
           readyState:false,
           // registerState:false,//页面切换状态
@@ -237,7 +300,7 @@ import intercept from "../js/intercept.js";
       //回车键
        document.onkeydown = (ev) => {
         if (ev.keyCode == 13) {
-          this.registerButton()
+          this.registerButton();
         }
       };
       //获取openid
@@ -266,10 +329,56 @@ import intercept from "../js/intercept.js";
           this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
-                  //页面显示
-                    this.readyState = true;
-                  //判断是否注册过
-                    this.complete =  response.data.result.complete;
+                  this.complete =  response.data.result.complete;
+                   var that = this;
+                   if(this.complete == 1){
+                     setTimeout(()=>{
+                          //解决进入空白问题
+                          that.$confirm('此账号已存在，无需重复注册！', '温馨提示', {
+                                        confirmButtonText: '确定',
+                                        showCancelButton:false,
+                                        customClass:"tsk",
+                                        type: 'warning',
+                                        showClose:false,
+                                        center: true
+                                }).then(() => {
+                                      // 进入空白页
+                                       WeixinJSBridge.call('closeWindow');
+                                }).catch(() => {
+                                      // 进入空白页
+                                    WeixinJSBridge.call('closeWindow');
+                                });
+                              return
+                           //页面显示
+                          // that.readyState = true;
+                     },1000);
+                   }else{
+                       //页面显示
+                      this.readyState = true;
+                   };
+                      // setTimeout(()=>{
+                      //       this.complete =  response.data.result.complete;
+                      //       if(this.complete == 1){
+                      //           this.$confirm('此账号已存在，无需重复注册！', '温馨提示', {
+                      //                   confirmButtonText: '确定',
+                      //                   showCancelButton:false,
+                      //                   customClass:"tsk",
+                      //                   type: 'warning',
+                      //                   showClose:false,
+                      //                   center: true
+                      //           }).then(() => {
+                      //                 // 进入空白页
+                      //                  WeixinJSBridge.call('closeWindow');
+                      //           }).catch(() => {
+                      //                 // 进入空白页
+                      //               WeixinJSBridge.call('closeWindow');
+                      //           });
+                      //         return
+                      //       };
+                      //       //页面显示
+                      //       this.readyState = true;
+                      // },1000)
+                    
                     console.log(response.data.result.complete,"是否注册成功！")
                     if(response.data.result.phone){
                        this.phoneNum = response.data.result.phone;//电话号
@@ -297,7 +406,7 @@ import intercept from "../js/intercept.js";
                    // this.invitationCode = response.data.result.qcode; 
                    // this.interceptPage(response.data.result.step);
 
-                }
+                };
                 console.log(response,33333)
             }, err => {
 
@@ -310,6 +419,21 @@ import intercept from "../js/intercept.js";
               //     type: 'error'
               //   });
             });
+       },
+       //同意条按钮
+       consentClick(){
+          this.clausePopupState = false;
+          this.checked = true;
+       },
+       //查看注册条款
+       clauseClick(){
+          this.clausePopupState = true;
+       },
+       //注册条款
+       checkedChange(value){
+        this.checked = value;
+        this.setButGreen();
+        console.log(value,"注册条款的选择")
        },
        cancelBut(){
            $(".award").addClass("hide")
@@ -371,7 +495,7 @@ import intercept from "../js/intercept.js";
        //注册按钮变色
         setButGreen(){
           
-           if(this.phoneNumState && this.authCodeState){
+           if(this.phoneNumState && this.authCodeState && this.checked){
               this.isGreen = true;
            }else{
               this.isGreen = false;
@@ -501,7 +625,7 @@ import intercept from "../js/intercept.js";
         //注册按钮点击
         registerButton(e){
 
-  this.$router.push({path:'/personalInfo'});
+  //this.$router.push({path:'/personalInfo'});
 
           console.log(this.invitationCodeState,this.phoneNumState,this.authCodeState);
           console.log(this.invitationCode,this.phoneNum,this.authCode);
@@ -520,7 +644,7 @@ import intercept from "../js/intercept.js";
               });
                this.isGreen = false
               return
-           }
+           };
            if(!this.authCodeState){
                this.$message({
                 message: '请输入正确的验证码',
@@ -528,7 +652,15 @@ import intercept from "../js/intercept.js";
               });
                this.isGreen = false
               return
-           }
+           };
+           if(!this.checked){
+               this.$message({
+                message: '请勾选注册条款',
+                type: 'error'
+              });
+              this.isGreen = false
+              return
+           };
            // if(!this.invitationCodeState){
            //     this.$message({
            //      message: '请输入正确的邀请码',

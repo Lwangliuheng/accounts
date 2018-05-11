@@ -151,6 +151,24 @@ import axios from "axios";
           this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
+                    if(response.data.result.complete == 1){
+                        this.$confirm('此账号已存在，无需重复注册！', '温馨提示', {
+                                confirmButtonText: '确定',
+                                showCancelButton:false,
+                                customClass:"tsk",
+                                type: 'warning',
+                                showClose:false,
+                                center: true
+                        }).then(() => {
+                              // 进入空白页
+                             WeixinJSBridge.call('closeWindow');
+                        }).catch(() => {
+                             
+                              // 进入空白页
+                            WeixinJSBridge.call('closeWindow');
+                        });
+                      return
+                    };
                    this.$store.commit('setfirstTimeActive');
                    this.$store.commit('setcompanyActive',response.data.result);
                    console.log(response.data.result.qcode);

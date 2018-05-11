@@ -2,13 +2,14 @@
   <div class="watch-video" v-if="readyState">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
       <div class="video">
-        <video @click="pause" ref="video" id="video" controls @ended="end">
+        <video @click="pause" ref="video" id="video" controls @ended="end" x5-playsinline="" playsinline="" webkit-playsinline="">
             <source :src="videoUrl" type="video/mp4">
             您的手机暂不支持video标签，请升级系统
         </video>
         <img class="video-poster" v-show="!haveWatch" src="../images/videoPoster.png" alt="" srcset="" >
         <img class="video-btn" src="../images/videoBtn.png" v-show="!isPlaying" alt="" @click='play'>
       </div>
+
       <div class="btn" @click="beganSingle" :class="{active: isEnd}">开始接单<span></span></div>
   </div>
 </template>
@@ -28,6 +29,11 @@
       }
     },
     mounted() {
+      // video.addEventListener('ended', function() {
+      //                 //播放完毕，退出全屏
+      //       console.log(4)
+      //       this.webkitExitFullScreen();
+      //     }, false);
         this.videoUrl = "https://static.zhongchebaolian.com/message/survey/images/WeChat_20180301131800.mp4";
         this.getInfo();
         // alert(this.$refs.video)
@@ -98,13 +104,15 @@
                 this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: openid,step: '5',complete: '1'})
                 .then(res => {
                     if(res.data.rescode == 200){
-                       
+                        localStorage.setItem('complete',"1");
+                        console.log(localStorage.getItem('complete'))
                         this.$confirm('您已注册成功！', '温馨提示', {
                                 confirmButtonText: '确定',
                                 showCancelButton:false,
                                 customClass:"tsk",
                                 cancelButtonText: '取消',
                                 type: 'warning',
+                                showClose:false,
                                 center: true
                         }).then(() => {
                               // 进入空白页

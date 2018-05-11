@@ -91,8 +91,8 @@ axios.interceptors.response.use(
     
 
 //cs
-localStorage.setItem('openid',"oYqIewHK593VkLLuDtT1Axx2yaAM");
-
+//localStorage.setItem('openid',"oYqIewHK593VkLLuDtT1Axx2yaAM");
+//localStorage.setItem('complete',"1");
 
 Vue.config.productionTip = false;
 console.log(window.location.href.split("#")[1].split("?")[0],99999);
@@ -102,7 +102,7 @@ console.log(currentPathOne);
 console.log(currentPathTwo);
 //刚进入路径跳转
 if(localStorage.getItem('openid')){
-   if(currentPathOne !=　"/redPacket"){
+   if(currentPathOne !=　"/redPacket" ){
       if( currentPathTwo != "/caseList"){
           console.log("我有openid，也不是特殊页面！");
           //特殊页面不用判断进行到第几步
@@ -114,7 +114,7 @@ if(localStorage.getItem('openid')){
       if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
              //初次去除不需要获取openid的页面
             if(to.path != "/code" && to.path != "/caseList" && to.path != "/redPacket"){
-              // WXBaseAuthorize();
+               WXBaseAuthorize();
             };
       };
       //初次进入不执行，重定向后执行，进入code获取openid。

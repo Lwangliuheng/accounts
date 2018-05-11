@@ -317,8 +317,8 @@
     methods: {
        //获取基本信息
         getInfo(){
-           //var openid = localStorage.getItem('openid');
-           var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM";
+           var openid = localStorage.getItem('openid');
+           //var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM";
            var paramData = {
                 openid:openid
            }

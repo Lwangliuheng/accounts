@@ -374,10 +374,10 @@
        },
        //下一步
        registerButton(){
-
+           var openid = localStorage.getItem('openid');
           //this.$router.push({path:'/workRange'});
           var paramData = {
-                openid:"wlhabc",
+                openid:openid,
                 step:"2",
                 username:this.name,
                 cityCode:this.cityCode,

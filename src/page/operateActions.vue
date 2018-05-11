@@ -1,5 +1,5 @@
 <template>
-  <section class="operate-actions">
+  <section class="operate-actions" v-if="readyState">
       <div class="title"><img src="../images//registerSuccess.png" alt="">恭喜您，注册成功！</div>
       <div class="have-actions" v-if="haveActions">
         <div class="tips"><span>100元返现券</span>已发放到您的账户内，完成首单即可提现！</div>
@@ -19,9 +19,11 @@
 
 <script>
 export default {
-    name:"operateActions",
+  name:"operateActions",
   data () {
       return {
+          readyState:false,
+          complete:"",
           haveActions: false
       }
   },
@@ -29,12 +31,58 @@ export default {
     created () {
         if(this.$route.query.money) {
             this.haveActions = true;
-        }
+        };
+        this.getInfo();
     },
   methods: {
+     //获取基本信息
+        getInfo(){
+           var openid = localStorage.getItem('openid');
+           var paramData = {
+                openid:openid
+           }
+          this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
+            .then(response => {
+                if(response.data.rescode == 200){
+                    //页面显示
+                      this.readyState = true;
+                    //判断是否注册过
+                      this.complete =  response.data.result.complete;
+                    if(response.data.result.money){
+                         this.haveActions = true;
+                    }else{
+                         this.haveActions = false;
+                    };
+                    
+                    
+                }
+                console.log(response,33333)
+            }, err => {
+              this.haveActions = false;
+              console.log(err);
 
+            })
+            .catch((error) => {
+              this.haveActions = false;
+              // this.$message({
+              //     message: '短信验证码发送失败',
+              //     type: 'error'
+              //   });
+            });
+          },
+      //去学习按钮
       toLearn () {
+         
+         if(this.complete == 1){
 
+            this.$message({
+              showClose: true,
+              message: '此账号已被注册！',
+              type: 'success'
+            });
+
+           return
+        };
         var openid = localStorage.getItem('openid');
         console.log(openid)
         var paramData = {

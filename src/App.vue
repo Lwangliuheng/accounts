@@ -12,8 +12,15 @@ export default {
 </script>
 
 <style>
+   /* .el-checkbox{
+    	margin:0.05rem 0.20rem 0px 0 !important;
+    }*/
+   /* .el-checkbox__inner{
+    	width:0.3rem !important;
+    	height:0.3rem !important;
+    }*/
 	.tsk{
-	    width:80%;
+	    width:80% !important;
 	  }
     #app{
    	  font-size:12px;
