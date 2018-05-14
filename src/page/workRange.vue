@@ -241,7 +241,12 @@ export default {
 
     // 修改
     modifyRange(index) {
+        // 如果上面的没有确定，点击增加全部确定
+        this.list.forEach( item => {
+            item.isModify = false
+        });
         this.list[index].isModify = true;
+        this.lookAddressLocation(index);        
     },
 
     // 删除一条
@@ -306,7 +311,7 @@ export default {
 
                         // 如果是最后一个，定为中心
                         if(index == array.length-1){
-                            let center = that.list[index];
+                            let center = that.list[currentIndex];
                             let centerPoint = new BMap.Point(center.lng,center.lat);
                             map.centerAndZoom(centerPoint,13);
                         }
