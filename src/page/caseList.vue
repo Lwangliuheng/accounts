@@ -169,7 +169,7 @@
                   </div>
                   <div class="order-word-wrap">
                     <img class="word-img left" src="../images/circle.png">
-                    <span class="order-word left">要求{{item.estimateArrivalTime}}到达</span>
+                    <span class="order-word left">要求{{item.arrivalTime}}到达</span>
                   </div>
                   <div class="order-word-wrap order-word-wrap-te">
                     <img class="word-img left word-img-te" src="../images/site.png">
