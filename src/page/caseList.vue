@@ -302,10 +302,12 @@
                       }else{
                           this.fullscreenLoading = false;
                           this.$confirm('您已有存在订单，请前往App完成查勘任务！', '温馨提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning',
-                            center: true
+                             confirmButtonText: '确定',
+                             showCancelButton:false,
+                             customClass:"tsk",
+                             type: 'warning',
+                             showClose:false,
+                             center: true
                           }).then(() => {
                              WeixinJSBridge.call('closeWindow');
                           }).catch(() => {

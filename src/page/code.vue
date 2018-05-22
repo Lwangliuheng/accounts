@@ -26,6 +26,7 @@ import axios from "axios";
 
     },
     mounted() {
+       //alert(1111)
        this.getCode();
     },
     computed:{
@@ -39,6 +40,7 @@ import axios from "axios";
       getCode(){
       
         var code = this.$route.query.code;
+        //alert(code);
         var code = window.location.href.split("?")[1].split("&")[0].split("=")[1];
         console.log(code,"我是code")
         this.code = code;
@@ -49,16 +51,16 @@ import axios from "axios";
         };
         console.log(localStorage.getItem('openid'),"getCode")
         console.log(localStorage.getItem('openid') == "undefined")
-        if(localStorage.getItem('openid') != "undefined" && localStorage.getItem('openid') != null){
-           console.log("本地已经保存openID")
-           var openid = localStorage.getItem('openid');
-           this.$store.commit('setopenidActive',openid);
-            //判断用户信息
-           console.log(this.$store.state.maiden,"1111进入");
-            //判断第几步并获取基本信息
-           this.getInfo();
-           return
-        };
+        // if(localStorage.getItem('openid') != "undefined" && localStorage.getItem('openid') != null){
+        //    console.log("本地已经保存openID")
+        //    var openid = localStorage.getItem('openid');
+        //    this.$store.commit('setopenidActive',openid);
+        //     //判断用户信息
+        //    console.log(this.$store.state.maiden,"1111进入");
+        //     //判断第几步并获取基本信息
+        //    this.getInfo();
+        //    return
+        // };
         // if(localStorage.getItem('openid') != null){
         //    console.log("本地已经保存openID")
         //    var openid = localStorage.getItem('openid');
@@ -72,6 +74,7 @@ import axios from "axios";
         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/getOpenId",paramData)
             .then(response => {
                   var openid = response.data.openid;
+                  //alert(openid)
                   console.log(response.data,"openid5466645654654656");
                   //localStorage.setItem('openid',"safafasfd98879879safd");
                   localStorage.setItem('openid',response.data.openid);
@@ -116,7 +119,7 @@ import axios from "axios";
         console.log(type);
         console.log(type == 4);   
            if(type == 0){
-              this.$router.push({path:'/'});
+              this.$router.push({path:'/login'});
            }
            // if(type == 1){
            //    this.$router.push({path:'/'});

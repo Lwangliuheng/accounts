@@ -127,7 +127,7 @@
        }
      },1000)
       //获取红包信息
-      this.getRedPacket();
+      //this.getRedPacket();
     },
     computed:{
      

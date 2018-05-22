@@ -1,13 +1,88 @@
 <template>
   <div id="app">
 
-  <router-view/>
+  <router-view v-if="readyState"/>
   </div>
 </template>
 
 <script>
+import intercept from "./js/intercept.js"
 export default {
-  name: 'app'
+	  name: 'app',
+	  data() {
+	      return {
+	          readyState:false
+	      }
+	   },
+	 created(){
+	      //alert("app")
+	    },
+	 mounted() {
+	 	var openid = localStorage.getItem('openid');
+        if(openid){
+        	this.getInfo();
+        }else{
+        	this.readyState = true;
+        };
+	  },
+	methods: {
+      //获取基本信息
+       getInfo(){
+          var openid = localStorage.getItem('openid');
+          console.log("register",openid)
+          var paramData = {
+               openid:openid
+          }
+          ///public-surveyor-api-boot
+         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
+           .then(response => {
+               if(response.data.rescode == 200){
+                 this.complete =  response.data.result.complete;
+                  var that = this;
+                  if(this.complete == 1){
+                    setTimeout(()=>{
+                         //解决进入空白问题
+                         that.$confirm('此账号已存在，无需重复注册！', '温馨提示', {
+                                       confirmButtonText: '确定',
+                                       showCancelButton:false,
+                                       customClass:"tsk",
+                                       type: 'warning',
+                                       showClose:false,
+                                       center: true
+                               }).then(() => {
+                                     // 进入空白页
+                                      localStorage.setItem('openid',"");
+                                      WeixinJSBridge.call('closeWindow');
+                               }).catch(() => {
+                                     // 进入空白页
+                                   WeixinJSBridge.call('closeWindow');
+                               });
+                             return
+                          //页面显示
+                         // that.readyState = true;
+                    },1000);
+                  }else{
+                      //页面显示
+                     this.readyState = true;
+                     intercept.interceptPage(response.data.result.step,this.$router);
+                     
+                  };
+                  
+               };
+               console.log(response,33333)
+           }, err => {
+
+             console.log(err);
+
+           })
+           .catch((error) => {
+             // this.$message({
+             //     message: '短信验证码发送失败',
+             //     type: 'error'
+             //   });
+           });
+      },
+	}
 }
 </script>
 

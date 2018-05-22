@@ -16,7 +16,7 @@ import personalInfo from "@/page/personalInfo";
 import Code from "@/page/code";
 import caseList from "@/page/caseList";
 import redPacket from "@/page/redPacket";
-
+import home from "@/page/home";
 Vue.use(Router);
 
 export default new Router({
@@ -63,9 +63,14 @@ export default new Router({
       path: "/home",
       component: personalCenter
     },
-    //1登录页
+    //1首页
     {
       path: '/',
+      component: home
+    },
+     //1登录页
+    {
+      path: '/login',
       component: login
     },
     //账单页

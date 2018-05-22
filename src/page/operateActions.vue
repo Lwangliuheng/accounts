@@ -93,7 +93,7 @@ export default {
           .then(response => {
 
             if(response.data.rescode == 200){
-
+            localStorage.setItem('step',4);
              this.$router.push('/learn');
               //console.log(response.result,"城市返回数据");
         

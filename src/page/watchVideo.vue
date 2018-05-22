@@ -104,13 +104,14 @@
                 this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: openid,step: '5',complete: '1'})
                 .then(res => {
                     if(res.data.rescode == 200){
+                        localStorage.setItem('step',5);
                         localStorage.setItem('complete',"1");
-                        console.log(localStorage.getItem('complete'))
+                        console.log(localStorage.getItem('complete'));
+                        this.readyState = false;
                         this.$confirm('您已注册成功！', '温馨提示', {
                                 confirmButtonText: '确定',
                                 showCancelButton:false,
                                 customClass:"tsk",
-                                cancelButtonText: '取消',
                                 type: 'warning',
                                 showClose:false,
                                 center: true

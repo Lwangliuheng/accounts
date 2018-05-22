@@ -267,7 +267,7 @@
    
 </template>
 <script>
-import intercept from "../js/intercept.js";
+//import intercept from "../js/intercept.js";
   // import personalInfo from '../components/personalInfo'
   export default {
     components: {
@@ -303,6 +303,20 @@ import intercept from "../js/intercept.js";
           this.registerButton();
         }
       };
+      // console.log(1111111111111)
+      // var step = localStorage.getItem('step');
+      //  if(localStorage.getItem('step') == "undefined" || localStorage.getItem('step') == null){
+      //     this.getInfo();
+      //  }else{
+      //    if(step != 0 && step != 5){
+      //        console.log("login");
+      //        //intercept.interceptPage(step,this.$router);  
+      //    }else{
+      //      console.log("login111111")
+      //       this.getInfo();
+      //    };
+      //  }
+      
       //获取openid
       //alert(33333)
       //this.getCode();
@@ -356,29 +370,6 @@ import intercept from "../js/intercept.js";
                        //页面显示
                       this.readyState = true;
                    };
-                      // setTimeout(()=>{
-                      //       this.complete =  response.data.result.complete;
-                      //       if(this.complete == 1){
-                      //           this.$confirm('此账号已存在，无需重复注册！', '温馨提示', {
-                      //                   confirmButtonText: '确定',
-                      //                   showCancelButton:false,
-                      //                   customClass:"tsk",
-                      //                   type: 'warning',
-                      //                   showClose:false,
-                      //                   center: true
-                      //           }).then(() => {
-                      //                 // 进入空白页
-                      //                  WeixinJSBridge.call('closeWindow');
-                      //           }).catch(() => {
-                      //                 // 进入空白页
-                      //               WeixinJSBridge.call('closeWindow');
-                      //           });
-                      //         return
-                      //       };
-                      //       //页面显示
-                      //       this.readyState = true;
-                      // },1000)
-                    
                     console.log(response.data.result.complete,"是否注册成功！")
                     if(response.data.result.phone){
                        this.phoneNum = response.data.result.phone;//电话号
@@ -401,11 +392,6 @@ import intercept from "../js/intercept.js";
                        this.invitationCode = "";//邀请吗
                        this.invitationCodeState = false;
                     };
-                   // this.$store.commit('setcompanyActive',response.data.result);
-                   // console.log(response.data.result.qcode);
-                   // this.invitationCode = response.data.result.qcode; 
-                   // this.interceptPage(response.data.result.step);
-
                 };
                 console.log(response,33333)
             }, err => {
@@ -606,7 +592,7 @@ import intercept from "../js/intercept.js";
             .then(response => {
 
               if(response.data.rescode == 200){
-
+               localStorage.setItem('step',1);
                this.$router.push({path:'/personalInfo'});
                 //console.log(response.result,"城市返回数据");
     
