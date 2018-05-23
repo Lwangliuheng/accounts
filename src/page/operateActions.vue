@@ -29,9 +29,6 @@ export default {
   },
 
     created () {
-        if(this.$route.query.money) {
-            this.haveActions = true;
-        };
         this.getInfo();
     },
   methods: {
@@ -48,27 +45,18 @@ export default {
                       this.readyState = true;
                     //判断是否注册过
                       this.complete =  response.data.result.complete;
-                    if(response.data.result.money){
-                         this.haveActions = true;
-                    }else{
-                         this.haveActions = false;
-                    };
+                    // if(response.data.result.money){
+                    //      this.haveActions = true;
+                    // }else{
+                    //      this.haveActions = false;
+                    // };
                     
                     
                 }
-                console.log(response,33333)
             }, err => {
               this.haveActions = false;
               console.log(err);
-
             })
-            .catch((error) => {
-              this.haveActions = false;
-              // this.$message({
-              //     message: '短信验证码发送失败',
-              //     type: 'error'
-              //   });
-            });
           },
       //去学习按钮
       toLearn () {

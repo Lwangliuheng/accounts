@@ -187,7 +187,9 @@
                 console.log(r);
                 var data = {
                   currentAddress:r.address.city+r.address.district+r.address.street+r.address.street_number,
-                  currentPoint:r.point
+                  currentPoint:r.point,
+                  currentCity: r.address.city,
+                  currentCode: r.address.city_code
                 };
                 that.$store.commit('setThreeActive',data)
                 that.cityName = r.address.city;

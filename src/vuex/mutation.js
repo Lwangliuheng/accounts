@@ -23,6 +23,8 @@ const mutation = {
   setThreeActive(state,data){
      state.currentAddress = data.currentAddress;
      state.currentPoint = data.currentPoint;
+     state.currentCity = data.currentCity;
+     state.currentCode = data.currentCode;
   },
    setfirstTimeActive(state){
      state.firstTime = true;
