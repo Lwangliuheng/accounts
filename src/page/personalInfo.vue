@@ -507,7 +507,7 @@
             .then(response => {
 
               if(response.data.rescode == 200){
-
+                localStorage.setItem('step',2);
                 console.log(response.data.result,"城市返回数据");
                 this.$router.push({path:'/workRange'});
 

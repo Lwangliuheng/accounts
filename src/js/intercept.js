@@ -1,11 +1,9 @@
 import axios from 'axios'
-import router from '../router'
 import store from '../vuex/index'
 import ElementUI from "element-ui";
 export default {
-      interceptPage(type,routerCallback){
+      interceptPage(type,router){
         console.log(type);
-        console.log(type == 4);
            if(type == 0){
               router.push({path:'/'});
            }
@@ -25,19 +23,16 @@ export default {
                 localStorage.setItem('complete',1);
                 router.push({path:'/'});
            }
-            routerCallback();
-           // if(type == 6){
-           //      router.push({path:'/personalInfo'});
-           // }
           
        },
-       getInfo(routerCallback){
+       getInfo(){
            var complete = localStorage.getItem('complete');
            var openid = localStorage.getItem('openid');
            console.log(complete,"是否完成")
            //解决异步坑
            if(complete == 1){
-             this.interceptPage(5,routerCallback);
+             localStorage.setItem('step',5);
+             //this.interceptPage(5,routerCallback);
              return
            };
            //var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM"
@@ -50,7 +45,8 @@ export default {
             .then(response => {
                 if(response.data.rescode == 200){
                    store.commit('setfirstTimeActive');
-                   this.interceptPage(response.data.result.step,routerCallback);
+                   localStorage.setItem('step',response.data.result.step);
+                   //this.interceptPage(response.data.result.step,routerCallback);
 
                 }
                 console.log(response,33333)

@@ -13,7 +13,7 @@ import "viewerjs/dist/viewer.css";
 
 import {WXBaseAuthorize} from "@/js/wechat.js";
 //判断type进行页面的跳转
-import intercept from "@/js/intercept.js";
+//import intercept from "@/js/intercept.js";
 //引入rem布局
 import "../accident/static/js/rem.js";
 Vue.prototype.ajaxUrl = "/public-surveyor-api-boot";
@@ -81,56 +81,40 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-
-  // window.addEventListener("popstate", function(e) { 
-  //     history.go(-1);
-  //     alert(666666)
-  // }, false); 
-   
-    
-
+//alert("min");
 //cs
 //localStorage.setItem('openid',"oYqIewHK593VkLLuDtT1Axx2yaAM");
 //localStorage.setItem('complete',"1");
 
 Vue.config.productionTip = false;
+
 console.log(window.location.href.split("#")[1].split("?")[0],99999);
 var currentPathOne =  window.location.href.split("#")[1];
 var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
 console.log(currentPathOne);
 console.log(currentPathTwo);
+//alert(localStorage.setItem('openid',""))
 //刚进入路径跳转
 if(localStorage.getItem('openid')){
    if(currentPathOne !=　"/redPacket" ){
       if( currentPathTwo != "/caseList"){
           console.log("我有openid，也不是特殊页面！");
           //特殊页面不用判断进行到第几步
-          intercept.getInfo(routerCallback);
+          //intercept.getInfo();
       }
    };  
 }else{
-    router.beforeEach((to, from, next) => {
-      if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
-             //初次去除不需要获取openid的页面
-            if(to.path != "/code" && to.path != "/caseList" && to.path != "/redPacket"){
-               WXBaseAuthorize();
-            };
-      };
-      //初次进入不执行，重定向后执行，进入code获取openid。
-      ///localStorage.setItem('openid',"oYqIewHK593VkLLuDtT1Axx2yaAM")
-      next();
-      
-    });
-};
-
- function routerCallback(){
-   router.beforeEach((to, from, next) => {
-    //alert(666666)
-     next();
+  console.log("没有openid");
+  if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
      
-   });
- }
+       if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code"){
+          if( currentPathTwo != "/caseList"){
+            console.log("没有openid回调！");
+                WXBaseAuthorize();
+          }
+       };  
+  };
+};
 
  
 //备份路由拦截

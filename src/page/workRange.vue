@@ -217,7 +217,7 @@ export default {
         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",data)
         .then(res => {
             if(res.data.rescode == 200){
-                // res.data.result.money ? this.$router.push({ path: "/operateActions",query: {money: res.data.result.money } }) : this.$router.push({ path: "/operateActions"})
+              localStorage.setItem('step',3);
                 this.$router.push({ path: "/operateActions"})
             }else{
                 console.log(response)
