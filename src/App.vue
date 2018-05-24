@@ -18,12 +18,21 @@ export default {
 	      //alert("app")
 	    },
 	 mounted() {
+	 	//获取路径进行拦截
+	 	var currentPathOne =  window.location.href.split("#")[1];
+        var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
+        console.log(currentPathOne)
 	 	var openid = localStorage.getItem('openid');
         if(openid){
-        	this.getInfo();
-        }else{
-        	this.readyState = true;
+          if(currentPathOne !=　"/redPacket" ){
+        	   if(currentPathTwo != "/caseList"){
+        	      this.getInfo();
+        	      return
+        	   }
+        	}  
         };
+
+        this.readyState = true;
 	  },
 	methods: {
       //获取基本信息
@@ -94,6 +103,23 @@ export default {
     	width:0.3rem !important;
     	height:0.3rem !important;
     }*/
+    .career_wrap{
+    	 min-width: 100px !important;
+    	/*position:fixed !important;
+    	top:0rem !important;
+        left: 4.0rem !important;*/
+    }
+    .el-input--suffix .el-input__inner{
+    	padding-right:0.6rem;
+         border:none;
+    }
+    .el-input__inner{
+    	text-align: right;
+    }
+    .el-select{
+    	margin-right: 0px;
+    	margin-left: 0px; 
+    }
 	.tsk{
 	    width:80% !important;
 	  }

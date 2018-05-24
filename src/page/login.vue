@@ -130,7 +130,7 @@
     color:#6d6163;
    /* width:20px;
     height:20px;*/
-    border:1px solid #6d6163;
+   /* border:1px solid #6d6163;*/
     border-radius: 50%;
   }
   .register_top_img{
@@ -391,6 +391,15 @@
                     }else{
                        this.invitationCode = "";//邀请吗
                        this.invitationCodeState = false;
+                       //获取二维码进来的邀请码
+                       // if(localStorage.getItem('authCode')){
+                       //   this.invitationCode = localStorage.getItem('authCode');//邀请吗
+                       //   this.invitationCodeState = true;
+                       // }else{
+                       //    this.invitationCode = "";//邀请吗
+                       //    this.invitationCodeState = false;
+                       // }
+                       
                     };
                 };
                 console.log(response,33333)
@@ -597,6 +606,12 @@
                 //console.log(response.result,"城市返回数据");
     
 
+              }else{
+                this.$message({
+                   showClose: true,
+                   message: response.data.resdes,
+                   type: 'error'
+                 });
               }
             }, err => {
               console.log(err);

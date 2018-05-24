@@ -224,6 +224,8 @@
       
     },
     mounted() {
+      
+      //alert(this.$route.path)
       //优化苹果手机进入首页问题
       this.getInfo();
       // var step = localStorage.getItem('step');

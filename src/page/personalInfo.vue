@@ -6,7 +6,7 @@
     
    }
    .register_content{
-    padding-top:1.5rem;
+    padding-top:0.5rem;
     margin:0 auto;
     width:6.35rem;
    }
@@ -148,6 +148,7 @@
   .city_name{
     text-align:right;
     width:3rem;
+    line-height: 40px !important;
     color:#343434;
   }
   .name_input{
@@ -191,6 +192,7 @@
     height:1.86rem;
     display: block;
   }
+  
 </style>
 <template>
   <div>
@@ -210,14 +212,14 @@
 <!--           <img class="register_top_img" src="../images/headPortrait1.png" v-on:click="imgChange">
           <p class="top_wrod">请按照示例图上传大头照</p> -->
         </div>
-        <p class="input_box">
+        <div class="input_box">
          <div class="city_input">
             <p class="city_title left">姓名</p>
             <p class="city_name right">
                 <input type="text" name="" :value="name" @input="nameInput" v-on:blur="nameChange" maxlength="4" class="name_input" placeholder="请输入姓名">
             </p>
           </div>
-        </p>
+        </div>
         <div class="input_box" v-on:click="selectCity">
           <div class="city_input" >
             <p class="city_title left">所在城市</p>
@@ -234,7 +236,21 @@
             </p>
           </div>
         </div>
-
+        <div class="input_box">
+         <div class="city_input">
+            <p class="city_title left">职业</p>
+            <p class="city_name right">
+               <el-select v-model="optionsValue" placeholder="请选择" popper-class="career_wrap" @change="careerChange">
+                 <el-option
+                   v-for="item in options"
+                   :key="item.code"
+                   :label="item.name"
+                   :value="item.code">
+                 </el-option>
+               </el-select>
+            </p>
+          </div>
+        </div>
         <p v-bind:class="{ 'green_but_box':isGreen, 'gray_but_box': !isGreen }" v-on:click="registerButton">
             下一步
         </p>
@@ -257,6 +273,38 @@
     name:"personalInfo",
     data() {
       return {
+        careerCode:"",
+        careerName:"",
+        careerStatus:false,
+          options:[{
+          code: '1',
+          name: '黄金糕'
+        }, {
+          code: '2',
+          name: '双皮奶'
+        }, {
+          code: '3',
+          name: '蚵仔煎'
+        }, {
+          code: '4',
+          name: '龙须面'
+        }, {
+          code: '5',
+          name: '北京烤鸭'
+        },{
+          code: '6',
+          name: '黄金糕'
+        },{
+          code: '7',
+          name: '黄金糕'
+        },{
+          code: '8',
+          name: '黄金糕'
+        },{
+          code: '9',
+          name: '黄金糕'
+        }],
+          optionsValue:"",
           complete:"", 
           readyState:false,//页面显示状态
           action:this.ajaxUrl + "/public/file/v1/uploadImage",
@@ -290,6 +338,8 @@
       };
       //获取基本信息
       this.getInfo();
+      //获取职业列表
+      this.getDicts();
        // setTimeout(() => {
        //    this.$store.commit('setSurveyNoActive',"改变后")
        //  }, 1000)
@@ -364,6 +414,17 @@
                       this.imageUrl = "";
                       this.imgState = false;
                     }
+                    //职业
+                    if(response.data.result.type){//用户名
+                        this.careerCode = type;
+                        this.careerName = this.typeName;
+                        this.optionsValue = type;
+                        this.careerStatus = true;
+                    }else{
+                        this.careerCode = "";
+                        this.careerName = "";
+                        this.careerStatus = false;
+                    };
                    // this.$store.commit('setcompanyActive',response.data.result);
                    // console.log(response.data.result.qcode);
                    // this.invitationCode = response.data.result.qcode; 
@@ -383,9 +444,52 @@
               //   });
             });
        },
-         //下一步按钮变色
+       getDicts(){
+           var paramData = {
+                type:"vocation"
+           }
+          this.$ajax.post(this.ajaxUrl+"/public/dict/v1/getDicts",paramData)
+            .then(response => {
+                if(response.status == 200){
+                   this.options = response.data.dicts;
+                }
+                console.log(this.options,666666)
+                console.log(response,444444)
+            }, err => {
+
+              console.log(err);
+
+            })
+            .catch((error) => {
+              
+            });
+       },
+       //职业实时校验
+       //获取careerName
+       getCareerName(code){
+          var compareCode = "";
+         if(this.options.length > 0){
+         
+              this.options.forEach((item) => {
+                 compareCode = item.code;
+                 if(compareCode == code){
+                     this.careerName = item.name;
+                 }
+              });
+        
+         };
+         console.log(this.careerCode,this.careerName)
+           
+       },
+       careerChange(code){
+          this.careerCode = code;
+          this.getCareerName(code);
+          this.careerStatus = true;
+          this.setButGreen();
+       },
+       //下一步按钮变色
        setButGreen(){
-           if(this.imgState && this.nameState && this.cityState ){
+           if(this.imgState && this.nameState && this.cityState && this.careerStatus){
               this.isGreen = true;
            }else{
               this.isGreen = false;
@@ -490,6 +594,14 @@
               this.isGreen = false
               return
            }
+           if(!this.careerStatus){
+              this.$message({
+                message: '请选择职业',
+                type: 'error'
+              });
+              this.isGreen = false
+              return
+           }
           var openid = localStorage.getItem('openid');
           var paramData = {
                 openid:openid,
@@ -501,7 +613,9 @@
                 companyCode:this.companyCode,
                 logo:this.imgeUrlLine,//传入后台返回线上链接
                 lat:this.lat,
-                lng:this.lng
+                lng:this.lng,
+                typeName:this.careerName,
+                type:this.careerCode
           }
           this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {

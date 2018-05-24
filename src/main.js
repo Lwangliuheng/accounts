@@ -83,7 +83,7 @@ axios.interceptors.response.use(
 );
 //alert("min");
 //cs
-//localStorage.setItem('openid',"oYqIewHK593VkLLuDtT1Axx2yaAM");
+//localStorage.setItem('openid',"12345566");
 //localStorage.setItem('complete',"1");
 
 Vue.config.productionTip = false;
@@ -91,8 +91,15 @@ Vue.config.productionTip = false;
 console.log(window.location.href.split("#")[1].split("?")[0],99999);
 var currentPathOne =  window.location.href.split("#")[1];
 var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
-console.log(currentPathOne);
-console.log(currentPathTwo);
+console.log(currentPathOne,1);
+console.log(currentPathTwo,2);
+//进入页扫二维码进入
+// var currentPathThree =  window.location.href.split("?")[1];
+// if(currentPathThree){
+//   var authCode = window.location.href.split("?")[1].split("=")[1];
+//   console.log(authCode);
+//   localStorage.setItem('authCode',authCode);
+// }
 //alert(localStorage.setItem('openid',""))
 //刚进入路径跳转
 if(localStorage.getItem('openid')){

@@ -126,6 +126,7 @@
          clearTimeout(this.timer);
        }
      },1000)
+     this.readyState = true;
       //获取红包信息
       //this.getRedPacket();
     },
