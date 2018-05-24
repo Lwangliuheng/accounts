@@ -53,12 +53,16 @@ export default {
               lng: '',
               lat: '',
               range: 3,
+              cityName: '',
+              cityCode: '',
               isModify: true,
           }
       ],
       canAdd: true,
       currentAddress: '',
       currentPoint: '',
+      currentCity: '',
+      currentCode: '',
       tempSearchContent: ''
     };
   },
@@ -104,7 +108,9 @@ export default {
                             address: item.address,
                             lng: item.lng,
                             lat: item.lat,
-                            range: 3,
+                            cityName: item.cityName,
+                            cityCode: item.cityCode,
+                            range: item.length,
                             isModify: false, 
                         }
                     })
@@ -116,52 +122,66 @@ export default {
                         console.log(currentAddress,"地址已经保存过,并且有数据");
                         this.currentAddress = this.$store.state.currentAddress;
                         this.currentPoint = this.$store.state.currentPoint;
-                        return
-                    };
-                    var geolocation = new BMap.Geolocation();
-                    geolocation.getCurrentPosition(function(r){
-                        // console.log(r.point);
-                        // 获取当前位置信息
-                        that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
-                        that.currentPoint = r.point;
-                     
-                    },{enableHighAccuracy: true})
+                        this.currentCity = this.$store.state.currentCity;
+                        this.currentCode = this.$store.state.currentCode;
+                        // return
+                    }else {
+
+                        var geolocation = new BMap.Geolocation();
+                        geolocation.getCurrentPosition(function(r){
+                            // console.log('获取当前位置信息',r);
+                            // 获取当前位置信息
+                            that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
+                            that.currentPoint = r.point;
+                            that.currentCity = r.address.city;
+                            that.currentCode = r.address.city_code;
+                         
+                        },{enableHighAccuracy: true})
+                    }
                 }else {
                     // 获取当前位置
                     if(currentAddress){
                        console.log(currentAddress,"地址已经保存过,但没有数据");
                        this.currentAddress = this.$store.state.currentAddress;
                        this.currentPoint = this.$store.state.currentPoint;
+                        this.currentCity = this.$store.state.currentCity;
+                        this.currentCode = this.$store.state.currentCode;
+
                        this.list[0].address = this.currentAddress;
                        this.list[0].lng = this.currentPoint.lng;
                        this.list[0].lat = this.currentPoint.lat;
+                       this.list[0].cityName = this.currentCity;
+                       this.list[0].cityCode = this.currentCode;
                        
                        this.theSpot(this.currentPoint,3, 0);
-                        return
-                    };
-                    var geolocation = new BMap.Geolocation();
-                    geolocation.getCurrentPosition(function(r){
-                        // console.log(r.point);
-                        // 获取当前位置信息
-                        that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
-                        that.currentPoint = r.point;
-                
-                        that.list[0].address = that.currentAddress;
-                        that.list[0].lng = r.point.lng;
-                        that.list[0].lat = r.point.lat;
-                
-                        if(this.getStatus() == 0){
-                
-                            that.theSpot(r.point,3, 0);
-                        }else if(this.getStatus() == 2) {
-                            alert("请输入详细的位置信息");
-                        }else if(this.getStatus() == 8) {
-                            alert('请求超时，请检查网络');
-                        }
-                        else {
-                            alert('failed'+this.getStatus());
-                        }        
-                    },{enableHighAccuracy: true})
+                        // return
+                    }else {
+
+                        var geolocation = new BMap.Geolocation();
+                        geolocation.getCurrentPosition(function(r){
+                            // console.log(r.point);
+                            // 获取当前位置信息
+                            that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
+                            that.currentPoint = r.point;
+                            that.currentCity = r.address.city;
+                            that.currentCode = r.address.city_code;
+                    
+                            that.list[0].address = that.currentAddress;
+                            that.list[0].lng = r.point.lng;
+                            that.list[0].lat = r.point.lat;
+                            that.list[0].cityName = r.address.city;
+                            that.list[0].cityCode = r.address.city_code;
+    
+                            if(this.getStatus() == 0){
+                    
+                                that.theSpot(r.point,3, 0);
+                            }else if(this.getStatus() == 2) {
+                                alert("请输入详细的位置信息");
+                            }else {
+                                alert('failed'+this.getStatus());
+                            }        
+                        },{enableHighAccuracy: true})
+                    }
                 }
             }
         })
@@ -175,7 +195,7 @@ export default {
         if(!this.list.length) {
             return alert("请至少填写一个接单范围！");
         }
-        console.log(this.list)
+        // console.log(this.list)
         let data = {};
         if(this.checked) data.all = '1';
         else data.all = '0';
@@ -185,6 +205,8 @@ export default {
                 lng: item.lng,
                 lat: item.lat,
                 address: item.address,
+                cityName: item.cityName,
+                cityCode: item.cityCode,
                 length: item.range
             }
         })
@@ -196,7 +218,7 @@ export default {
         .then(res => {
             if(res.data.rescode == 200){
               localStorage.setItem('step',3);
-                res.data.result.money ? this.$router.push({ path: "/operateActions",query: {money: res.data.result.money } }) : this.$router.push({ path: "/operateActions"})
+                this.$router.push({ path: "/operateActions"})
             }else{
                 console.log(response)
             }
@@ -271,6 +293,8 @@ export default {
             address: this.currentAddress,
             lng: this.currentPoint.lng,
             lat: this.currentPoint.lat,
+            cityName: this.currentCity,
+            cityCode: this.currentCode,
             range: 3,
             isModify: true
         })
