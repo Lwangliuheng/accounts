@@ -24,14 +24,13 @@ export default {
         console.log(currentPathOne)
 	 	var openid = localStorage.getItem('openid');
         if(openid){
-          if(currentPathOne !=　"/redPacket" ){
+          if(currentPathOne !=　"/redPacket" && currentPathOne !=　"/caseDetail"){
         	   if(currentPathTwo != "/caseList"){
         	      this.getInfo();
         	      return
         	   }
         	}  
         };
-
         this.readyState = true;
 	  },
 	methods: {
