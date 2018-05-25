@@ -136,7 +136,7 @@ export default {
                             that.currentPoint = r.point;
                             that.currentCity = r.address.city;
                             that.currentCode = r.address.city_code;
-                         
+
                         },{enableHighAccuracy: true})
                     }
                 // 第一次创建执行以下
@@ -155,8 +155,9 @@ export default {
                        this.list[0].cityName = this.currentCity;
                        this.list[0].cityCode = this.currentCode;
                        
-                       this.theSpot(this.currentPoint,3, 0);
-                        // return
+                    //    this.theSpot(this.currentPoint,3, 0);
+                        this.lookAddressLocation(this.list.length-1);
+                    
                     }else {
 
                         var geolocation = new BMap.Geolocation();
@@ -176,7 +177,9 @@ export default {
     
                             if(this.getStatus() == 0){
                     
-                                that.theSpot(r.point,3, 0);
+                                // that.theSpot(r.point,3, 0);
+                                that.lookAddressLocation(this.list.length-1);
+                                
                             }else if(this.getStatus() == 2) {
                                 alert("请输入详细的位置信息");
                             }else {
@@ -211,13 +214,13 @@ export default {
             }
         })
         data.openid = localStorage.getItem('openid');;
-        data.step = 3;
+        data.step = 2;
         // console.log(data);
         // 调用接口
         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",data)
         .then(res => {
             if(res.data.rescode == 200){
-                localStorage.setItem('step',3);
+                localStorage.setItem('step',2);
                 this.$router.push({ path: "/operateActions"})
             }else{
                 console.log(response)
