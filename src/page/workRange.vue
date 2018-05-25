@@ -214,13 +214,13 @@ export default {
             }
         })
         data.openid = localStorage.getItem('openid');;
-        data.step = 2;
+        data.step = 3;
         // console.log(data);
         // 调用接口
         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",data)
         .then(res => {
             if(res.data.rescode == 200){
-                localStorage.setItem('step',2);
+                localStorage.setItem('step',3);
                 this.$router.push({ path: "/operateActions"})
             }else{
                 console.log(response)
