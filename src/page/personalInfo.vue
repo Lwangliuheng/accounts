@@ -148,7 +148,7 @@
   .city_name{
     text-align:right;
     width:3rem;
-    line-height: 40px !important;
+    line-height: 52px !important;
     color:#343434;
   }
   .name_input{
@@ -192,7 +192,38 @@
     height:1.86rem;
     display: block;
   }
-  
+  .city_name_select{
+    overflow: hidden;
+  }
+  .input_box_te{
+    position:relative;
+  }
+  .career_ul{
+    width:100%;
+    position:fixed;
+    max-height: 5rem;
+    overflow: scroll;
+    bottom:0px;
+    background-color: #fff;
+  }
+  .career_li{
+    border-bottom:2px solid rgb(239, 239, 239);
+    text-align: center;
+    font-size: 14px;
+    width:100%;
+    height:0.9rem;
+    line-height: 0.9rem;
+  }
+  .tc{
+    position:fixed;
+    top:0px;
+    width:100%;
+    height:100vh;
+    opacity:0.6;
+    background-color:#e1e1e1;
+
+   /* background: rgba(255, 255, 255, 0.5);*/
+  }
 </style>
 <template>
   <div>
@@ -236,10 +267,13 @@
             </p>
           </div>
         </div>
-        <div class="input_box">
-         <div class="city_input">
+        <div class="input_box input_box_te" >
+         <div class="city_input" v-on:click="openCareer">
             <p class="city_title left">职业</p>
-            <p class="city_name right">
+            <p class="city_name right city_name_te">{{careerName}}</p>
+            <p class="auth_code auth_code_te"> <img src="../images/RightOn.png" class="auth_code_img"> </p>
+           <!--  <div class="city_name right city_name_select">
+              
                <el-select v-model="optionsValue" placeholder="请选择" popper-class="career_wrap" @change="careerChange">
                  <el-option
                    v-for="item in options"
@@ -248,7 +282,7 @@
                    :value="item.code">
                  </el-option>
                </el-select>
-            </p>
+            </div> -->
           </div>
         </div>
         <p v-bind:class="{ 'green_but_box':isGreen, 'gray_but_box': !isGreen }" v-on:click="registerButton">
@@ -259,7 +293,10 @@
       </div>
 
       <city-module v-show="cityModuleState"></city-module>
-
+       <div class="tc" v-if="selectCareerStatue" @click="cancelLayer"></div>
+       <ul class="career_ul" v-if="selectCareerStatue">
+          <li class="career_li" v-for="item in options" @click="selectCareer($event,item.code,item.name)">{{item.name}}</li>
+        </ul>
    </div>
 </div>
 </template>
@@ -273,38 +310,11 @@
     name:"personalInfo",
     data() {
       return {
-        careerCode:"",
-        careerName:"",
-        careerStatus:false,
-          options:[{
-          code: '1',
-          name: '黄金糕'
-        }, {
-          code: '2',
-          name: '双皮奶'
-        }, {
-          code: '3',
-          name: '蚵仔煎'
-        }, {
-          code: '4',
-          name: '龙须面'
-        }, {
-          code: '5',
-          name: '北京烤鸭'
-        },{
-          code: '6',
-          name: '黄金糕'
-        },{
-          code: '7',
-          name: '黄金糕'
-        },{
-          code: '8',
-          name: '黄金糕'
-        },{
-          code: '9',
-          name: '黄金糕'
-        }],
-          optionsValue:"",
+          selectCareerStatue:false,//弹层状态
+          careerCode:"",
+          careerName:"",
+          careerStatus:false,//职业选择状态
+          options:[],//职业列表
           complete:"", 
           readyState:false,//页面显示状态
           action:this.ajaxUrl + "/public/file/v1/uploadImage",
@@ -365,6 +375,23 @@
 
     },
     methods: {
+      //职业选择
+      selectCareer(e,code,name){
+          this.careerCode = code;
+          this.careerName = name;
+          this.careerStatus = true;
+          this.setButGreen();
+
+          this.selectCareerStatue = !this.selectCareerStatue;
+      },
+      //关闭弹层
+      cancelLayer(){
+         this.selectCareerStatue = !this.selectCareerStatue;
+      },
+      //打开弹层
+      openCareer(e){
+        this.selectCareerStatue = !this.selectCareerStatue;
+      },
        //获取基本信息
         getInfo(){
            var openid = localStorage.getItem('openid');
@@ -418,7 +445,6 @@
                     if(response.data.result.type){//用户名
                         this.careerCode = type;
                         this.careerName = this.typeName;
-                        this.optionsValue = type;
                         this.careerStatus = true;
                     }else{
                         this.careerCode = "";
@@ -464,29 +490,9 @@
               
             });
        },
-       //职业实时校验
-       //获取careerName
-       getCareerName(code){
-          var compareCode = "";
-         if(this.options.length > 0){
-         
-              this.options.forEach((item) => {
-                 compareCode = item.code;
-                 if(compareCode == code){
-                     this.careerName = item.name;
-                 }
-              });
+       // careerChange(code){
         
-         };
-         console.log(this.careerCode,this.careerName)
-           
-       },
-       careerChange(code){
-          this.careerCode = code;
-          this.getCareerName(code);
-          this.careerStatus = true;
-          this.setButGreen();
-       },
+       // },
        //下一步按钮变色
        setButGreen(){
            if(this.imgState && this.nameState && this.cityState && this.careerStatus){

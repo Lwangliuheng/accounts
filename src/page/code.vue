@@ -144,6 +144,13 @@ import axios from "axios";
            // }
           
        },
+       //拦截我的任务页面
+       interceptVegetarian(){
+         var currentPathOne =  window.location.href.split("#")[1];
+         if(currentPathOne ==　"/caseDetail"){
+           this.$router.push({path:'/caseDetail'});
+         };
+       },
        //获取基本信息
         getInfo(){
            var openid = localStorage.getItem('openid');
@@ -177,6 +184,8 @@ import axios from "axios";
                    console.log(response.data.result.qcode);
                    this.invitationCode = response.data.result.qcode; 
                    console.log(response.data.result.step);
+                   //拦截我的任务页面
+                   this.interceptVegetarian();
                    this.interceptPage(response.data.result.step);
 
                 }

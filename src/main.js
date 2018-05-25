@@ -83,7 +83,7 @@ axios.interceptors.response.use(
 );
 //alert("min");
 //cs
-//localStorage.setItem('openid',"12345566");
+//localStorage.setItem('openid',"123455667765454666");
 //localStorage.setItem('complete',"1");
 
 Vue.config.productionTip = false;

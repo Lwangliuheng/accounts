@@ -17,6 +17,7 @@ import Code from "@/page/code";
 import caseList from "@/page/caseList";
 import redPacket from "@/page/redPacket";
 import home from "@/page/home";
+import caseDetails from "@/page/caseDetails";
 Vue.use(Router);
 
 export default new Router({
@@ -112,6 +113,11 @@ export default new Router({
     {
       path: "/redPacket",
       component: redPacket
+    },
+    //详情页
+    {
+      path: "/caseDetail",
+      component: caseDetails
     },
     //在线学习页
     {
