@@ -10,7 +10,7 @@
               <li v-for="(ls,index) in list" :key="index">
                   <h4 v-show="!ls.isModify" class="h4">{{ls.address}}</h4>
                   <div v-show="ls.isModify" class="modify-input">
-                    <input class="h4" type="text" v-model="ls.address" @change='imputChange(index)'>
+                    <input class="h4" type="text" v-model="ls.address">
                     <span class="el-icon-search" @click='lookAddressLocation(index)'></span>
                   </div>
                 <div class="modify-ad">
@@ -22,7 +22,7 @@
                     <div class="modify-right">
                         <span @click='confirmRange(index)' v-show='ls.isModify' class="el-icon-circle-check-outline"></span>
                         <span @click='modifyRange(index)' v-show='!ls.isModify' class="el-icon-edit-outline"></span>
-                        <span @click='deleteItem(index)' class="el-icon-delete"></span>
+                        <span @click='deleteItem(index)' class="el-icon-delete" v-show="list.length !== 1"></span>
                     </div>
                 </div>
               </li>
@@ -97,10 +97,10 @@ export default {
             }})
         .then( res => {
             console.log("后台获取到的数据",res.data.result)
-            if(res.data.rescode == 200) {
                 // 如果接收到的值 存有位置
+            if(res.data.rescode == 200) {
                 var currentAddress = this.$store.state.currentAddress;
-                console.log(currentAddress,"地址已经保存过1");
+                console.log("地址已经保存过1",currentAddress);
                 if(res.data.result.areas.length) {
                     if(res.data.result.areas.length == 3) that.canAdd = false;
                     this.list = res.data.result.areas.map( item => {
@@ -138,8 +138,9 @@ export default {
                          
                         },{enableHighAccuracy: true})
                     }
+                // 第一次创建执行以下
                 }else {
-                    // 获取当前位置
+                    // 如果前面获取了位置
                     if(currentAddress){
                        console.log(currentAddress,"地址已经保存过,但没有数据");
                        this.currentAddress = this.$store.state.currentAddress;
@@ -189,13 +190,11 @@ export default {
     },
     // 下一步
     nextStep(e) {
-    //   this.$router.push({ path: "/operateActions" });
-
-        // 判断是否至少存在一个位置
-        if(!this.list.length) {
-            return alert("请至少填写一个接单范围！");
+        // 如果有没有确定的
+        for (let i = 0; i < this.list.length; i++) {
+            if(this.list[i].isModify) return this.$message.error('请确认所有的接单范围！');
         }
-        // console.log(this.list)
+        // 所有的都确定范围额
         let data = {};
         if(this.checked) data.all = '1';
         else data.all = '0';
@@ -217,7 +216,7 @@ export default {
         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",data)
         .then(res => {
             if(res.data.rescode == 200){
-              localStorage.setItem('step',3);
+                localStorage.setItem('step',3);
                 this.$router.push({ path: "/operateActions"})
             }else{
                 console.log(response)
@@ -269,7 +268,7 @@ export default {
             item.isModify = false
         });
         this.list[index].isModify = true;
-        this.lookAddressLocation(index);        
+        this.lookAddressLocation(index);   
     },
 
     // 删除一条
@@ -309,56 +308,62 @@ export default {
 
     // 点击搜索按钮
     lookAddressLocation (currentIndex) {
-        
+
         const that = this;
         // 先清空所有
         map.clearOverlays();
         // 把当前修改项放在最后一位
-        if(this.list.length){
 
+        this.renderAds().then( res => {
+            // console.log(this.list[0])
             let arr = Array.from(this.list);
             arr.push(arr.splice(currentIndex,1)[0]);
-            
-            // 先渲染点
+
             arr.forEach( (item,index,array) => {
+                // 渲染所有点
+                let point = {
+                    lng: item.lng,
+                    lat: item.lat
+                };
+                this.theSpot(point,item.range);
+                // 如果是最后一个，定为中心
+                if(index == array.length-1){
+                    // let center = this.list[currentIndex];
+                    let centerPoint = new BMap.Point(item.lng,item.lat);
+                    map.centerAndZoom(centerPoint,13);
+                }
+            })
+        })
+    },
+
+    // promise
+    renderAds () {
+        return new Promise( (resolve,reject) => {
+            // 先渲染点
+            this.list.forEach( (item,index,array) => {
                 // 创建地址解析器实例    
                 var myGeo = new BMap.Geocoder();
                 // 将地址解析结果显示在地图上,并调整地图视野
                 myGeo.getPoint(item.address, function(point){
                     if (point) {
                         // 保存当前查询位置
-                        that.list[currentIndex].lng = point.lng;
-                        that.list[currentIndex].lat = point.lat;
-                        
-                        // 渲染所有点
-                        that.theSpot(point,item.range);
-                        
+                        item.lng = point.lng;
+                        item.lat = point.lat;
 
-                        // 如果是最后一个，定为中心
-                        if(index == array.length-1){
-                            let center = that.list[currentIndex];
-                            let centerPoint = new BMap.Point(center.lng,center.lat);
-                            map.centerAndZoom(centerPoint,13);
-                        }
+                        // 保存当前城市
+                        myGeo.getLocation(point, function(rs){
+                            item.cityName = rs.addressComponents.city;
+                            item.cityCode = '0'; // 获取不到，暂时随便传值
+                            resolve();
+                        })
+                        
                     }else{
-                        alert("您选择地址没有解析到结果!");
+                        this.$message.error("您选择地址没有解析到结果!");
+                        reject('您选择地址没有解析到结果');
                     }
                 });
             });
-            // 深拷贝位置列表
-
-
-            // map.panTo(centerPoint);
-
-        }
-
-    },
-
-    // 当输入框内容改变
-    imputChange (index) {
-        // console.log(this.list[index]);
-        // this.tempSearchContent = value;
-        // this.lookAddressLocation(index);
+        })
         
     }
   }
