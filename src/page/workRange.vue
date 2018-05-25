@@ -69,6 +69,11 @@ export default {
   },
 
   mounted() {
+    //在此调用api  
+    map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.40387397, 39.91488908);
+    map.centerAndZoom(point, 13);
+
      var that = this;
 
        setTimeout(function(){
@@ -80,10 +85,6 @@ export default {
   methods: {
     //画地图
     drawMap(){
-        //在此调用api  
-        map = new BMap.Map("allmap");
-        var point = new BMap.Point(116.40387397, 39.91488908);
-        map.centerAndZoom(point, 13);
 
         // 页面初始化 定位当前位置
         const that = this;
@@ -174,12 +175,19 @@ export default {
                             that.list[0].lat = r.point.lat;
                             that.list[0].cityName = r.address.city;
                             that.list[0].cityCode = r.address.city_code;
-    
                             if(this.getStatus() == 0){
                     
-                                // that.theSpot(r.point,3, 0);
-                                that.lookAddressLocation(this.list.length-1);
+                                // 先清空所有
+                                // map.clearOverlays();
+
+                                that.theSpot(r.point,3, 0);
+                                var point = new BMap.Point(r.point.lng,r.point.lat);
+                                // console.log("SSSsdas的士速递多多")
+                                map.centerAndZoom(point, 13);
                                 
+                                // setTimeout(function(){
+                                //     that.lookAddressLocation(0)
+                                // },2000)
                             }else if(this.getStatus() == 2) {
                                 alert("请输入详细的位置信息");
                             }else {
@@ -331,7 +339,6 @@ export default {
 
     // 点击搜索按钮
     lookAddressLocation (currentIndex) {
-
         const that = this;
         // 先清空所有
         map.clearOverlays();
@@ -352,6 +359,7 @@ export default {
                 // 如果是最后一个，定为中心
                 if(index == array.length-1){
                     // let center = this.list[currentIndex];
+                    alert('aaaaa')
                     let centerPoint = new BMap.Point(item.lng,item.lat);
                     map.centerAndZoom(centerPoint,13);
                 }
