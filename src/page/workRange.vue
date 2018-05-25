@@ -157,7 +157,9 @@ export default {
                        this.list[0].cityCode = this.currentCode;
                        
                     //    this.theSpot(this.currentPoint,3, 0);
-                        this.lookAddressLocation(this.list.length-1);
+                        that.theSpot(this.currentPoint,3, 0);
+                        var point = new BMap.Point(this.currentPoint.lng,this.currentPoint.lat);
+                        map.centerAndZoom(point, 13);
                     
                     }else {
 
@@ -182,7 +184,6 @@ export default {
 
                                 that.theSpot(r.point,3, 0);
                                 var point = new BMap.Point(r.point.lng,r.point.lat);
-                                // console.log("SSSsdas的士速递多多")
                                 map.centerAndZoom(point, 13);
                                 
                                 // setTimeout(function(){
