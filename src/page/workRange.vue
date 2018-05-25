@@ -190,9 +190,9 @@ export default {
                                 //     that.lookAddressLocation(0)
                                 // },2000)
                             }else if(this.getStatus() == 2) {
-                                alert("请输入详细的位置信息");
+                                that.$message.error("请输入详细的位置信息");
                             }else {
-                                alert('failed'+this.getStatus());
+                                 that.$message.error('failed'+this.getStatus());
                             }        
                         },{enableHighAccuracy: true})
                     }
@@ -360,7 +360,6 @@ export default {
                 // 如果是最后一个，定为中心
                 if(index == array.length-1){
                     // let center = this.list[currentIndex];
-                    alert('aaaaa')
                     let centerPoint = new BMap.Point(item.lng,item.lat);
                     map.centerAndZoom(centerPoint,13);
                 }
