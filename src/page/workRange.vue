@@ -47,6 +47,7 @@ export default {
       checked: false,
       loading: true,
       haveTip: true,
+      unknownAdIndex: 0, // 地址解析失败位置
       list: [
           {
               address: '',
@@ -81,8 +82,8 @@ export default {
     drawMap(){
         //在此调用api  
         map = new BMap.Map("allmap");
-        var point = new BMap.Point(116.404, 39.915);
-        map.centerAndZoom(point, 11);
+        var point = new BMap.Point(116.40387397, 39.91488908);
+        map.centerAndZoom(point, 13);
 
         // 页面初始化 定位当前位置
         const that = this;
@@ -160,7 +161,7 @@ export default {
 
                         var geolocation = new BMap.Geolocation();
                         geolocation.getCurrentPosition(function(r){
-                            // console.log(r.point);
+                            console.log('获取当前位置信息',r.point);
                             // 获取当前位置信息
                             that.currentAddress = r.address.city+r.address.district+r.address.street+r.address.street_number;
                             that.currentPoint = r.point;
@@ -239,6 +240,11 @@ export default {
 
     // 增加范围
     add (index) {
+        // 如果有地址
+        console.log(index)
+        if(this.unknownAdIndex == (index+1)){
+            return;
+        }
         this.list[index].range == 6 ? this.list[index].range : this.list[index].range++;
         console.log(this.list);
         // 重新渲染
@@ -247,6 +253,9 @@ export default {
 
     // 减小范围
     reduce (index) {
+        if(this.unknownAdIndex == (index+1)){
+            return;
+        }
         this.list[index].range == 3 ? this.list[index].range : this.list[index].range--;
         // 重新渲染
         this.lookAddressLocation(index);
@@ -255,6 +264,9 @@ export default {
 
     // 确认修改
     confirmRange(index) {
+        if(this.unknownAdIndex == (index+1)){
+            return this.$message.error("您输入的地址没有解析到结果!");
+        }
         this.list[index].isModify = false;
 
         // 重新渲染
@@ -263,6 +275,7 @@ export default {
 
     // 修改
     modifyRange(index) {
+        
         // 如果上面的没有确定，点击增加全部确定
         this.list.forEach( item => {
             item.isModify = false
@@ -273,6 +286,9 @@ export default {
 
     // 删除一条
     deleteItem(index) {
+        if(this.unknownAdIndex == (index+1)){
+            this.unknownAdIndex = 0;
+        }
         this.canAdd = true;
         this.list.splice(index,1);
         this.checked = false;
@@ -282,28 +298,32 @@ export default {
 
     // 添加一条地址
     addList () {
-
-        // 如果上面的没有确定，点击增加全部确定
-        this.list.forEach( item => {
-            item.isModify = false
-        });
-        // 增加新的位置
-        this.list.push({
-            address: this.currentAddress,
-            lng: this.currentPoint.lng,
-            lat: this.currentPoint.lat,
-            cityName: this.currentCity,
-            cityCode: this.currentCode,
-            range: 3,
-            isModify: true
+        this.renderAds().then( res => {
+            // 如果上面的没有确定，点击增加全部确定
+            this.list.forEach( item => {
+                item.isModify = false
+            });
+            // 增加新的位置
+            this.list.push({
+                address: this.currentAddress,
+                lng: this.currentPoint.lng,
+                lat: this.currentPoint.lat,
+                cityName: this.currentCity,
+                cityCode: this.currentCode,
+                range: 3,
+                isModify: true
+            })
+            
+            // 重新渲染
+            this.lookAddressLocation(this.list.length-1);
+    
+            if(this.list.length == 3) {
+                this.canAdd = false;
+            }
+            
+        }, err => {
+            return this.$message.error("请确定输入地址正确并保存");
         })
-        
-        // 重新渲染
-        this.lookAddressLocation(this.list.length-1);
-
-        if(this.list.length == 3) {
-            this.canAdd = false;
-        }
     },
 
     // 点击搜索按钮
@@ -333,11 +353,16 @@ export default {
                     map.centerAndZoom(centerPoint,13);
                 }
             })
+        }, err => {
+            if(this.unknownAdIndex == (currentIndex+1)){
+                return this.$message.error("您输入的地址没有解析到结果!");
+            }
         })
     },
 
     // promise
     renderAds () {
+        const that = this;
         return new Promise( (resolve,reject) => {
             // 先渲染点
             this.list.forEach( (item,index,array) => {
@@ -346,6 +371,7 @@ export default {
                 // 将地址解析结果显示在地图上,并调整地图视野
                 myGeo.getPoint(item.address, function(point){
                     if (point) {
+                        that.unknownAdIndex = 0;
                         // 保存当前查询位置
                         item.lng = point.lng;
                         item.lat = point.lat;
@@ -358,8 +384,10 @@ export default {
                         })
                         
                     }else{
-                        this.$message.error("您选择地址没有解析到结果!");
-                        reject('您选择地址没有解析到结果');
+                        // that.$message.error("您输入的地址没有解析到结果!");
+                        that.unknownAdIndex = index+1;
+                        console.log('haveUnknownAd',that.unknownAdIndex);
+                        reject('您输入的地址没有解析到结果');
                     }
                 });
             });
