@@ -220,7 +220,7 @@
              <p class="top_wrod">视频查勘定损平台</p>
            </div>
            <p class="input_box">
-             <input type="text" name="" v-model="phoneNum" v-on:blur="phoneChange" @input="phoneInput" placeholder="请输入登录手机号">
+             <input type="text" name="" value="" v-model="phoneNums" v-on:blur="phoneChange" @input="phoneInput" placeholder="请输入登录手机号">
            </p>
            <div class="input_box">
              <input type="text" name="" value="" @input="authInput"  v-on:blur="authChange" placeholder="请输入短信验证码">
@@ -343,6 +343,7 @@
     name:"Login",
     data() {
       return {
+          phoneNums:"",
           clausePopupState:false,
           checked:true,//注册按钮状态
           complete:"", 
@@ -440,9 +441,11 @@
                     console.log(response.data.result.complete,"是否注册成功！")
                     if(response.data.result.phone){
                        this.phoneNum = response.data.result.phone;//电话号
+                       this.phoneNums = response.data.result.phone;//电话号
                        this.phoneNumState = true;
                     }else{
                        this.phoneNum = "";//电话号
+                       this.phoneNums = "";//电话号
                        this.phoneNumState = false;
                     };
                     if(response.data.result.pcode){
@@ -566,6 +569,7 @@
         //手机号实时监控
         phoneInput(e){
            var phone = e.target.value;
+           this.phoneNums = phone;
            var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
            if (!r.test(phone)) {
              this.phoneNumState = false;
