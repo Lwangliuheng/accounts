@@ -173,7 +173,7 @@
                   </div>
                   <div class="order-word-wrap order-word-wrap-te">
                     <img class="word-img left word-img-te" src="../images/site.png">
-                    <span class="order-word left">{{item.address}} <span class="yellow-word"> {{item.straightLineDistance}}k</span></span>
+                    <span class="order-word left">{{item.address}} <span class="yellow-word"> {{item.straightLineDistance}}km</span></span>
                   </div>
                   <div class="order-footer">
                       <div class="left order-footer-word yellow-word">
@@ -412,7 +412,7 @@
                  //抢单成功
                 this.fullscreenLoading = false;
                  if (response.data.data.ok){
-                     this.$confirm('您已有存在订单，请前往App完成查勘任务！', '温馨提示', {
+                     this.$confirm('订单成功，请前往App完成查勘任务！', '温馨提示', {
                              confirmButtonText: '确定',
                              showCancelButton:false,
                              customClass:"tsk",

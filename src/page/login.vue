@@ -254,7 +254,7 @@
          
          <div class="award">
              <p class="left petunia"><img src="../images/announcement.png"></p>
-             <p class="left award_word">完成组成即送<span class="red">100元返现券</span>，赶紧加入吧</p>
+             <p class="left award_word">完成注册即送<span class="red">100元返现券</span>，赶紧加入吧</p>
              <p class="right close" @click="cancelBut"><img src="../images/close.png" class="close_img"></p>
          </div>
            <!-- <el-button type="primary" style="width:6rem;">主要按钮</el-button> -->
