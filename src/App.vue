@@ -24,25 +24,26 @@ export default {
     console.log(currentPathOne);
 	 	var openid = localStorage.getItem('openid'); 
     // 优化
-        // if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-
-        //     this.readyState = true;
-        //     return
-        // }else{
-          
-        //        if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
-        //              if( currentPathTwo != "/caseList"){
-        //                this.getInfo();
-        //                return
-        //              }
-        //        };
-        //     this.readyState = true;
-        // };
-       this.readyState = true;
+    if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+        this.readyState = true;
+        return
+    }else{
+      
+      if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+             if( currentPathTwo != "/caseList"){
+               this.getInfo();
+               return
+             }
+      };
+      this.readyState = true;
+    };
+       // this.readyState = true;
 	  },
 	methods: {
       //获取基本信息
        getInfo(){
+        alert("app")
+        console.log("app");
           var openid = localStorage.getItem('openid');
           console.log("register",openid)
           var paramData = {

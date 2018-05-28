@@ -62,9 +62,11 @@ import axios from "axios";
                   //判断用户信息
                   console.log(this.$store.state.maiden,"第一次1111进入");
                    //判断第几步并获取基本信息
-                   if(localStorage.getItem('openid')){
-                        this.getInfo();
-                   };
+                   var xopenid = localStorage.getItem('openid');
+                   this.$router.push({path:'/caseDetail'});
+                   // if(localStorage.getItem('openid')){
+                   //      this.getInfo();
+                   // };
              if(!response.data.openid){
                console.log("没有获取到openid，请重新登录")
                 this.$message({

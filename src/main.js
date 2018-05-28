@@ -80,7 +80,6 @@ axios.interceptors.response.use(
 //localStorage.setItem('complete',"1");
 
 Vue.config.productionTip = false;
-
 console.log(window.location.href.split("#")[1].split("?")[0],99999);
 var currentPathOne =  window.location.href.split("#")[1];
 var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
@@ -94,27 +93,22 @@ console.log(currentPathTwo,2);
 //   localStorage.setItem('authCode',authCode);
 // }
 // 优化
-// if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-//     if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
-//           if( currentPathTwo != "/caseList"){
-//             console.log("没有openid回调！");
-//                 WXBaseAuthorize();
-//           }
-//  };  
-// };
+if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+      //注册
+      if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+               if( currentPathTwo != "/caseList"){
+                 console.log("没有openid回调！");
+                     WXData.WXBaseAuthorize();
+               };
+      };    
+};
 //我的任务
  if(currentPathOne ==　"/caseDetail"){
+      alert("caseDetail");
        localStorage.setItem('case',"1");
-       //alert(localStorage.getItem('case'));
+       
        WXData.WXBaseAuthorizeCase();
  };
- //注册
- if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-          if( currentPathTwo != "/caseList"){
-            console.log("没有openid回调！");
-                WXData.WXBaseAuthorize();
-          };
- };  
 new Vue({
   el: "#app",
   router,
