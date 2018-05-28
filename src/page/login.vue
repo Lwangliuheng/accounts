@@ -197,10 +197,18 @@
   }
   .clause_content_wrod{
     padding:0.4rem 0.3rem;
-    margin-bottom:1rem;
+   /* margin-bottom:1rem;*/
+    height:70vh;
+    overflow: scroll;
   }
   .el-checkbox{
     margin:0.05rem 0.20rem 0px 0 !important;
+  }
+  .clause_content_top{
+    text-align: center;
+  }
+  .clause_content_top_content{
+    text-indent: 0.3rem;
   }
 </style>
 <template>
@@ -212,7 +220,7 @@
              <p class="top_wrod">视频查勘定损平台</p>
            </div>
            <p class="input_box">
-             <input type="text" name="" :value="phoneNum" v-on:blur="phoneChange" @input="phoneInput" placeholder="请输入登录手机号">
+             <input type="text" name="" v-model="phoneNum" v-on:blur="phoneChange" @input="phoneInput" placeholder="请输入登录手机号">
            </p>
            <div class="input_box">
              <input type="text" name="" value="" @input="authInput"  v-on:blur="authChange" placeholder="请输入短信验证码">
@@ -257,7 +265,66 @@
        <div class="clause_wrap" v-if="clausePopupState"></div>
        <div class="clause_content" v-if="clausePopupState">
             <div class="clause_content_wrod">
-               4556456465454
+                <p class="clause_content_top">你我保用户注册与服务须知</p>
+                <div>
+                   <p>一、总则</p>
+                   <p class="clause_content_top_content">
+                      1、请务必认真阅读和理解本《用户注册与服务须知》(以下简称《须知》)中规定的所有权利和限制。
+
+                      2、除非另有明确规定，你我保平台所推出的新功能、新服务，均无条件的使用本须知。
+
+                      3、你我保平台保留在任何时候修改本须知条款的权利，且无需另行通知，用户在使用服务时应关注并遵守；当发生有关争议时,以最新的须知文本为准。
+                   </p>
+                  
+                </div>
+                 <div>
+                   <p>二、用户注册</p>
+                   <p class="clause_content_top_content">
+              
+                      1、用户应当同意本须知的条款并按照页面上的提示完成全部的注册程序。用户在进行注册程序过程中点击"确认"按钮即表示用户完全接受本须知项下的全部条款。
+
+                      2、用户在使用本平台服务过程中应保证各项服务业务所需信息的真实性,如果因确认的信息不真实而引起的问题，并对问题发生所带来的后果，你我保平台不负任何责任。
+
+                      3、在您注册和使用你我保平台时，本平台会提示、收集您的部分个人信息和设备信息，本平台不对外公开或向第三方提供用户的信息资料。仅会将这些资料用于：改进为您提供的服务及网页内容。
+                   </p>
+                  
+                </div>
+                 <div>
+                   <p>三、服务内容</p>
+                   <p class="clause_content_top_content">
+                      1、你我保平台免费为用户提供服务，用户使用网络下载服务软件产生的流量费用需自行承担。
+                      2、除非本服务须知另有其它明示规定，本平台所推出的新产品、新功能、新服务，均受到本服务须知之规范。
+                      3、用户同意使用本平台服务,由本平台根据实际情况提供。用户的使用行为视为其对服务条款以及本平台在服务中发出的各类公告的同意。
+                   </p>
+                  
+                </div>
+                <div>
+                   <p>四、服务变更、中断或终止</p>
+                   <p class="clause_content_top_content">
+                        1、你我保平台会定期或不定期的对本平台系统进行检修或维护，无需为此承担任何责任。
+                        2、鉴于网络服务的特殊性（包括但不限于服务器的稳定性问题、恶意的网络攻击等行为的存在及你我保平台无法控制的情形），用户同意你我保平台有权随时中断或终止部分或全部的服务。
+                   </p>
+                  
+                </div>
+                <div>
+                   <p>五、用户使用规则</p>
+                   <p class="clause_content_top_content">
+                      1、用户在使用系统过程中,应遵守道路交通管理相关法律和法规。
+                      2、用户应遵守本平台网络服务须知的各项规定。
+                      3、用户对以其账号发生的或通过其账号发生的一切活动和事件负全部法律责任。
+                      4、用户不得为任何非法目的或利用本平台系统服务进行不正当活动。
+                      5、用户不得对本平台系统服务任何部分或本平台系统服务中使用或获得，进行复制、拷贝、出售、转售或用于任何其它商业目的。
+                   </p>
+                  
+                </div>
+                <div>
+                   <p>六、免费声明</p>
+                   <p class="clause_content_top_content">
+                      1、鉴于本科技系统使用网络服务的特殊性,不担保网络服务一定满足用户的要求,也不担保网络服务不会中断,对网络服务的及时性、安全性和准确性也不作担保。
+                      2、对于因电信系统或互联网网络故障、计算机故障、计算机系统问题或其它任何不可抗力原因而产生损失, 本平台系统不承担任何责任,但将尽力减少因此给用户造成的损失和影响。
+                   </p>
+                  
+                </div>
             </div>
             <p class=" consent_but" @click="consentClick">
                同意

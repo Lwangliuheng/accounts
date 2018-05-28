@@ -368,8 +368,8 @@
            this.topPromise = this.$ajax.get("/boot-xcx-survey-api/rider/v1/me/"+mobilePhone)
              .then(response => {
                  if(response.data.rescode == 200){
-                  this.todayReceiveOrderCount = response.data.data.todayReceiveOrderCount;
-                  this.todayIncome = response.data.data.todayIncome
+                  this.todayReceiveOrderCount = response.data.data.todayReceiveOrderCount ? response.data.data.todayReceiveOrderCount : 0;
+                  this.todayIncome = response.data.data.todayIncome ? response.data.data.todayIncome: 0;
                   
                    console.log(response.data.data, 555555555)
                    
@@ -412,16 +412,18 @@
                  //抢单成功
                 this.fullscreenLoading = false;
                  if (response.data.data.ok){
-                     this.$confirm('您已抢单成功！请前往App进行查勘。', '温馨提示', {
-                           confirmButtonText: '确定',
-                           cancelButtonText: '取消',
-                           type: 'warning',
-                           center: true
-                     }).then(() => {
-                          WeixinJSBridge.call('closeWindow');
-                     }).catch(() => {
-                         WeixinJSBridge.call('closeWindow');
-                     });
+                     this.$confirm('您已有存在订单，请前往App完成查勘任务！', '温馨提示', {
+                             confirmButtonText: '确定',
+                             showCancelButton:false,
+                             customClass:"tsk",
+                             type: 'warning',
+                             showClose:false,
+                             center: true
+                          }).then(() => {
+                             WeixinJSBridge.call('closeWindow');
+                          }).catch(() => {
+                            WeixinJSBridge.call('closeWindow');
+                          });
 
                  }else{
                      //发放了红包

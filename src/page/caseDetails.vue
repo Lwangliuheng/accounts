@@ -97,6 +97,7 @@
   
 </template>
 <script>
+import WXData from "../js/wechat.js";
   export default {
     components: {
       // personalInfo
@@ -112,7 +113,14 @@
       }
     },
     created(){
-       this.getInfo();
+       localStorage.setItem('case',"");
+       if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+            localStorage.setItem('case',"1");
+            WXData.WXBaseAuthorizeCase();
+       }else{
+         this.getInfo();
+       };
+       
     },
     mounted() {
   
@@ -125,7 +133,7 @@
     },
     methods: {
       jumpClick(){
-        this.$confirm('您已有存在订单，请前往App完成查勘任务！', '温馨提示', {
+        this.$confirm('请前往App完成查勘任务！', '温馨提示', {
            confirmButtonText: '确定',
            showCancelButton:false,
            customClass:"tsk",
@@ -141,6 +149,7 @@
        //获取基本信息
         getInfo(){
            var openid = localStorage.getItem('openid');
+           // alert(44444)
            var paramData = {
                 openid:openid
            }
@@ -151,11 +160,12 @@
                     if(response.data.result.complete == 1){
                       //this.riderId = "068b88be-15b5-4b2b-b536-27c7b3ba3dfb"
                        this.riderId = response.data.result.userId;
+                        console.log("jibenxinxi ")
                        //定位
                        this.getPlace();
                     }else{
                        //没有注册
-                        this.$router.push({path:'/login'});
+                        this.$router.push({path:'/'});
                     };
                 }
                 console.log(response,33333)
@@ -174,6 +184,7 @@
              that.lng = r.point.lng;
              that.lat = r.point.lat
              console.log('您的位置：'+r.point.lng+','+r.point.lat);
+             console.log("dingwei ")
              that.getCurrentStatus();
            }else {
              that.$message({
@@ -185,6 +196,7 @@
        },
        //判断是否存在已有订单
        getCurrentStatus(){
+        console.log("dingdan ")
              var paramData = {
                  uid: this.riderId,
                  lng: this.lng,//getApp().data.longitude,

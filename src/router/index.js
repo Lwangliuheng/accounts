@@ -14,6 +14,7 @@ import operateActions from "@/page/operateActions";
 import watchVideo from "@/page/watchVideo";
 import personalInfo from "@/page/personalInfo";
 import Code from "@/page/code";
+import caseCode from "@/page/caseCode";
 import caseList from "@/page/caseList";
 import redPacket from "@/page/redPacket";
 import home from "@/page/home";
@@ -43,6 +44,10 @@ export default new Router({
     {
       path: '/code',
       component: Code
+    },
+    {
+      path: '/caseCode',
+      component: caseCode
     },
     //个人设置
     {

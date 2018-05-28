@@ -14,7 +14,7 @@ import axios from "axios";
     components: {
       // personalInfo
     },
-    name:"Code",
+    name:"caseCode",
     data() {
       return {
         code:"",
@@ -27,13 +27,6 @@ import axios from "axios";
 
     },
     mounted() {
-       //alert(1111)
-       //console.log(localStorage.getItem('case'));
-       // if(localStorage.getItem('case') == 1){
-       //    console.log("case111")
-       //    this.case = localStorage.getItem('case');
-       // };
-       // localStorage.setItem('case',"");
        this.getCode();
     },
     computed:{
@@ -109,13 +102,6 @@ import axios from "axios";
                 this.$router.push({path:'/learn'});
            }
        },
-       //拦截我的任务页面
-       interceptVegetarian(){
-         var currentPathOne =  window.location.href.split("#")[1];
-         if(currentPathOne ==　"/caseDetail"){
-           this.$router.push({path:'/caseDetail'});
-         };
-       },
        //获取基本信息
         getInfo(){
            var openid = localStorage.getItem('openid');
@@ -130,26 +116,7 @@ import axios from "axios";
             .then(response => {
                 if(response.data.rescode == 200){
                     if(response.data.result.complete == 1){
-                       //alert(localStorage.getItem('case'))
-                       if(localStorage.getItem('case') == 1){
-                         this.$router.push({path:'/caseDetail'});
-                       }else{
-                          this.$confirm('此账号已存在，无需重复注册！', '温馨提示', {
-                                  confirmButtonText: '确定',
-                                  showCancelButton:false,
-                                  customClass:"tsk",
-                                  type: 'warning',
-                                  showClose:false,
-                                  center: true
-                          }).then(() => {
-                                // 进入空白页
-                               WeixinJSBridge.call('closeWindow');
-                          }).catch(() => {
-                               
-                                // 进入空白页
-                              WeixinJSBridge.call('closeWindow');
-                          });
-                       };
+                      this.$router.push({path:'/caseDetail'});
                        return
                     };
                    this.$store.commit('setfirstTimeActive');
@@ -157,8 +124,6 @@ import axios from "axios";
                    console.log(response.data.result.qcode);
                    this.invitationCode = response.data.result.qcode; 
                    console.log(response.data.result.step);
-                   //拦截我的任务页面
-                   //this.interceptVegetarian();
                    this.interceptPage(response.data.result.step);
 
                 }
