@@ -20,18 +20,25 @@ export default {
 	 mounted() {
 	 	//获取路径进行拦截
 	 	var currentPathOne =  window.location.href.split("#")[1];
-        var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
-        console.log(currentPathOne)
-	 	var openid = localStorage.getItem('openid');
-        if(openid){
-          if(currentPathOne !=　"/redPacket" && currentPathOne !=　"/caseDetail"){
-        	   if(currentPathTwo != "/caseList"){
-        	      this.getInfo();
-        	      return
-        	   }
-        	}  
-        };
-        this.readyState = true;
+    var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
+    console.log(currentPathOne);
+	 	var openid = localStorage.getItem('openid'); 
+    // 优化
+        // if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+
+        //     this.readyState = true;
+        //     return
+        // }else{
+          
+        //        if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
+        //              if( currentPathTwo != "/caseList"){
+        //                this.getInfo();
+        //                return
+        //              }
+        //        };
+        //     this.readyState = true;
+        // };
+       this.readyState = true;
 	  },
 	methods: {
       //获取基本信息

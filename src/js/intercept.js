@@ -5,7 +5,7 @@ export default {
       interceptPage(type,router){
         console.log(type);
            if(type == 0){
-              router.push({path:'/'});
+              router.push({path:'/login'});
            }
            if(type == 1){
                 router.push({path:'/personalInfo'});
@@ -18,10 +18,6 @@ export default {
            }
            if(type == 4){
                 router.push({path:'/learn'});
-           }
-           if(type == 5){
-                localStorage.setItem('complete',1);
-                router.push({path:'/'});
            }
           
        },

@@ -210,6 +210,8 @@
    
 </template>
 <script>
+//import {WXBaseAuthorize} from "../js/wechat.js";
+import WXData from "@/js/wechat.js";
   export default {
     components: {
       // personalInfo
@@ -224,27 +226,32 @@
       
     },
     mounted() {
-      
+      var currentPathOne =  window.location.href.split("#")[1];
+      var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
       //alert(this.$route.path)
-      //优化苹果手机进入首页问题
-      this.getInfo();
-      // var step = localStorage.getItem('step');
-      //  if(localStorage.getItem('step') == "undefined" || localStorage.getItem('step') == null){
-      //     this.getInfo();
-      //  }else{
-      //    if(step != 0 && step != 5){
-      //        console.log("login");
-      //        intercept.interceptPage(step,this.$router);  
-      //    }else{
-      //      console.log("login111111")
-      //       this.getInfo();
-      //    };
-      //  }
-      
-      //获取openid
-      //alert(33333)
-      //this.getCode();
-      
+      //优化苹果手机进入首页问题 
+      //// 优化
+  //  if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+  //         if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
+  //               if( currentPathTwo != "/caseList"){
+  //                 console.log("没有openid回调！");
+  //                     WXBaseAuthorize();
+  //               }
+  //         };  
+  // }else{
+  //     if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
+  //              if( currentPathTwo != "/caseList"){
+  //                this.getInfo();
+  //                return
+  //              }
+  //     };  
+  // };
+     if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+        if( currentPathTwo != "/caseList"){
+          console.log("没有openid回调！");
+              WXData.WXBaseAuthorize();
+        }
+      };  
     },
     computed:{
      

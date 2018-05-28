@@ -11,7 +11,8 @@ import "@/style/reset.css";
 import "viewerjs/dist/viewer.css";
 
 
-import {WXBaseAuthorize} from "@/js/wechat.js";
+//import {WXBaseAuthorize} from "@/js/wechat.js";
+import WXData from "@/js/wechat.js";
 //判断type进行页面的跳转
 //import intercept from "@/js/intercept.js";
 //引入rem布局
@@ -25,24 +26,16 @@ var loadinginstace = "";
 axios.interceptors.request.use(
   config => {
     console.log("config.url", config);
-    
-
-    // element ui Loading方法
-    // if(config.url == '/boot-pub-survey-manage/monitor/v1/overview'){
-    //   loadinginstace = "";
-    // }else if(config.url == '/boot-pub-survey-manage/pub/survey/v1/page'){
-    //   loadinginstace = "";
-    // }else if(config.url == '/boot-pub-survey-manage/survey-detail/v1/photo/page'){
-    //   loadinginstace = "";
-    // }else if(config.url == '/boot-pub-survey-manage/pubsurvey/manage/department/v1/14/citys'){
-    //   loadinginstace = "";
-    // }
     // 注册loading
     if (config.url == "/public-surveyor-api-boot/weixin/public/v1/register") {
       loadinginstace = ElementUI.Loading.service({ fullscreen: true });
     };
     //短信
     if (config.url == "/public-surveyor-api-boot/public/sms/v1/send") {
+      loadinginstace = ElementUI.Loading.service({ fullscreen: true });
+    };
+     //判断是否存在已有订单
+    if (config.url == "/boot-xcx-survey-api/order/v1/undone") {
       loadinginstace = ElementUI.Loading.service({ fullscreen: true });
     };
     //红包loading
@@ -83,7 +76,7 @@ axios.interceptors.response.use(
 );
 //alert("min");
 //cs
-//localStorage.setItem('openid',"123455667765454666");
+//localStorage.setItem('openid',"oYqIewHziI_Er9A6fWkLNoFd06mQ");
 //localStorage.setItem('complete',"1");
 
 Vue.config.productionTip = false;
@@ -100,61 +93,28 @@ console.log(currentPathTwo,2);
 //   console.log(authCode);
 //   localStorage.setItem('authCode',authCode);
 // }
-//alert(localStorage.setItem('openid',""))
-//刚进入路径跳转
-if(localStorage.getItem('openid')){
-   if(currentPathOne !=　"/redPacket" ){
-      if( currentPathTwo != "/caseList"){
-          console.log("我有openid，也不是特殊页面！");
-          //特殊页面不用判断进行到第几步
-          //intercept.getInfo();
-      }
-   };  
-}else{
-  console.log("没有openid");
-  if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-     
-       if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code"){
+// 优化
+// if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+//     if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
+//           if( currentPathTwo != "/caseList"){
+//             console.log("没有openid回调！");
+//                 WXBaseAuthorize();
+//           }
+//  };  
+// };
+//我的任务
+ if(currentPathOne ==　"/caseDetail"){
+       localStorage.setItem('case',"1");
+       //alert(localStorage.getItem('case'));
+       WXData.WXBaseAuthorizeCase();
+ };
+ //注册
+ if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
           if( currentPathTwo != "/caseList"){
             console.log("没有openid回调！");
-                WXBaseAuthorize();
-          }
-       };  
-  };
-};
-
- 
-//备份路由拦截
-// router.beforeEach((to, from, next) => {
-//   console.log(to.path);
-//   console.log(to.path != "/code");
-//   console.log(localStorage.getItem('openid') == "undefined");
-//   console.log(localStorage.getItem('openid') == null);
-//   if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null){
-//          //初次去除不需要获取openid的页面
-//         if(to.path != "/code" && to.path != "/caseList" && to.path != "/redPacket"){
-//           // WXBaseAuthorize();
-//           return
-//         };
-//   };
-//    if(currentPathOne ==　"/redPacket"){
-//        next();
-//    };
-//    if(currentPathTwo == "/caseList"){
-//        next();
-//    }
-//   if(localStorage.getItem('openid') ){
-//     // console.log(store.state.firstTime,"有id并且首次进入");
-//     //if(store.state.firstTime){
-//       next();
-//     //};
-//   }else{
-//     if(currentPathOne !=　"/redPacket" && currentPathTwo != "/caseList"){
-//         next();
-//     };
-//   }
-  
-// });
+                WXData.WXBaseAuthorize();
+          };
+ };  
 new Vue({
   el: "#app",
   router,
