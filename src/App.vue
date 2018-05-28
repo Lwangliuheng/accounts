@@ -24,6 +24,7 @@ export default {
     console.log(currentPathOne);
 	 	var openid = localStorage.getItem('openid'); 
     // 优化
+    alert(currentPathOne)
     if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
         this.readyState = true;
         return

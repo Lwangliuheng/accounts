@@ -93,6 +93,7 @@ console.log(currentPathTwo,2);
 //   localStorage.setItem('authCode',authCode);
 // }
 // 优化
+alert(currentPathOne)
 if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
       //注册
       if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
@@ -104,9 +105,10 @@ if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid
 };
 //我的任务
  if(currentPathOne ==　"/caseDetail"){
-      alert("caseDetail");
+     alert("caseDetail");
        localStorage.setItem('case',"1");
-       
+       // var url = "localhost:8084/#/caseCode";
+       // window.location.href= url;
        WXData.WXBaseAuthorizeCase();
  };
 new Vue({
