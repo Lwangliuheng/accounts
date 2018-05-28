@@ -289,9 +289,9 @@ export default {
     modifyRange(index) {
         
         // 如果上面的没有确定，点击增加全部确定
-        this.list.forEach( item => {
-            item.isModify = false
-        });
+        // this.list.forEach( item => {
+        //     item.isModify = false
+        // });
         this.list[index].isModify = true;
         this.lookAddressLocation(index);   
     },
