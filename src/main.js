@@ -51,6 +51,42 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+
+//cs
+//localStorage.setItem('openid',"444444");
+//localStorage.setItem('complete',"1");
+ var currentPathOne =  window.location.href.split("#")[1];
+ var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
+ console.log(currentPathOne,1);
+ console.log(currentPathTwo,2);
+ // //我的任务
+ // if(currentPathOne ==　"/caseDetail"){
+ //       WXData.WXBaseAuthorizeCase();
+ // };
+ // alert(11111)
+ if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+        console.log("没有openid",currentPathOne);
+        //注册
+       if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+                  if( currentPathTwo != "/caseList"){
+                        console.log("没有openid回调！");
+                        WXData.WXBaseAuthorize();
+                  };
+       }; 
+       //我的任务
+       if(currentPathOne ==　"/caseDetail"){
+          WXData.WXBaseAuthorizeCase();
+        };   
+ }else{
+        console.log("有openid");
+        if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+                  if( currentPathTwo != "/caseList"){
+                         router.push("/");
+                  };
+       };     
+ }; 
+
 // http响应拦截器
 axios.interceptors.response.use(
   data => {
@@ -74,9 +110,7 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-//cs
-//localStorage.setItem('openid',"oYqIewHziI_Er9A6fWkLNoFd06mQ");
-//localStorage.setItem('complete',"1");
+
 Vue.config.productionTip = false;
 new Vue({
   el: "#app",

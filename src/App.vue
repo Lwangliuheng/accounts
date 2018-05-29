@@ -20,35 +20,34 @@ export default {
 	    },
 	 mounted() {
   
-     var currentPathOne =  window.location.href.split("#")[1];
-     var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
-     console.log(currentPathOne,1);
-     console.log(currentPathTwo,2);
-      
-        //我的任务
-        if(currentPathOne ==　"/caseDetail"){
-              WXData.WXBaseAuthorizeCase();
-              return
-        };
-        if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-               console.log("没有openid",currentPathOne);
-               //注册
-              if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-                         if( currentPathTwo != "/caseList"){
-                               console.log("没有openid回调！");
-                               WXData.WXBaseAuthorize();
-                         };
-              };    
-        }else{
-               console.log("有openid");
-               if(currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-                  //alert("app1")
-                  this.getInfo();
-                  //this.$router.push({path:'/'})
-               };
-               //alert("app2")
+     // var currentPathOne =  window.location.href.split("#")[1];
+     // var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
+     // console.log(currentPathOne,1);
+     // console.log(currentPathTwo,2);
+        // //我的任务
+        // if(currentPathOne ==　"/caseDetail"){
+        //       WXData.WXBaseAuthorizeCase();
+        //       return
+        // };
+        // if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+        //        console.log("没有openid",currentPathOne);
+        //        //注册
+        //       if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+        //                  if( currentPathTwo != "/caseList"){
+        //                        console.log("没有openid回调！");
+        //                        WXData.WXBaseAuthorize();
+        //                  };
+        //       };    
+        // }else{
+        //        console.log("有openid");
+        //        if(currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+        //           //alert("app1")
+        //           this.getInfo();
+        //           //this.$router.push({path:'/'})
+        //        };
+        //        //alert("app2")
               
-        }; 
+        // }; 
 
 	  },
 	methods: {
