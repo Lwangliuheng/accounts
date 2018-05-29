@@ -54,7 +54,7 @@ axios.interceptors.request.use(
 
 
 //cs
-//localStorage.setItem('openid',"444444");
+//localStorage.setItem('openid',"oYqIewHK593VkLLuDtT1Axx2yaAM");
 //localStorage.setItem('complete',"1");
  var currentPathOne =  window.location.href.split("#")[1];
  var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];

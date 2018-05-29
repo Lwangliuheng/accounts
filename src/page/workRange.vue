@@ -70,13 +70,15 @@ export default {
 
   mounted() {
     //在此调用api  
-    map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.40387397, 39.91488908);
-    map.centerAndZoom(point, 13);
+    
 
      var that = this;
-
+      
        setTimeout(function(){
+           map = new BMap.Map("allmap");
+           var point = new BMap.Point(116.40387397, 39.91488908);
+           map.centerAndZoom(point, 13);
+
            that.drawMap();
            that.loading = false;
        },1000)
