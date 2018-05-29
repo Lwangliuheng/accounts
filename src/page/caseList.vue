@@ -137,6 +137,10 @@
     max-height:80vh;
     overflow: scroll;
   }
+  .warmPrompt_zanwu{
+    font-size: 20px;
+    margin-top:3rem;
+  }
 </style>
 <template>
   
@@ -173,7 +177,7 @@
                   </div>
                   <div class="order-word-wrap order-word-wrap-te">
                     <img class="word-img left word-img-te" src="../images/site.png">
-                    <span class="order-word left">{{item.address}} <span class="yellow-word"> {{item.straightLineDistance}}k</span></span>
+                    <span class="order-word left">{{item.address}} <span class="yellow-word"> {{item.straightLineDistance}}km</span></span>
                   </div>
                   <div class="order-footer">
                       <div class="left order-footer-word yellow-word">
@@ -187,8 +191,12 @@
                  
             </div>
 
-            <div class="warmPrompt">
+
+            <div class="warmPrompt" v-if="zanwuStatus">
                    温馨提示：抢单成功后不能手动取消，需联系客服取消订单
+           </div>
+           <div class="warmPrompt warmPrompt_zanwu" v-if="!zanwuStatus">
+                   暂无订单
            </div>
         </div>
       </div>
@@ -216,6 +224,7 @@
     name:"List",
     data() {
       return {
+          zanwuStatus:false,
           readyState:false,
           topPromise:"",
           listPromise:"",
@@ -339,6 +348,7 @@
               .then(response => {
                   if(response.data.rescode == 200){
                        this.orderList = response.data.data;
+                       this.zanwuStatus = this.orderList.length > 0 ? true:false;
                       // this.orderList  = [{
                       //   vehicleLicenseNo:"111",
                       //   createTime:"222",
@@ -412,7 +422,7 @@
                  //抢单成功
                 this.fullscreenLoading = false;
                  if (response.data.data.ok){
-                     this.$confirm('您已有存在订单，请前往App完成查勘任务！', '温馨提示', {
+                     this.$confirm('订单成功，请前往App完成查勘任务！', '温馨提示', {
                              confirmButtonText: '确定',
                              showCancelButton:false,
                              customClass:"tsk",

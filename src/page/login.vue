@@ -254,7 +254,7 @@
          
          <div class="award">
              <p class="left petunia"><img src="../images/announcement.png"></p>
-             <p class="left award_word">完成组成即送<span class="red">100元返现券</span>，赶紧加入吧</p>
+             <p class="left award_word">完成注册即送<span class="red">100元返现券</span>，赶紧加入吧</p>
              <p class="right close" @click="cancelBut"><img src="../images/close.png" class="close_img"></p>
          </div>
            <!-- <el-button type="primary" style="width:6rem;">主要按钮</el-button> -->
@@ -343,7 +343,7 @@
     name:"Login",
     data() {
       return {
-        phoneNums:"",
+          phoneNums:"",
           clausePopupState:false,
           checked:true,//注册按钮状态
           complete:"", 
@@ -569,7 +569,7 @@
         //手机号实时监控
         phoneInput(e){
            var phone = e.target.value;
-           this.phoneNums = e.target.value;
+           this.phoneNums = phone;
            var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
            if (!r.test(phone)) {
              this.phoneNumState = false;
