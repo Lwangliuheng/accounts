@@ -73,21 +73,7 @@ import axios from "axios";
                         this.getInfo();
                    };
              if(!response.data.openid){
-               this.$confirm('请关注公众号！！', '温馨提示', {
-                                  confirmButtonText: '确定',
-                                  showCancelButton:false,
-                                  customClass:"tsk",
-                                  type: 'warning',
-                                  showClose:false,
-                                  center: true
-                          }).then(() => {
-                                // 进入空白页
-                               WeixinJSBridge.call('closeWindow');
-                          }).catch(() => {
-                               
-                                // 进入空白页
-                              WeixinJSBridge.call('closeWindow');
-                    });
+               WeixinJSBridge.call('closeWindow');
              };
                 
             }, err => {

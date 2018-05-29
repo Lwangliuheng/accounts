@@ -2,7 +2,7 @@
   <div class="watch-video" v-if="readyState">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
       <div class="video">
-        <video @click="pause" ref="video" id="video" controls @ended="end" x5-playsinline="" playsinline="" webkit-playsinline="">
+        <video @click="pause" ref="video" id="video"  @ended="end" x5-playsinline="" playsinline="" webkit-playsinline="">
             <source :src="videoUrl" type="video/mp4">
             您的手机暂不支持video标签，请升级系统
         </video>
