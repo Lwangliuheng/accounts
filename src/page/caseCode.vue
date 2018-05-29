@@ -54,7 +54,7 @@ import axios from "axios";
         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/getOpenId",paramData)
             .then(response => {
                   var openid = response.data.openid;
-                  //alert(openid)
+                  alert(openid)
                   console.log(response.data,"openid5466645654654656");
                   //localStorage.setItem('openid',"safafasfd98879879safd");
                   localStorage.setItem('openid',response.data.openid);
@@ -66,14 +66,21 @@ import axios from "axios";
                         this.getInfo();
                    };
              if(!response.data.openid){
-               console.log("没有获取到openid，请重新登录")
-                this.$message({
-                  message: '获取失败',
-                   type: 'error'
-                }); 
-
-                // 进入空白页
-                WeixinJSBridge.call('closeWindow');
+                  this.$confirm('请关注公众号！！', '温馨提示', {
+                                  confirmButtonText: '确定',
+                                  showCancelButton:false,
+                                  customClass:"tsk",
+                                  type: 'warning',
+                                  showClose:false,
+                                  center: true
+                          }).then(() => {
+                                // 进入空白页
+                               WeixinJSBridge.call('closeWindow');
+                          }).catch(() => {
+                               
+                                // 进入空白页
+                              WeixinJSBridge.call('closeWindow');
+                    });
              };
                 
             }, err => {
