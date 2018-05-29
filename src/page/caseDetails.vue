@@ -113,9 +113,8 @@ import WXData from "../js/wechat.js";
       }
     },
     created(){
-       localStorage.setItem('case',"");
        if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-            localStorage.setItem('case',"1");
+        alert(11111111)
             WXData.WXBaseAuthorizeCase();
        }else{
          this.getInfo();
@@ -123,7 +122,6 @@ import WXData from "../js/wechat.js";
        
     },
     mounted() {
-  
     },
     computed:{
      

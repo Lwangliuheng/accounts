@@ -414,26 +414,7 @@
                   this.complete =  response.data.result.complete;
                    var that = this;
                    if(this.complete == 1){
-                     setTimeout(()=>{
-                          //解决进入空白问题
-                          that.$confirm('此账号已存在，无需重复注册！', '温馨提示', {
-                                        confirmButtonText: '确定',
-                                        showCancelButton:false,
-                                        customClass:"tsk",
-                                        type: 'warning',
-                                        showClose:false,
-                                        center: true
-                                }).then(() => {
-                                      // 进入空白页
-                                       WeixinJSBridge.call('closeWindow');
-                                }).catch(() => {
-                                      // 进入空白页
-                                    WeixinJSBridge.call('closeWindow');
-                                });
-                              return
-                           //页面显示
-                          // that.readyState = true;
-                     },1000);
+                     
                    }else{
                        //页面显示
                       this.readyState = true;

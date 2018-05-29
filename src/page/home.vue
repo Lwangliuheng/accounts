@@ -226,32 +226,16 @@ import WXData from "@/js/wechat.js";
       
     },
     mounted() {
-      var currentPathOne =  window.location.href.split("#")[1];
-      var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
       //alert(this.$route.path)
       //优化苹果手机进入首页问题 
       //// 优化
-   if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-     if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-        if( currentPathTwo != "/caseList"){
-          console.log("没有openid回调！");
-              WXData.WXBaseAuthorize();
-        }
-      };  
-  }else{
-      if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-               if( currentPathTwo != "/caseList"){
+        if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+                 console.log("home","没有openid")
+                  WXData.WXBaseAuthorize();
+        }else{
+                 console.log("home","有openid")
                  this.getInfo();
-                 return
-               }
-      };  
-  };
-     // if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-     //    if( currentPathTwo != "/caseList"){
-     //      console.log("没有openid回调！");
-     //          WXData.WXBaseAuthorize();
-     //    }
-     //  };  
+        };
     },
     computed:{
      
@@ -281,7 +265,6 @@ import WXData from "@/js/wechat.js";
            }
        },
         getInfo(){
-          alert("home")
            var openid = localStorage.getItem('openid');
            //var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM";
            console.log("register",openid)
