@@ -156,6 +156,25 @@ import WXData from "../js/wechat.js";
           this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
+                   if(response.data.result.follow == 0){
+                       //alert(localStorage.getItem('case'))
+                          this.$confirm('请关注公众号！', '温馨提示', {
+                                  confirmButtonText: '确定',
+                                  showCancelButton:false,
+                                  customClass:"tsk",
+                                  type: 'warning',
+                                  showClose:false,
+                                  center: true
+                          }).then(() => {
+                                // 进入空白页
+                               WeixinJSBridge.call('closeWindow');
+                          }).catch(() => {
+                               
+                                // 进入空白页
+                              WeixinJSBridge.call('closeWindow');
+                          });
+                       return
+                    };
                       //注册成功
                     if(response.data.result.complete == 1){
                       //this.riderId = "068b88be-15b5-4b2b-b536-27c7b3ba3dfb"

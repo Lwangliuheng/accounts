@@ -54,7 +54,7 @@ import axios from "axios";
         this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/getOpenId",paramData)
             .then(response => {
                   var openid = response.data.openid;
-                  alert(openid)
+                  //alert(openid)
                   console.log(response.data,"openid5466645654654656");
                   //localStorage.setItem('openid',"safafasfd98879879safd");
                   localStorage.setItem('openid',response.data.openid);
@@ -66,7 +66,7 @@ import axios from "axios";
                         this.getInfo();
                    };
              if(!response.data.openid){
-                  this.$confirm('请关注公众号！！', '温馨提示', {
+                  this.$confirm('请关注公众号！', '温馨提示', {
                                   confirmButtonText: '确定',
                                   showCancelButton:false,
                                   customClass:"tsk",
@@ -122,6 +122,25 @@ import axios from "axios";
           this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
+                    if(response.data.result.follow == 0){
+                       //alert(localStorage.getItem('case'))
+                          this.$confirm('请关注公众号！', '温馨提示', {
+                                  confirmButtonText: '确定',
+                                  showCancelButton:false,
+                                  customClass:"tsk",
+                                  type: 'warning',
+                                  showClose:false,
+                                  center: true
+                          }).then(() => {
+                                // 进入空白页
+                               WeixinJSBridge.call('closeWindow');
+                          }).catch(() => {
+                               
+                                // 进入空白页
+                              WeixinJSBridge.call('closeWindow');
+                          });
+                       return
+                    };
                     if(response.data.result.complete == 1){
                       this.$router.push({path:'/caseDetail'});
                        return

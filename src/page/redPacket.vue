@@ -79,7 +79,7 @@
           <img src="../images/defeated.png" class="img-top">
           <span>手慢了，订单被别人抢走了~</span>
       </div>
-      <div class='info-tip'>别灰心，送您一个红包奖励，拆开后继续去抢单吧</div>
+    <!--   <div class='info-tip'>别灰心，送您一个红包奖励，拆开后继续去抢单吧</div> -->
       <div style='position:relative;height:584rrem;margin-top:54rpx;' v-if="moneyData">
       <img src='../images/red_packet.png' class='redBag' v-if='!isOpen' @click="openRedPacket">
       <img src="../images/Open_red_envelopes.png" class='redBag' v-if='isOpen'>
