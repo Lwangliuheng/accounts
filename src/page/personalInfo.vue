@@ -241,7 +241,7 @@
     <div class="register_wrap" v-if="readyState">
       <div class="register_content"  v-show="!cityModuleState" >
         <div class="register_top" @click='clickInput'>
-          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' type="file" accept="image/*" capture="camera"/>
+          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' id="avatar" type="file" accept="image/*" capture="camera"/>
           <span class="el-icon-plus" v-if="!imageUrl"></span>
           <img :src="imageUrl" class="register_top_img" alt="" srcset="">
           <!-- <el-upload
@@ -354,6 +354,15 @@
        
     },
     mounted() {
+        //获取浏览器的userAgent,并转化为小写
+        var ua = navigator.userAgent.toLowerCase();
+        //判断是否是苹果手机，是则是true
+        var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
+        if (isIos) {
+            document.getElementById('avatar').removeAttribute("capture");
+        };
+
+
       //回车键
        document.onkeydown = (ev) => {
         if (ev.keyCode == 13) {
