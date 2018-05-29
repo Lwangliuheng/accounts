@@ -233,7 +233,8 @@ import WXData from "@/js/wechat.js";
                  console.log("home","没有openid")
                   WXData.WXBaseAuthorize();
         }else{
-                 console.log("home","有openid")
+                 console.log("home","有openid");
+                 //alert("open5")
                  this.getInfo();
         };
     },
@@ -249,6 +250,7 @@ import WXData from "@/js/wechat.js";
         //alert(type)
         console.log(type);
            if(type == 0){
+           // alert("app8")
               this.$router.push({path:'/login'});
            }
            if(type == 1){

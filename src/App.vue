@@ -27,7 +27,7 @@ export default {
       
         //我的任务
         if(currentPathOne ==　"/caseDetail"){
-              //WXData.WXBaseAuthorizeCase();
+              WXData.WXBaseAuthorizeCase();
               return
         };
         if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
@@ -42,16 +42,19 @@ export default {
         }else{
                console.log("有openid");
                if(currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-                  this.$router.push({path:'/'})
+                  //alert("app1")
+                  this.getInfo();
+                  //this.$router.push({path:'/'})
                };
+               //alert("app2")
               
-        };
+        }; 
 
 	  },
 	methods: {
       //获取基本信息
        getInfo(){
-        alert("app")
+        //alert("app")
         console.log("app");
           var openid = localStorage.getItem('openid');
           console.log("register",openid)

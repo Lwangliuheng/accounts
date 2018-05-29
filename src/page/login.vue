@@ -401,6 +401,7 @@
     methods: {
        //获取基本信息
         getInfo(){
+           //alert("app6");
            var openid = localStorage.getItem('openid');
            //var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM";
            console.log("register",openid)
@@ -416,6 +417,7 @@
                    if(this.complete == 1){
                      
                    }else{
+                       alert("app7");
                        //页面显示
                       this.readyState = true;
                    };

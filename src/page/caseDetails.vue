@@ -114,9 +114,11 @@ import WXData from "../js/wechat.js";
     },
     created(){
        if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-        alert(11111111)
-            WXData.WXBaseAuthorizeCase();
+        //alert(11111111)
+           WXData.WXBaseAuthorizeCase();
+           return
        }else{
+         //alert("app3")
          this.getInfo();
        };
        
@@ -145,6 +147,27 @@ import WXData from "../js/wechat.js";
         });
       },
        //获取基本信息
+       interceptPage(type){
+        //alert(type)
+        console.log(type);
+           if(type == 0){
+           // alert("app8")
+              this.$router.push({path:'/login'});
+           }
+           if(type == 1){
+                this.$router.push({path:'/personalInfo'});
+           }
+           if(type == 2){
+                this.$router.push({path:'/workRange'});
+           }
+           if(type == 3){
+                this.$router.push({path:'/operateActions'});
+           }
+           if(type == 4){
+                this.$router.push({path:'/learn'});
+           }
+       },
+       //获取基本信息
         getInfo(){
            var openid = localStorage.getItem('openid');
            // alert(44444)
@@ -163,7 +186,8 @@ import WXData from "../js/wechat.js";
                        this.getPlace();
                     }else{
                        //没有注册
-                        this.$router.push({path:'/'});
+                        //alert("app4")
+                        this.interceptPage(response.data.result.step);
                     };
                 }
                 console.log(response,33333)
