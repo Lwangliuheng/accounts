@@ -1,12 +1,13 @@
 <template>
   <div id="app">
 
-  <router-view v-if="readyState"/>
+  <router-view/>
   </div>
 </template>
 
 <script>
 import intercept from "./js/intercept.js"
+import WXData from "@/js/wechat.js";
 export default {
 	  name: 'app',
 	  data() {
@@ -18,32 +19,42 @@ export default {
 	      //alert("app")
 	    },
 	 mounted() {
-	 	//获取路径进行拦截
-	 	var currentPathOne =  window.location.href.split("#")[1];
-    var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
-    console.log(currentPathOne);
-	 	var openid = localStorage.getItem('openid'); 
-    // 优化
-    alert(currentPathOne)
-    if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-        this.readyState = true;
-        return
-    }else{
+  
+     var currentPathOne =  window.location.href.split("#")[1];
+     var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
+     console.log(currentPathOne,1);
+     console.log(currentPathTwo,2);
       
-      if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-             if( currentPathTwo != "/caseList"){
-               this.getInfo();
-               return
-             }
-      };
-      this.readyState = true;
-    };
-       // this.readyState = true;
+        //我的任务
+        if(currentPathOne ==　"/caseDetail"){
+              WXData.WXBaseAuthorizeCase();
+              return
+        };
+        if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
+               console.log("没有openid",currentPathOne);
+               //注册
+              if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+                         if( currentPathTwo != "/caseList"){
+                               console.log("没有openid回调！");
+                               WXData.WXBaseAuthorize();
+                         };
+              };    
+        }else{
+               console.log("有openid");
+               if(currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+                  //alert("app1")
+                  this.getInfo();
+                  //this.$router.push({path:'/'})
+               };
+               //alert("app2")
+              
+        }; 
+
 	  },
 	methods: {
       //获取基本信息
        getInfo(){
-        alert("app")
+        //alert("app")
         console.log("app");
           var openid = localStorage.getItem('openid');
           console.log("register",openid)

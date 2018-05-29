@@ -276,13 +276,18 @@ export default {
 
     // 确认修改
     confirmRange(index) {
-        if(this.unknownAdIndex == (index+1)){
-            return this.$message.error("您输入的地址没有解析到结果!");
-        }
-        this.list[index].isModify = false;
 
-        // 重新渲染
-        this.lookAddressLocation(index);
+        this.renderAds().then( res => {
+            this.list[index].isModify = false;
+
+            // 重新渲染
+            this.lookAddressLocation(index);
+        }, err => {
+            if(this.unknownAdIndex == (index+1)){
+                return this.$message.error("您输入的地址没有解析到结果!");
+            }
+        })
+
     },
 
     // 修改
@@ -310,11 +315,14 @@ export default {
 
     // 添加一条地址
     addList () {
+
+        // 如果上面的没有确定，点击增加全部确定
+        for (let i = 0; i < this.list.length; i++) {
+            if(this.list[i].isModify) return this.$message.error("请先保存以上接单范围再添加")
+            
+        }
         this.renderAds().then( res => {
-            // 如果上面的没有确定，点击增加全部确定
-            this.list.forEach( item => {
-                item.isModify = false
-            });
+
             // 增加新的位置
             this.list.push({
                 address: this.currentAddress,
@@ -465,7 +473,7 @@ display: none;
   position: relative;
 }
 .work-address .el-checkbox {
-  margin: 4.7rem 0 0.4rem 0.56rem;
+  margin: 5rem 0 0.35rem 0.56rem;
   font-size: 0.28rem;
 }
 .work-address .btn {
@@ -488,7 +496,7 @@ display: none;
   top: -0.52rem;
   left: 50%;
   transform: translateX(-50%);
-  padding-bottom: 0.4rem;
+  padding-bottom: 0.3rem;
 }
 .address-list li {
   padding: 0 0.3rem;
@@ -496,15 +504,15 @@ display: none;
 .address-list h4,
 .address-list input {
     width: 100%;
-    min-height: .5rem;
+    min-height: .56rem;
     font-size: 0.34rem;
     line-height: 0.34rem;
     font-family: "SimHei";
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.24rem;
     margin-top: 0.3rem;
 }
 .address-list input {
-    width: 75%;   
+    width: 100%;
     padding-right: .45rem; 
     border: 1px solid #ccc;
 }
@@ -519,8 +527,8 @@ display: none;
     font-size: .42rem;
     line-height: .42rem;
     position: absolute;
-    top: 55%;
-    left: calc(70% - .32rem);
+    top: 53%;
+    left: calc(95% - .3rem);
     transform: translateY(-50%);
 }
 

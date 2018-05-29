@@ -74,43 +74,10 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-//alert("min");
 //cs
 //localStorage.setItem('openid',"oYqIewHziI_Er9A6fWkLNoFd06mQ");
 //localStorage.setItem('complete',"1");
-
 Vue.config.productionTip = false;
-console.log(window.location.href.split("#")[1].split("?")[0],99999);
-var currentPathOne =  window.location.href.split("#")[1];
-var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
-console.log(currentPathOne,1);
-console.log(currentPathTwo,2);
-//进入页扫二维码进入
-// var currentPathThree =  window.location.href.split("?")[1];
-// if(currentPathThree){
-//   var authCode = window.location.href.split("?")[1].split("=")[1];
-//   console.log(authCode);
-//   localStorage.setItem('authCode',authCode);
-// }
-// 优化
-alert(currentPathOne)
-if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-      //注册
-      if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
-               if( currentPathTwo != "/caseList"){
-                 console.log("没有openid回调！");
-                     WXData.WXBaseAuthorize();
-               };
-      };    
-};
-//我的任务
- if(currentPathOne ==　"/caseDetail"){
-     alert("caseDetail");
-       localStorage.setItem('case',"1");
-       // var url = "localhost:8084/#/caseCode";
-       // window.location.href= url;
-       WXData.WXBaseAuthorizeCase();
- };
 new Vue({
   el: "#app",
   router,

@@ -254,7 +254,7 @@
          
          <div class="award">
              <p class="left petunia"><img src="../images/announcement.png"></p>
-             <p class="left award_word">完成组成即送<span class="red">100元返现券</span>，赶紧加入吧</p>
+             <p class="left award_word">完成注册即送<span class="red">100元返现券</span>，赶紧加入吧</p>
              <p class="right close" @click="cancelBut"><img src="../images/close.png" class="close_img"></p>
          </div>
            <!-- <el-button type="primary" style="width:6rem;">主要按钮</el-button> -->
@@ -343,7 +343,7 @@
     name:"Login",
     data() {
       return {
-        phoneNums:"",
+          phoneNums:"",
           clausePopupState:false,
           checked:true,//注册按钮状态
           complete:"", 
@@ -401,6 +401,7 @@
     methods: {
        //获取基本信息
         getInfo(){
+           //alert("app6");
            var openid = localStorage.getItem('openid');
            //var openid = "oYqIewHK593VkLLuDtT1Axx2yaAM";
            console.log("register",openid)
@@ -414,27 +415,9 @@
                   this.complete =  response.data.result.complete;
                    var that = this;
                    if(this.complete == 1){
-                     setTimeout(()=>{
-                          //解决进入空白问题
-                          that.$confirm('此账号已存在，无需重复注册！', '温馨提示', {
-                                        confirmButtonText: '确定',
-                                        showCancelButton:false,
-                                        customClass:"tsk",
-                                        type: 'warning',
-                                        showClose:false,
-                                        center: true
-                                }).then(() => {
-                                      // 进入空白页
-                                       WeixinJSBridge.call('closeWindow');
-                                }).catch(() => {
-                                      // 进入空白页
-                                    WeixinJSBridge.call('closeWindow');
-                                });
-                              return
-                           //页面显示
-                          // that.readyState = true;
-                     },1000);
+                     
                    }else{
+                       alert("app7");
                        //页面显示
                       this.readyState = true;
                    };
@@ -569,7 +552,7 @@
         //手机号实时监控
         phoneInput(e){
            var phone = e.target.value;
-           this.phoneNums = e.target.value;
+           this.phoneNums = phone;
            var r = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;
            if (!r.test(phone)) {
              this.phoneNumState = false;
