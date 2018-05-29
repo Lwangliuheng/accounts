@@ -137,6 +137,10 @@
     max-height:80vh;
     overflow: scroll;
   }
+  .warmPrompt_zanwu{
+    font-size: 20px;
+    margin-top:3rem;
+  }
 </style>
 <template>
   
@@ -187,8 +191,12 @@
                  
             </div>
 
-            <div class="warmPrompt">
+
+            <div class="warmPrompt" v-if="zanwuStatus">
                    温馨提示：抢单成功后不能手动取消，需联系客服取消订单
+           </div>
+           <div class="warmPrompt warmPrompt_zanwu" v-if="!zanwuStatus">
+                   暂无订单
            </div>
         </div>
       </div>
@@ -216,6 +224,7 @@
     name:"List",
     data() {
       return {
+          zanwuStatus:false,
           readyState:false,
           topPromise:"",
           listPromise:"",
@@ -339,6 +348,7 @@
               .then(response => {
                   if(response.data.rescode == 200){
                        this.orderList = response.data.data;
+                       this.zanwuStatus = this.orderList.length > 0 ? true:false;
                       // this.orderList  = [{
                       //   vehicleLicenseNo:"111",
                       //   createTime:"222",
