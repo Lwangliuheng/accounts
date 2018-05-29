@@ -117,6 +117,30 @@ import axios from "axios";
           this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",paramData)
             .then(response => {
                 if(response.data.rescode == 200){
+                    var that = this;
+                   if(response.data.result.follow != 1){
+                        setTimeout(()=>{
+                             //解决进入空白问题
+                             that.$confirm('请关注公众号！', '温馨提示', {
+                                           confirmButtonText: '确定',
+                                           showCancelButton:false,
+                                           customClass:"tsk",
+                                           type: 'warning',
+                                           showClose:false,
+                                           center: true
+                                   }).then(() => {
+                                         // 进入空白页
+                                          //localStorage.setItem('openid',"");
+                                          WeixinJSBridge.call('closeWindow');
+                                   }).catch(() => {
+                                         // 进入空白页
+                                       WeixinJSBridge.call('closeWindow');
+                                   });
+                              //页面显示
+                             // that.readyState = true;
+                        },1000);
+                      return
+                   };
                     if(response.data.result.complete == 1){
                       this.$router.push({path:'/caseDetail'});
                        return

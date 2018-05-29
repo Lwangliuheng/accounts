@@ -241,7 +241,8 @@
     <div class="register_wrap" v-if="readyState">
       <div class="register_content"  v-show="!cityModuleState" >
         <div class="register_top" @click='clickInput'>
-          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' id="avatar" type="file" accept="image/*" capture="camera"/>
+          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' id="avatar" type="file" multiple accept="image/*" capture="camera" v-if="!isIos"/>
+          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' id="avatar" type="file" multiple accept="image/*" v-if="isIos"/>
           <span class="el-icon-plus" v-if="!imageUrl"></span>
           <img :src="imageUrl" class="register_top_img" alt="" srcset="">
           <!-- <el-upload
@@ -324,6 +325,7 @@
     name:"personalInfo",
     data() {
       return {
+          isIos:false,
           selectCareerStatue:false,//弹层状态
           careerCode:"",
           careerName:"",
@@ -359,8 +361,10 @@
         //判断是否是苹果手机，是则是true
         var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
         if (isIos) {
+            this.isIos = true;
             this.$nextTick(function () {
-               document.getElementById('avatar').removeAttribute("capture");
+                //$('#avatar').attr('capture',"")
+               //document.getElementById('avatar').removeAttribute("capture");
             })
             
         };
