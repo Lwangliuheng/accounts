@@ -170,6 +170,7 @@ import WXData from "../js/wechat.js";
        },
        //获取基本信息
         getInfo(){
+           var that = this;
            var openid = localStorage.getItem('openid');
            // alert(44444)
            var paramData = {
@@ -182,9 +183,12 @@ import WXData from "../js/wechat.js";
                     if(response.data.result.complete == 1){
                       //this.riderId = "068b88be-15b5-4b2b-b536-27c7b3ba3dfb"
                        this.riderId = response.data.result.userId;
-                        console.log("jibenxinxi ")
+                        console.log("jibenxinxi ");
+                        setTimeout(function(){
+                           that.getPlace();
+                        },1000)
                        //定位
-                       this.getPlace();
+                       //this.getPlace();
                     }else{
                        //没有注册
                         //alert("app4")
