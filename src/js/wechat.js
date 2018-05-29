@@ -8,7 +8,7 @@ function WXBaseAuthorize() {
 };
 function WXBaseAuthorizeCase() {
    console.log(location.origin,"url")
-
+// alert(55555)
    const baseUrl = encodeURIComponent("https://test.zhongchebaolian.com/public/#/caseCode" );
    console.log(baseUrl,"定向url")//wx2ee0af7fbdfe267e
    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2ee0af7fbdfe267e&redirect_uri="+ baseUrl +"&response_type=code&scope=snsapi_base&#wechat_redirect";

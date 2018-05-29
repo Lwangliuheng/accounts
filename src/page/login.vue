@@ -417,7 +417,6 @@
                    if(this.complete == 1){
                      
                    }else{
-                       alert("app7");
                        //页面显示
                       this.readyState = true;
                    };
