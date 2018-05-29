@@ -359,7 +359,10 @@
         //判断是否是苹果手机，是则是true
         var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
         if (isIos) {
-            document.getElementById('avatar').removeAttribute("capture");
+            this.$nextTick(function () {
+               document.getElementById('avatar').removeAttribute("capture");
+            })
+            
         };
 
 
