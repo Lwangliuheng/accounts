@@ -11,9 +11,20 @@
     width:6.35rem;
    }
    .register_top{
-    text-align: center;
-  
-    padding-bottom:0.64rem;
+     width: 1.86rem;
+    height:1.86rem;
+    margin: 0 auto;
+    border: 0.5px dashed #ccc;
+    margin-bottom:0.64rem;
+    position: relative;
+   }
+   .register_top .el-icon-plus {
+     font-size: .5rem;
+     color: #999;
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     transform: translate(-50%,-50%);
    }
    .register_top_img{
       width:1.86rem;
@@ -229,8 +240,11 @@
   <div>
     <div class="register_wrap" v-if="readyState">
       <div class="register_content"  v-show="!cityModuleState" >
-        <div class="register_top">
-          <el-upload
+        <div class="register_top" @click='clickInput'>
+          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' type="file" accept="image/*" capture="camera"/>
+          <span class="el-icon-plus" v-if="!imageUrl"></span>
+          <img :src="imageUrl" class="register_top_img" alt="" srcset="">
+          <!-- <el-upload
             name="image"
             class="avatar-uploader"
             action="/public-surveyor-api-boot/public/file/v1/uploadImage"
@@ -239,7 +253,7 @@
             :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" class="avatar" >
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+          </el-upload> -->
 <!--           <img class="register_top_img" src="../images/headPortrait1.png" v-on:click="imgChange">
           <p class="top_wrod">请按照示例图上传大头照</p> -->
         </div>
@@ -470,6 +484,40 @@
               //   });
             });
        },
+      // click input file
+      clickInput(){
+        this.$refs.avatar.click();
+      },
+      uploadAvatar(url){
+        var formData = new FormData();
+        formData.append("image", url);
+        this.$ajax.post(this.ajaxUrl+"/public/file/v1/uploadImage",formData)
+        .then(response => {
+          if(response.data.rescode == 200){
+              this.imageUrl = response.data.url;
+              this.setButGreen(); 
+          }else{
+            this.$message({
+              message: response.data.resdes,
+              type: 'error'
+            });
+          }
+        }, err => {
+          console.log(err);
+        })
+      },
+       // 获取到的图片
+      getImage(){
+          var reader = new FileReader();//新建一个FileReader
+          console.log(this.$refs.avatar.files[0])
+          reader.readAsDataURL(this.$refs.avatar.files[0]);//读取文件
+          var that = this;
+          reader.onload = (evt) => { //读取完文件之后会回来这里
+              // var fileString = evt.target.result;
+              //post方式上传图片到控制器
+              this.uploadAvatar(this.$refs.avatar.files[0]);       
+          }
+       },
        getDicts(){
            var paramData = {
                 type:"vocation"
@@ -495,7 +543,7 @@
        // },
        //下一步按钮变色
        setButGreen(){
-           if(this.imgState && this.nameState && this.cityState && this.careerStatus){
+           if(this.imageUrl && this.nameState && this.cityState && this.careerStatus){
               this.isGreen = true;
            }else{
               this.isGreen = false;
@@ -576,7 +624,7 @@
              });
              return
           };
-          if(!this.imgState){
+          if(!this.imageUrl){
                this.$message({
                 message: '请上传头像',
                 type: 'error'
@@ -617,7 +665,7 @@
                 cityName:this.city,
                 companyName:this.company,
                 companyCode:this.companyCode,
-                logo:this.imgeUrlLine,//传入后台返回线上链接
+                logo:this.imageUrl,//传入后台返回线上链接
                 lat:this.lat,
                 lng:this.lng,
                 typeName:this.careerName,
@@ -646,7 +694,7 @@
        //上传图片成功
       handleAvatarSuccess(res, file) {
         // alert(111111)
-        console.log(res,"图片上传后台返回数据")
+        console.log(res,"图片上传后台返回数据",file.raw)
         this.imgeUrlLine = res.url
         this.imgState = true
         //本地显示地址
