@@ -54,7 +54,7 @@ axios.interceptors.request.use(
 
 
 //cs
-localStorage.setItem('openid',"oYqIewD0n3rALGJOd7JBQnjEkwc4");
+localStorage.setItem('openid',"2132231231");
 //localStorage.setItem('complete',"1");
  var currentPathOne =  window.location.href.split("#")[1];
  var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
@@ -64,23 +64,18 @@ localStorage.setItem('openid',"oYqIewD0n3rALGJOd7JBQnjEkwc4");
  // if(currentPathOne ==　"/caseDetail"){
  //       WXData.WXBaseAuthorizeCase();
  // };
- // alert(11111)
  if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
         console.log("没有openid",currentPathOne);
         //注册
-       if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+       if(currentPathOne !=　"/" && currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
                   if( currentPathTwo != "/caseList"){
                         console.log("没有openid回调！");
                         WXData.WXBaseAuthorize();
                   };
        }; 
-       //我的任务
-       if(currentPathOne ==　"/caseDetail"){
-          WXData.WXBaseAuthorizeCase();
-        };   
  }else{
-        console.log("有openid");
-        if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+  
+        if(currentPathOne !=　"/" && currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
                   if( currentPathTwo != "/caseList"){
                          router.push("/");
                   };
