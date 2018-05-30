@@ -1,13 +1,13 @@
 <template>
-  <div class="watch-video" v-if="readyState">
+  <div class="watch-video" v-show="readyState">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
       <div class="video">
-        <video @click="pause" ref="video" id="video" controls @ended="end" x5-playsinline="" playsinline="" webkit-playsinline="">
-            <source :src="videoUrl" type="video/mp4">
+        <video style="position: relative;  object-fit: fill;"  ref="video" preload="auto" v-show="false" id="video" @play="play" @ended="end" playsinline="" x-webkit-airplay="allow" webkit-playsinline="" x5-video-player-type="h5" x5-playsinline="" :src="videoUrl">
             您的手机暂不支持video标签，请升级系统
         </video>
         <img class="video-poster" v-show="!haveWatch" src="../images/videoPoster.png" alt="" srcset="" >
-        <img class="video-btn" src="../images/videoBtn.png" v-show="!isPlaying" alt="" @click='play'>
+        <img class="video-btn" src="../images/videoBtn.png" v-show="!isPlaying" alt="" @click.stop='play'>
+        <canvas id="canvas" ref="canvas" @click="pause" width="900" height="450"></canvas>
       </div>
 
       <div class="btn" @click="beganSingle" :class="{active: isEnd}">开始接单<span></span></div>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    var timer;
+    var timer,canvas,context;
   export default {
     name:"learn",
     data() {
@@ -25,10 +25,22 @@
          isPlaying: false,
          haveWatch: false,
          isEnd: false,
-         videoUrl: ''
+         videoUrl: '',
+
       }
     },
     mounted() {
+
+
+        canvas = document.getElementById("canvas");
+        console.log(canvas)
+        context = canvas.getContext("2d");
+        // canvas.width = "6.9rem";
+        // canvas.height = "4rem";
+
+        
+        // canvas.width = window.innerWidth*2;  //获取屏幕宽度作为canvas的宽度  这个设置的越大，画面越清晰（相当于绘制的图像大，然后被css缩小）
+        // canvas.height = window.innerHeight*2;
       // video.addEventListener('ended', function() {
       //                 //播放完毕，退出全屏
       //       console.log(4)
@@ -59,6 +71,7 @@
 
     },
     methods: {
+
          //获取基本信息
         getInfo(){
            var openid = localStorage.getItem('openid');
@@ -74,7 +87,7 @@
                       this.complete =  response.data.result.complete;
                     console.log("video url",response.data.result.video);
                      //this.videoUrl = response.data.result.video;
-                this.videoUrl = "https://static.zhongchebaolian.com/message/survey/images/WeChat_20180301131800.mp4";
+                // this.videoUrl = "https://static.zhongchebaolian.com/message/survey/images/WeChat_20180301131800.mp4";
 
                 }
                 console.log(response,33333)
@@ -136,11 +149,16 @@
 
         //点击按钮播放
         play () {
-            /*alert(1111111111111)*/
             this.$refs.video.play();
             this.isPlaying = true;
             this.haveWatch = true;
-            
+            timer = setInterval(function(){
+                if(video.currentTime >=160){   //视频时间在3.8s时停止
+                    video.pause();
+                    clearInterval(timer);
+                };
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);//绘制视频
+            },16);
         },
 
         // 点击按钮暂停
@@ -186,6 +204,7 @@
 }
 .video .video-btn {
     width: .7rem;
+    padding: .5rem;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -215,6 +234,12 @@
 .btn span {
     color: #fff;
     margin-left: .25rem;
+}
+#canvas {
+    width: 6.9rem;
+    height: 4rem;
+    border-radius: .28rem;
+    /* background: #2fab3b; */
 }
 </style>
 
