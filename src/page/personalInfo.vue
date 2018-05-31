@@ -369,6 +369,10 @@
             
         };
 
+        var that = this;
+        setTimeout(function(){
+            that.placeKick();
+        },1000)
 
       //回车键
        document.onkeydown = (ev) => {
@@ -413,6 +417,46 @@
           this.setButGreen();
 
           this.selectCareerStatue = !this.selectCareerStatue;
+      },
+
+      //定位
+      placeKick(){
+        //地图定位方法
+        // console.log(cityData)
+        const that = this;
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function(r){
+          if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                console.log(r);
+                var data = {
+                  currentAddress:r.address.city+r.address.district+r.address.street+r.address.street_number,
+                  currentPoint:r.point,
+                  currentCity: r.address.city,
+                  currentCode: r.address.city_code
+                };
+                that.$store.commit('setThreeActive',data)
+                that.city = r.address.city;
+                that.cityCode = '';
+                // that.city = '上海市'
+                Bus.$emit('locationCity',{cityName: that.city})
+                var myGeo = new BMap.Geocoder();
+                // 将地址解析结果显示在地图上,并调整地图视野
+                myGeo.getPoint(that.city, function(point){
+                  if (point) {
+                    // console.log(point,"获取经纬度")
+                    that.lng = point.lng;
+                    that.lat = point.lat;
+                  }else{
+                    alert("您选择地址没有解析到结果!");
+                  }
+                });
+          }
+          else {
+            alert('failed'+this.getStatus());
+            Bus.$emit('locationCity',{cityName: ''})
+          }        
+        },{enableHighAccuracy: true})
+
       },
       //关闭弹层
       cancelLayer(){

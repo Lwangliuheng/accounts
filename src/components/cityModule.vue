@@ -149,12 +149,17 @@
        //城市数据转变格式
        this.cityDataOne = this.remouldCityData(false,0,[]);
        var that = this;
-       setTimeout(function(){
-           that.placeKick();
-       },1000)
-       // this.$nextTick(function(){
-       //    this.placeKick();
-       // })
+       // 定位移动到主页
+      //  setTimeout(function(){
+      //      that.placeKick();
+      //  },1000)
+
+      Bus.$on('locationCity', data => {
+        if(data.cityName) {
+          this.cityName = data.cityName;
+          that.cityNameState = true;          
+        }
+      })
      
     },
     computed:{

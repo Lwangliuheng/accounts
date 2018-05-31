@@ -54,7 +54,7 @@ axios.interceptors.request.use(
 
 
 //cs
-localStorage.setItem('openid',"2132231231");
+// localStorage.setItem('openid',"2132231231");
 //localStorage.setItem('complete',"1");
  var currentPathOne =  window.location.href.split("#")[1];
  var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
