@@ -1,5 +1,5 @@
 <template>
-  <div class="watch-video" v-if="readyState">
+  <div class="watch-video" v-show="readyState">
       <img class="bg" src="../images/watchVideobg.png" alt="" srcset="">
       <div class="video">
         <video @click="pause" ref="video" id="video"  @ended="end" x5-playsinline="" playsinline="" webkit-playsinline="">
@@ -21,8 +21,8 @@
     data() {
       return {
          idt:"",
-         sec:3,
-         min:0,
+         sec:38,
+         min:2,
          hour:0,
          idtStatus:false,
          isTimeEnd:false,
@@ -45,7 +45,7 @@
         this.getInfo();
         // alert(this.$refs.video)
         // 设置页面加载完成
-        //console.log(this.$refs.video.duration);
+        // alert(this.$refs.video.duration);
         // 调用接口
         // this.$ajax.post(this.ajaxUrl+"/weixin/public/v1/register",{openid: '1234',step: '4'})
         // .then(res => {
@@ -83,11 +83,12 @@
                this.hour--;
                 this.min = 59;
           }
+          
           // document.getElementById("rest_time").innerText = this.format(this.hour) + ":" + this.format(this.min) + ":" + this.format(this.sec); 
               document.getElementById("rest_time").innerText = '开始接单' +this.format(this.min) + ":" + this.format(this.sec);
             if(parseInt(this.hour)==0 && parseInt(this.min)==0 && parseInt(this.sec)==0) { 
                  window.clearInterval(this.idt);
-                 this.idtStatus = false;
+                //  this.idtStatus = false;
                  this.isTimeEnd = true;
                  this.isEnd = true;
                  document.getElementById("rest_time").innerText = '开始接单';
@@ -226,6 +227,7 @@
 }
 .video .video-btn {
     width: .7rem;
+    padding: .5rem;
     position: absolute;
     top: 50%;
     left: 50%;
