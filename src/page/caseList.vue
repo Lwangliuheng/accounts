@@ -399,14 +399,24 @@
         },
         //抢单按钮
         lootMenu(event){
+
+          this.$confirm('抢单成功后不能手动取消，需联系客服取消订单', '温馨提示', {
+                   confirmButtonText: '确定',
+                   cancelButtonText: '取消',
+                   type: 'warning',
+                   customClass:"tsk",
+                   center: true
+                 }).then(() => {
+                   var orderno = event.target.getAttribute('orderno');
+                   this.$store.commit('setordernoActive',orderno);
+                   console.log(orderno,"订单号");
+                   this.getLootDat(orderno);
+                   this.fullscreenLoading = true;
+                 }).catch(() => {
+                    
+                 });
+         
           
-          var orderno = event.target.getAttribute('orderno');
-
-          this.$store.commit('setordernoActive',orderno);
-
-          console.log(orderno,"订单号");
-          this.getLootDat(orderno);
-          this.fullscreenLoading = true;
         },
         //抢单数据请求
         getLootDat(id){
@@ -422,7 +432,7 @@
                  //抢单成功
                 this.fullscreenLoading = false;
                  if (response.data.data.ok){
-                     this.$confirm('订单成功，请前往App完成查勘任务！', '温馨提示', {
+                     this.$confirm('抢单成功，请前往App完成查勘任务！', '温馨提示', {
                              confirmButtonText: '确定',
                              showCancelButton:false,
                              customClass:"tsk",

@@ -229,23 +229,7 @@ import WXData from "@/js/wechat.js";
       var currentPathOne =  window.location.href.split("#")[1];
       var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
       //alert(this.$route.path)
-      //优化苹果手机进入首页问题 
-      //// 优化
-  //  if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-  //         if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
-  //               if( currentPathTwo != "/caseList"){
-  //                 console.log("没有openid回调！");
-  //                     WXBaseAuthorize();
-  //               }
-  //         };  
-  // }else{
-  //     if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
-  //              if( currentPathTwo != "/caseList"){
-  //                this.getInfo();
-  //                return
-  //              }
-  //     };  
-  // };
+      //优化苹果手机进入首页问题
      if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
         if( currentPathTwo != "/caseList"){
           console.log("没有openid回调！");

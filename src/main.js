@@ -42,6 +42,10 @@ axios.interceptors.request.use(
     if (config.url == "/boot-xcx-survey-api/rider/income/v1/redpacket/receive") {
       loadinginstace = ElementUI.Loading.service({ fullscreen: true });
     }
+    //抢单
+    if (config.url == "/boot-xcx-survey-api/order/v1/scramble") {
+      loadinginstace = ElementUI.Loading.service({ fullscreen: true });
+    }
     return config;
   },
   error => {
@@ -81,38 +85,21 @@ axios.interceptors.response.use(
 
 Vue.config.productionTip = false;
 
-console.log(window.location.href.split("#")[1].split("?")[0],99999);
+//console.log(window.location.href.split("#")[1].split("?")[0],99999);
 var currentPathOne =  window.location.href.split("#")[1];
 var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
-console.log(currentPathOne,1);
-console.log(currentPathTwo,2);
-//进入页扫二维码进入
-// var currentPathThree =  window.location.href.split("?")[1];
-// if(currentPathThree){
-//   var authCode = window.location.href.split("?")[1].split("=")[1];
-//   console.log(authCode);
-//   localStorage.setItem('authCode',authCode);
-// }
-// 优化
-// if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-//     if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseDetail"){
-//           if( currentPathTwo != "/caseList"){
-//             console.log("没有openid回调！");
-//                 WXBaseAuthorize();
-//           }
-//  };  
-// };
+// console.log(currentPathOne,1);
+// console.log(currentPathTwo,2);
 //我的任务
- if(currentPathOne ==　"/caseDetail"){
-       localStorage.setItem('case',"1");
-       //alert(localStorage.getItem('case'));
-       WXData.WXBaseAuthorizeCase();
- };
+ // if(currentPathOne ==　"/caseDetail"){
+ //       //alert(localStorage.getItem('case'));
+ //       WXData.WXBaseAuthorizeCase();
+ // };
  //注册
- if(currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
+ if(currentPathOne !=　"/" && currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
           if( currentPathTwo != "/caseList"){
             console.log("没有openid回调！");
-                WXData.WXBaseAuthorize();
+                  WXData.WXBaseAuthorize();
           };
  };  
 new Vue({

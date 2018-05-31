@@ -10,7 +10,7 @@
         <img class="video-btn" src="../images/videoBtn.png" v-show="!isPlaying" alt="" @click='play'>
       </div>
 
-      <div class="btn" @click="beganSingle" :class="{active: isEnd}">开始接单<span></span></div>
+      <div class="btn" id="rest_time" @click="beganSingle" :class="{active: isEnd}">开始接单<span></span></div>
   </div>
 </template>
 
@@ -20,6 +20,13 @@
     name:"learn",
     data() {
       return {
+         idt:"",
+         sec:3,
+         min:0,
+         hour:0,
+         idtStatus:false,
+         isTimeEnd:false,
+
          complete:"", 
          readyState:false,//页面显示状态
          isPlaying: false,
@@ -59,6 +66,34 @@
 
     },
     methods: {
+        format(str){
+            if(parseInt(str) < 10){
+               return "0" + str; 
+            }
+               return str;
+        },
+        ls(){
+       
+          this.sec--;
+          if(this.sec == 0 && this.min > 0){
+              this.min--;
+              this.sec = 59;
+          }
+          if(this.min < 0 && this.hour > 0){
+               this.hour--;
+                this.min = 59;
+          }
+          // document.getElementById("rest_time").innerText = this.format(this.hour) + ":" + this.format(this.min) + ":" + this.format(this.sec); 
+              document.getElementById("rest_time").innerText = '开始接单' +this.format(this.min) + ":" + this.format(this.sec);
+            if(parseInt(this.hour)==0 && parseInt(this.min)==0 && parseInt(this.sec)==0) { 
+                 window.clearInterval(this.idt);
+                 this.idtStatus = false;
+                 this.isTimeEnd = true;
+                 this.isEnd = true;
+                 document.getElementById("rest_time").innerText = '开始接单';
+            } 
+        
+        },
          //获取基本信息
         getInfo(){
            var openid = localStorage.getItem('openid');
@@ -136,7 +171,12 @@
 
         //点击按钮播放
         play () {
-            /*alert(1111111111111)*/
+           if(!this.idtStatus){
+               var that = this;
+               this.idt = window.setInterval(that.ls, 1000);
+           };
+           this.idtStatus = true;
+
             this.$refs.video.play();
             this.isPlaying = true;
             this.haveWatch = true;

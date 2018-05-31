@@ -113,11 +113,10 @@ import WXData from "../js/wechat.js";
       }
     },
     created(){
-       localStorage.setItem('case',"");
        if(localStorage.getItem('openid') == "undefined" || localStorage.getItem('openid') == null || !localStorage.getItem('openid')){
-            localStorage.setItem('case',"1");
             WXData.WXBaseAuthorizeCase();
        }else{
+         //alert(11111)
          this.getInfo();
        };
        
@@ -181,7 +180,11 @@ import WXData from "../js/wechat.js";
                        this.riderId = response.data.result.userId;
                         console.log("jibenxinxi ")
                        //定位
-                       this.getPlace();
+                       var that = this;
+                       setTimeout(function(){
+                           that.getPlace();
+                       },1000)
+                       ///this.getPlace();
                     }else{
                        //没有注册
                         this.$router.push({path:'/'});
