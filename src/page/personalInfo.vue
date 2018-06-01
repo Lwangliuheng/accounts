@@ -177,7 +177,12 @@
   }
   
 
-
+   .avatar-uploader{
+        margin:0 auto;
+        width: 1.86rem;
+       height: 1.86rem;
+       margin-bottom:0.64rem;
+   }
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
@@ -238,14 +243,15 @@
 </style>
 <template>
   <div>
-    <div class="register_wrap" v-if="readyState">
+    <div class="register_wrap" v-if="readyState" >
       <div class="register_content"  v-show="!cityModuleState" >
-        <div class="register_top" @click='clickInput'>
-          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' id="avatar" type="file" multiple accept="image/*" capture="camera" v-if="!isIos"/>
-          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' id="avatar" type="file" multiple accept="image/*" v-if="isIos"/>
+        <div class="register_top" @click='clickInput' v-if="!isIos">
+          <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' id="avatar" type="file" multiple accept="image/*" capture="camera" />
+        <!--   <input class="js_upFile" v-show="false"  @change='getImage' ref='avatar' id="avatar" type="file" multiple accept="image/*" v-if="isIos"/> -->
           <span class="el-icon-plus" v-if="!imageUrl"></span>
           <img :src="imageUrl" class="register_top_img" alt="" srcset="">
           <!-- <el-upload
+            v-if="isIos"
             name="image"
             class="avatar-uploader"
             action="/public-surveyor-api-boot/public/file/v1/uploadImage"
@@ -255,6 +261,20 @@
             <img v-if="imageUrl" :src="imageUrl" class="avatar" >
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload> -->
+<!--           <img class="register_top_img" src="../images/headPortrait1.png" v-on:click="imgChange">
+          <p class="top_wrod">请按照示例图上传大头照</p> -->
+        </div>
+        <div class="isIos_wrap" v-if="isIos">
+          <el-upload
+            name="image"
+            class="avatar-uploader"
+            action="/public-surveyor-api-boot/public/file/v1/uploadImage"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" >
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
 <!--           <img class="register_top_img" src="../images/headPortrait1.png" v-on:click="imgChange">
           <p class="top_wrod">请按照示例图上传大头照</p> -->
         </div>
@@ -436,6 +456,7 @@
                 };
                 that.$store.commit('setThreeActive',data)
                 that.city = r.address.city;
+                that.cityState = true;
                 that.cityCode = '';
                 // that.city = '上海市'
                 Bus.$emit('locationCity',{cityName: that.city})
@@ -549,6 +570,7 @@
         this.$refs.avatar.click();
       },
       uploadAvatar(url){
+      
         var formData = new FormData();
         formData.append("image", url);
         this.$ajax.post(this.ajaxUrl+"/public/file/v1/uploadImage",formData)
@@ -568,13 +590,17 @@
       },
        // 获取到的图片
       getImage(){
+        
           var reader = new FileReader();//新建一个FileReader
-          console.log(this.$refs.avatar.files[0])
+
+          console.log(this.$refs.avatar.files[0]);
+          // alert(this.$refs.avatar.files[0])
           reader.readAsDataURL(this.$refs.avatar.files[0]);//读取文件
           var that = this;
           reader.onload = (evt) => { //读取完文件之后会回来这里
               // var fileString = evt.target.result;
               //post方式上传图片到控制器
+              
               this.uploadAvatar(this.$refs.avatar.files[0]);       
           }
        },

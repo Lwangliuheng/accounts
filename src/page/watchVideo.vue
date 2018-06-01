@@ -195,7 +195,7 @@
 
         // 当结束时
         end() {
-            this.isEnd = true;
+            //this.isEnd = true;
         },
     }
 

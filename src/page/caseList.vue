@@ -141,6 +141,47 @@
     font-size: 20px;
     margin-top:3rem;
   }
+  .ts_wrap{
+    background: rgba(0,0,0,0.3);
+    width:100%;
+    position: fixed;
+    height: 100vh;
+    top:0;
+    left:0;
+    z-index: 200;
+  }
+  .ts{
+    width:6rem;
+    height:4rem;
+    margin:0 auto;
+    position:absolute;
+    left:50%;
+    top:50%;
+    background-color: #fff;
+    margin-left:-3rem;
+    margin-top:-2rem;
+    padding:0px 0.8rem;
+    border-radius: 3px;
+  }
+  .qued{
+    width:70px;
+    height:35px;
+    background-color: #409EFF;
+    text-align: center;
+    color:#fff;
+    border-radius: 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    margin:0 auto;
+    line-height:35px;
+  }
+  .ts_word{
+    line-height: 24px;
+    padding-top:0.8rem;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom:0.6rem;
+  }
 </style>
 <template>
   
@@ -210,6 +251,14 @@
           <!--  <div class="warmPrompt">
                    温馨提示：抢单成功后不能手动取消，需联系客服取消订单
            </div> -->
+           <div class="ts_wrap" v-if="tsStatus">
+                <div class="ts">
+                   <p class="ts_word">抢单成功，请前往App完成查勘任务！</p>
+                   <div class="qued" @click="gb">
+                     确定
+                   </div>
+                </div>
+           </div>
       </div>
 
   
@@ -224,6 +273,7 @@
     name:"List",
     data() {
       return {
+          tsStatus:false,
           zanwuStatus:false,
           readyState:false,
           topPromise:"",
@@ -270,6 +320,10 @@
    
     },
     methods: {
+      gb(){
+         this.tsStatus = false;
+          WeixinJSBridge.call('closeWindow');
+      },
         //定位
         getPlace(){
           var that = this;
@@ -410,8 +464,9 @@
                    var orderno = event.target.getAttribute('orderno');
                    this.$store.commit('setordernoActive',orderno);
                    console.log(orderno,"订单号");
+                   //this.fullscreenLoading = true;
                    this.getLootDat(orderno);
-                   this.fullscreenLoading = true;
+                   
                  }).catch(() => {
                     
                  });
@@ -430,20 +485,37 @@
          .then(response => {
              if(response.data.rescode == 200){
                  //抢单成功
-                this.fullscreenLoading = false;
+               // this.fullscreenLoading = false;
                  if (response.data.data.ok){
-                     this.$confirm('抢单成功，请前往App完成查勘任务！', '温馨提示', {
-                             confirmButtonText: '确定',
-                             showCancelButton:false,
-                             customClass:"tsk",
-                             type: 'warning',
-                             showClose:false,
-                             center: true
-                          }).then(() => {
-                             WeixinJSBridge.call('closeWindow');
-                          }).catch(() => {
-                            WeixinJSBridge.call('closeWindow');
-                          });
+                  this.tsStatus = true;
+                  //    this.$confirm('抢单成功，请前往App完成查勘任务！', '温馨提示', {
+                  //            confirmButtonText: '确定',
+                  //            showCancelButton:false,
+                  //            customClass:"tsk",
+                  //            type: 'warning',
+                  //            showClose:false,
+                  //            center: true
+                  //    }).then(() => {
+                  //          // 进入空白页
+                  //         WeixinJSBridge.call('closeWindow');
+                  //    }).catch(() => {
+                          
+                  //          // 进入空白页
+                  //        WeixinJSBridge.call('closeWindow');
+                  //    });
+                  // return
+                     // this.$confirm('抢单成功，请前往App完成查勘任务！', '温馨提示', {
+                     //         confirmButtonText: '确定',
+                     //         showCancelButton:false,
+                     //         customClass:"tsk",
+                     //         type: 'warning',
+                     //         showClose:false,
+                     //         center: true
+                     //      }).then(() => {
+                     //         WeixinJSBridge.call('closeWindow');
+                     //      }).catch(() => {
+                     //        WeixinJSBridge.call('closeWindow');
+                     //      });
 
                  }else{
                      //发放了红包

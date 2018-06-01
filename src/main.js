@@ -80,7 +80,7 @@ axios.interceptors.response.use(
 );
 //alert("min");
 //cs
-//localStorage.setItem('openid',"oYqIewHziI_Er9A6fWkLNoFd06mQ");
+//localStorage.setItem('openid',"oYqIewIo2hHngivbg_PkK_AGIBnA");
 //localStorage.setItem('complete',"1");
 
 Vue.config.productionTip = false;
@@ -99,7 +99,7 @@ var currentPathTwo =  window.location.href.split("#")[1].split("?")[0];
  if(currentPathOne !=　"/" && currentPathOne !=　"/redPacket"  && currentPathOne !=　"/code" && currentPathOne !=　"/caseCode" && currentPathOne !=　"/caseDetail"){
           if( currentPathTwo != "/caseList"){
             console.log("没有openid回调！");
-                  WXData.WXBaseAuthorize();
+                 WXData.WXBaseAuthorize();
           };
  };  
 new Vue({
